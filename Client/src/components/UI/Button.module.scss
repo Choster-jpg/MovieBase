@@ -1,0 +1,43 @@
+@use "./../../styles/abstracts/variables" as *;
+
+.button {
+    width: 100%;
+    height: 45px;
+
+    &:global([class*="Primary"]) {
+        color: $default-dark;
+    }
+
+    &:global([class*="Secondary"]) {
+        color: $default-white;
+    }
+
+    &:global(.MuiButton-root) {
+        font-family: inherit;
+        font-weight: 700;
+        text-transform: none;
+        border-radius: 10px;
+    }
+
+    &:global(.MuiButton-containedSecondary) {
+        background-color: $default-dark;
+
+        &:hover {
+            background-color: $default-dark-hover;
+        }
+    }
+
+    &:global(.MuiButton-containedPrimary) {
+        background-color: $default-white;
+
+        &:hover {
+            background-color: $default-white-hover;
+        }
+    }
+
+    &:global(.MuiButton-text) {
+        &:hover {
+            background-color: $default-white-hover;
+        }
+    }
+}

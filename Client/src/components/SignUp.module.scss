@@ -1,0 +1,32 @@
+@use "./../styles/abstracts/variables" as *;
+@use "./../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($default-dark);
+
+    @include d-flex(space-between, start, column);
+
+    &__panel {
+        @include d-flex(initial, start, column);
+
+        border-radius: 0 0 0 $border-radius-md;
+
+        padding-left: $padding-default;
+        padding-top: $padding-xl;
+
+        width: $panel-width-default;
+        height: $panel-height-default;
+        background-color: $default-white;
+
+        &__container {
+            max-width: 200px;
+        }
+
+        .header {
+            margin-top: $margin-sm;
+            font-size: 1.8em;
+            font-weight: 600;
+            color: $default-dark;
+        }
+    }
+}

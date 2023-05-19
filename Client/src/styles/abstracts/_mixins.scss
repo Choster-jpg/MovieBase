@@ -1,0 +1,74 @@
+@use "variables" as *;
+
+// Small devices
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+@mixin sm-only {
+    @media (min-width: #{$screen-md-min}) and (max-width: #{$screen-md-min}){
+        @content;
+    }
+}
+
+// Medium devices
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+@mixin md-only {
+    @media (min-width: #{$screen-md-min}) and (max-width: #{$screen-lg-min}){
+        @content;
+    }
+}
+
+// Large devices
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+@mixin lg-only {
+    @media (min-width: #{$screen-md-min}) and (max-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+@mixin set-background-image($url) {
+    background-image: url($url);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@mixin fullscreen-background($color: false, $url: false) {
+    @if $url {
+        @include set-background-image($url)
+    }
+
+    @if $color {
+        background-color: $color;
+    }
+
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+@mixin d-flex($j-content: initial, $a-items: initial, $f-direction: initial) {
+    display: flex;
+    flex-direction: $f-direction;
+    justify-content: $j-content;
+    align-items: $a-items;
+}
