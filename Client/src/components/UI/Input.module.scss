@@ -1,0 +1,45 @@
+@use "./../../styles/abstracts/variables" as *;
+
+.label {
+    &:global(.MuiFormLabel-root) {
+        font-family: inherit;
+        color: $secondary-text-white;
+        font-size: 0.9em;
+        margin-left: $margin-sm;
+    }
+
+    &:global(.MuiFormLabel-root.Mui-focused) {
+        color: $secondary-text-white;
+    }
+}
+
+.formElement {
+    width: 100%;
+    + .formElement {
+        margin-top: $margin-sm;
+    }
+}
+
+.input {
+    &:global(.MuiInput-root) {
+        font-family: inherit;
+        color: $default-white;
+        padding-left: $padding-sm;
+    }
+
+    &:global(.MuiInput-underline:hover) {
+        border-color: $default-white-hover;
+    }
+
+    &:global(.MuiInput-underline:before) {
+        border-color: $default-white-hover;
+    }
+
+    &:global(.MuiInput-underline:after) {
+        border-color: $default-white-hover;
+    }
+
+    .icon {
+        color: $default-white;
+    }
+}
