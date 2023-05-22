@@ -1,66 +1,106 @@
 @use "./../styles/abstracts/variables" as *;
 @use "./../styles/abstracts/mixins" as *;
 
-.background {
-    @include fullscreen-background($default-dark);
+.image {
+    @include fullscreen-background(false, "../assets/login/1-xs.jpg");
 
-    .panel {
-        @include d-flex(initial, start, column);
-
-        border-radius: 0 0 0 $border-radius-md;
-
-        padding-left: $padding-default;
-        padding-top: $padding-default;
-
-        width: 100%;
-        height: 160px;
-        background-color: $default-white;
-
-        &__container {
-            max-width: 200px;
-        }
-
-        h1 {
-            margin-top: $margin-sm;
-            font-size: 1.8em;
-            font-weight: 600;
-            color: $default-dark;
-        }
+    @include md {
+        background-image: url("../assets/login/3-md.jpg");
     }
 
-    .form {
-        @include d-flex(center, center, column);
+    @include xl {
+        background-image: url("../assets/login/2-lg.jpg");
+    }
 
-        &__container {
-            padding: $padding-sm $padding-default 0 $padding-default;
-            max-width: 360px;
+    &::before {
+        content: '';
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+
+        @include xl {
+            background-color: $tone-sm;
         }
 
-        .dividerContainer {
-            margin: $margin-xs 0;
+        background-color: $tone-xs;
+        opacity: $tone-opacity;
+    }
 
-            .divider:global(.MuiDivider-withChildren) {
-                color: $default-white;
-                &:before, &:after {
-                    border-color: $default-white;
+    @include d-flex(end);
+
+    @include xl {
+        justify-content: start;
+    }
+
+    .background {
+        @include fullscreen-background($default-dark);
+        position: relative;
+
+        @include lg {
+            max-width: $background-max-width;
+            background-color: $lg-dark;
+        }
+
+        .panel {
+            @include d-flex(initial, start, column);
+
+            border-radius: 0 0 0 $border-radius-md;
+
+            padding-left: $padding-default;
+            padding-top: $padding-default;
+
+            width: 100%;
+            height: $panel-height-default;
+            background-color: $default-white;
+
+            &__container {
+                max-width: 200px;
+            }
+
+            h1 {
+                margin-top: $margin-sm;
+                font-size: 1.8em;
+                font-weight: 600;
+                color: $default-dark;
+            }
+        }
+
+        .form {
+            @include d-flex(center, center, column);
+
+            height: calc(100vh - $panel-height-default);
+
+            &__container {
+                padding: 0 $padding-default 0 $padding-default;
+                max-width: 360px;
+            }
+
+            .dividerContainer {
+                margin: $margin-xs 0;
+
+                .divider:global(.MuiDivider-withChildren) {
+                    color: $default-white;
+                    &:before, &:after {
+                        border-color: $default-white;
+                    }
                 }
             }
-        }
 
-        .container {
-            margin-top: $margin-md;
-            @include d-flex(start);
+            .container {
+                margin-top: $margin-md;
+                @include d-flex(start);
 
-            span {
-                color: $default-white;
-            }
-
-            .linkContainer {
-                margin-left: $margin-default;
-
-                .link {
-                    font-weight: 600;
+                span {
                     color: $default-white;
+                }
+
+                .linkContainer {
+                    margin-left: $margin-default;
+
+                    .link {
+                        font-weight: 600;
+                        color: $default-white;
+                    }
                 }
             }
         }

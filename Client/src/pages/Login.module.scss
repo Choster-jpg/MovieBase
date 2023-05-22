@@ -28,57 +28,57 @@
         opacity: $tone-opacity;
     }
 
-    &__nav {
-        position: relative;
-        padding-top: $padding-xl;
+    .container {
         padding-left: $padding-default;
-    }
-
-    &__tagline {
         position: relative;
-        padding-left: $padding-default;
-        max-width: $screen-md-min;
 
-        span {
-            font-weight: 700;
-            font-size: $title-fontsize;
-            line-height: 110%;
-            color: $default-white;
-        }
-    }
+        @include d-flex(space-between, start, column);
 
-    &__panel {
-        @include d-flex(initial, end, column);
+        height: 95vh;
 
-        max-width: $panel-width-default;
-
-        position: relative;
-        background-color: $default-white;
-        height: $panel-height-default;
-        border-radius: 0 $border-radius-md 0 0;
-
-        padding-top: $padding-default;
-        padding-left: $padding-default;
-        padding-right: $padding-default;
-
-        .container {
-            max-width: 300px;
+        &__nav {
+            padding-top: $padding-xl;
         }
 
-        span {
-            font-weight: 500;
-            color: $default-dark;
+        &__tagline {
+            max-width: $panel-width-default;
+            @include md {
+                max-width: $tagline-md-max-width;
+            }
+
+            span {
+                font-weight: 700;
+                font-size: $title-fontsize;
+                line-height: 110%;
+                color: $default-white;
+            }
         }
 
-        .button {
-            margin-top: $margin-default;
-        }
+        &__panel {
+            position: relative;
+            max-width: $panel-width-default;
 
-        .textButton {
-            margin-top: $margin-xs;
+            span {
+                font-weight: 600;
+                color: $default-white;
+            }
 
-            &__icon {
-                margin-left: $margin-xs;
+            .button {
+                margin-top: $margin-default;
+            }
+
+            .textButton {
+                margin-top: $margin-xs;
+
+                &__link {
+                    font-weight: 700;
+                    color: $default-white;
+                    @include d-flex(start, center);
+                }
+
+                &__icon {
+                    margin-left: $margin-xs;
+                }
             }
         }
     }

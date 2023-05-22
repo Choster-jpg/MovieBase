@@ -38,6 +38,7 @@
     &:global(.MuiButton-text) {
         &:hover {
             background-color: $default-white-hover;
+            color: $default-dark;
         }
     }
 }
