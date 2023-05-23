@@ -17,11 +17,6 @@
         position: absolute;
         height: 100vh;
         width: 100vw;
-
-        @include xl {
-            background-color: $tone-sm;
-        }
-
         background-color: $tone-xs;
         opacity: $tone-opacity;
     }
@@ -37,8 +32,12 @@
         position: relative;
 
         @include lg {
+            border-radius: 0 0 0 $border-radius-md;
             max-width: $background-max-width;
-            background-color: $lg-dark;
+        }
+
+        @include xl {
+            border-radius: 0 0 $border-radius-md 0;
         }
 
         .panel {
