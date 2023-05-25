@@ -1,0 +1,59 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.image {
+    @include fullscreen-background(false, "../assets/login/1-xs.jpg");
+
+    @include md {
+        background-image: url("../../../assets/login/3-md.jpg");
+    }
+
+    @include xl {
+        background-image: url("../../../assets/login/2-lg.jpg");
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        background-color: $tone-xs;
+        opacity: $tone-opacity;
+    }
+
+    @include d-flex(end);
+
+    @include xl {
+        justify-content: start;
+    }
+
+
+    .dividerContainer {
+        margin: $margin-xs 0;
+
+        .divider:global(.MuiDivider-withChildren) {
+            color: $default-white;
+            &:before, &:after {
+                border-color: $default-white;
+            }
+        }
+    }
+
+    .container {
+        margin-top: $margin-md;
+        @include d-flex(start);
+
+        span {
+            color: $default-white;
+        }
+
+        .linkContainer {
+            margin-left: $margin-default;
+
+            .link {
+                font-weight: 600;
+                color: $default-white;
+            }
+        }
+    }
+}

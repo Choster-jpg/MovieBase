@@ -1,18 +1,16 @@
 import {
     home_route,
     movie_route,
-    browse_movies_route,
-    login_route,
-    sign_up_route,
-    sign_in_route,
+    browse_movies_route, login_route, sign_up_route, sign_in_route,
 } from './consts/routes/publicRoutes.js';
 
 import Home from './pages/Home.jsx';
 import Movie from './pages/Movie.jsx';
 import BrowseMovies from "./pages/BrowseMovies.jsx";
-import Login from "./pages/Login.jsx";
-import SignUp from "./components/SignUp.jsx";
-import SignIn from "./components/SignIn.jsx";
+import Login from "./pages/Login/Login.jsx";
+import SignUp from "./components/auth/SignUp/SignUp.jsx";
+import SignIn from "./components/auth/SignIn/SignIn.jsx";
+import AuthForm from "./components/auth/AuthForm/AuthForm.jsx";
 
 
 export const public_routes = [
@@ -30,11 +28,11 @@ export const public_routes = [
     },
     {
         path: sign_up_route,
-        pageComponent: SignUp,
+        pageComponent: Login,
     },
     {
         path: sign_in_route,
-        pageComponent: SignIn,
+        pageComponent: Login,
     }
     /*{
         path: browse_movies_route,

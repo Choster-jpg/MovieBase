@@ -1,9 +1,9 @@
 // public routes, w/o sign in
 
-export const login_route = '/login';
+export const login_route = '/login/index';
 
-export const sign_up_route = '/sign_up';
-export const sign_in_route = '/sign_in';
+export const sign_up_route = '/login/sign_up';
+export const sign_in_route = '/login/sign_in';
 
 export const home_route = '/home';
 export const search_home_route = '/search';

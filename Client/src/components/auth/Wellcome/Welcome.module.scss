@@ -1,0 +1,57 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.container {
+    padding-left: $padding-default;
+    position: relative;
+
+    @include d-flex(space-between, start, column);
+
+    height: 95vh;
+
+    &__nav {
+        padding-top: $padding-xl;
+    }
+
+    &__tagline {
+        max-width: $panel-width-default;
+        @include md {
+            max-width: $tagline-md-max-width;
+        }
+
+        span {
+            font-weight: 700;
+            font-size: $title-fontsize;
+            line-height: 110%;
+            color: $default-white;
+        }
+    }
+
+    &__panel {
+        position: relative;
+        max-width: $panel-width-default;
+
+        span {
+            font-weight: 600;
+            color: $default-white;
+        }
+
+        .button {
+            margin-top: $margin-default;
+        }
+
+        .textButton {
+            margin-top: $margin-xs;
+
+            &__link {
+                font-weight: 700;
+                color: $default-white;
+                @include d-flex(start, center);
+            }
+
+            &__icon {
+                margin-left: $margin-xs;
+            }
+        }
+    }
+}

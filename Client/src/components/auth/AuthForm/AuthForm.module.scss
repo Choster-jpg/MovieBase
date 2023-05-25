@@ -1,0 +1,61 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+
+.background {
+    @include fullscreen-background($default-dark);
+    position: relative;
+
+    @include d-flex(n,n,column);
+
+    @include lg {
+        border-radius: 0 0 0 $border-radius-md;
+        max-width: $background-max-width;
+    }
+
+    @include xl {
+        border-radius: 0 0 $border-radius-md 0;
+    }
+
+    .panel {
+        @include d-flex(space-between, start, column);
+
+        border-radius: 0 0 0 $border-radius-md;
+
+        padding-left: $padding-default;
+        padding-top: $padding-xs;
+        padding-bottom: $padding-default;
+
+        width: 100%;
+        background-color: $default-white;
+
+        &__container {
+            max-width: 200px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: $default-dark;
+            display: inline-block;
+            margin-top: $margin-sm;
+        }
+
+        span {
+            font-weight: 500;
+            display: inline-block;
+            margin-top: $margin-sm;
+        }
+    }
+
+    .form {
+        @include d-flex(center, center, column);
+
+        flex-grow: 1;
+
+        &__container {
+            padding: 0 $padding-default 0 $padding-default;
+            max-width: 360px;
+        }
+    }
+}

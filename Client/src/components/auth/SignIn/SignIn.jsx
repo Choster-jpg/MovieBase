@@ -3,26 +3,15 @@ import React from 'react';
 import classes from './SignIn.module.scss';
 import {Divider, IconButton, Link} from "@mui/material";
 import {East, Google} from "@mui/icons-material";
-import Input from "./UI/Input.jsx";
-import Button from "./UI/Button.jsx";
+import Input from "../../UI/Input.jsx";
+import Button from "../../UI/Button.jsx";
+import AuthForm from "../AuthForm/AuthForm.jsx";
 
 const SignIn = () => {
     return (
         <div className={classes.background}>
-            <div className={classes.panel}>
-                <div className={classes.panel__container}>
-                    <IconButton sx={{
-                        color: '#272f32',
-                        marginRight: -1
-                    }}>
-                        <East/>
-                    </IconButton>
-                    <h1>Welcome back!</h1>
-                    <span>Continue your adventure.</span>
-                </div>
-            </div>
-            <div className={classes.form}>
-                <div className={classes.form__container}>
+            <AuthForm content={
+                <>
                     <Input label="Email" type="text"/>
                     <Input label="Password" type="password"/>
                     <Button variant="contained" color="primary" sx={{marginTop: 4}}>Sign In</Button>
@@ -33,10 +22,10 @@ const SignIn = () => {
                         Sign in with google
                     </Button>
                     <div className={classes.linkContainer}>
-                        <Link className={classes.link} href="#" underline="none">Forgot password?</Link>
+                        <Link className={classes.link} href="Client/src/components/auth/SignIn/SignIn.jsx#" underline="none">Forgot password?</Link>
                     </div>
-                </div>
-            </div>
+                </>
+            } backIcon={<East/>} header={"Welcome back!"} subheader={"Continue your adventure."}/>
         </div>
     );
 };
