@@ -17,4 +17,4 @@ app.use(express.json());
 
 app.use('/api', router);
 
-const api_server = app.listen(PORT, () => console.log(`Server ha started at ${PORT}`));
+const api_server = app.listen(PORT, () => console.log(`Server started at ${PORT}`));

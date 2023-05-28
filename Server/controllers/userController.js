@@ -1,5 +1,4 @@
 const userService = require('../services/userService');
-const ApiError = require('../error/ApiError');
 const {User} = require('../models/models');
 
 const passport = require('passport');
@@ -16,13 +15,13 @@ class UserController
             const errors = validationResult(request);
             if(!errors.isEmpty())
             {
-                return next(new ApiError('Ошибка при валидации', errors.array()))
+                // TODO: throw new error
             }
             const {email, password, display_name} = request.body;
             const {image} = request.files;
 
             let fileName = uuid.v4() + '.jpg';
-            image.mv(path.resolve(__dirname, '..', 'static', 'users', fileName))
+            //image.mv(path.resolve(__dirname, '..', 'static', 'users', fileName))
 
             const userData = await userService.register(email, password, display_name, fileName);
 
@@ -192,18 +191,6 @@ class UserController
                 }, {new: true});
             }
             return response.json(user);
-        }
-        catch(e)
-        {
-            next(e);
-        }
-    }
-
-    async google(request, response, next)
-    {
-        try
-        {
-            passport.authenticate('google', {failureRedirect: '/'})
         }
         catch(e)
         {

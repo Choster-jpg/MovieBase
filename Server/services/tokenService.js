@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 const {Token} = require('../models/models');
-const ApiError = require("../error/ApiError");
 
 class TokenService
 {
@@ -16,8 +15,7 @@ class TokenService
     {
         try
         {
-            const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-            return userData;
+            return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         }
         catch(e)
         {
@@ -29,8 +27,7 @@ class TokenService
     {
         try
         {
-            const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-            return userData;
+            return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
         }
         catch(e)
         {
@@ -47,8 +44,7 @@ class TokenService
             tokenData.refreshToken = refreshToken;
             return tokenData.save();
         }
-        const token = await Token.create({user: userEmail, refreshToken: refreshToken});
-        return token;
+        return await Token.create({user: userEmail, refreshToken: refreshToken});
     }
 
     async parseTokenFromRequest(request)
@@ -65,20 +61,17 @@ class TokenService
             return null;
         }
 
-        const userData = this.validateAccessToken(accessToken);
-        return userData;
+        return this.validateAccessToken(accessToken);
     }
 
     async removeToken(refreshToken)
     {
-        const tokenData = await Token.deleteOne({refreshToken: refreshToken});
-        return tokenData;
+        return await Token.deleteOne({refreshToken: refreshToken});
     }
 
     async findToken(refreshToken)
     {
-        const tokenData = await Token.findOne({refreshToken: refreshToken});
-        return tokenData;
+        return await Token.findOne({refreshToken: refreshToken});
     }
 }
 
