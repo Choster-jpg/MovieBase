@@ -16,7 +16,9 @@
     "@mui/material": "^5.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.1"
+    "react-hook-form": "^7.44.2",
+    "react-router-dom": "^6.11.1",
+    "react-tabs": "^6.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

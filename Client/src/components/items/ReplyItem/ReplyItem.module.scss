@@ -1,0 +1,47 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.replyItem {
+    margin-top: $margin-sm;
+
+    .contentHeader {
+        @include d-flex();
+
+        .contentAuthor {
+            @include d-flex(end, n, column);
+
+            color: $primary-white;
+            margin-left: $margin-xxs;
+
+            h5 {
+                margin-bottom: $margin-xxs;
+            }
+
+            span {
+                font-size: 0.7em;
+                color: $secondary-text-white;
+            }
+        }
+    }
+
+    .avatar {
+        height: auto;
+        width: 30px;
+    }
+
+    .reactions {
+        @include d-flex(start);
+        color: $primary-white;
+
+        Button {
+            height: 30px;
+            width: 60px;
+            font-size: 0.65em;
+        }
+
+        .icon {
+            width: 15px;
+            height: auto;
+        }
+    }
+}

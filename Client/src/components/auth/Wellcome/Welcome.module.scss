@@ -23,7 +23,7 @@
             font-weight: 700;
             font-size: $title-fontsize;
             line-height: 110%;
-            color: $default-white;
+            color: $primary-white;
         }
     }
 
@@ -33,7 +33,7 @@
 
         span {
             font-weight: 600;
-            color: $default-white;
+            color: $primary-white;
         }
 
         .button {
@@ -45,7 +45,7 @@
 
             &__link {
                 font-weight: 700;
-                color: $default-white;
+                color: $primary-white;
                 @include d-flex(start, center);
             }
 

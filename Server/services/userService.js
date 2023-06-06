@@ -4,17 +4,20 @@ const uuid = require('uuid');
 const mailService = require('./mailService');
 const tokenService = require('./tokenService');
 const UserDto = require('../dto/userDto');
-const {User} = require('../models/models');
+
+const sequelize = require('../database/database');
+const {User} = require('../models/models').Models(sequelize);
 
 class UserService
 {
-    async register(email, password, display_name, image)
+    async register(email, password, full_name, nickname)
     {
-        let candidate = await User.findOne( {email: email});
+        let candidate = await User.findOne( { email });
 
         if(candidate)
         {
-            // TODO: throw new error
+            // TODO: use error middleware
+            throw new Error('User with this email already exists.');
         }
 
         let hashPassword = await bcrypt.hash(password, 3);
@@ -22,7 +25,7 @@ class UserService
 
         let completeActivationLink = `${process.env.API_URL}/api/user/activate/${activationLink}`;
 
-        let user = await User.create({email: email, password: hashPassword, activationLink: activationLink, display_name: display_name, image: image});
+        let user = await User.create({email, password: hashPassword, activationLink, full_name, nickname});
         await mailService.sendActivationMail(email, completeActivationLink);
 
         let userDto = new UserDto(user);
@@ -36,7 +39,8 @@ class UserService
         console.log(user);
         if(!user)
         {
-            // TODO: throw new error
+            // TODO: use error middleware
+            throw new Error('Wrong activation link');
         }
 
         await User.updateOne({activationLink: activationLink}, {is_activated: true});
@@ -56,36 +60,40 @@ class UserService
 
     async login(email, password)
     {
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({email});
 
         if(!user)
         {
             // TODO: throw new error
+            throw new Error('There is no user with such email.');
         }
+
+        console.log(password, user.password);
 
         const isPassEquals = await bcrypt.compare(password, user.password);
         if(!isPassEquals)
         {
             // TODO: throw new error
+            throw new Error('Wrong password');
         }
 
-        if(user.is_activated === false)
+        /*if(user.is_activated === false)
         {
             // TODO: throw new error
-        }
+            throw new Error('Account is not activated');
+        }*/
 
         const userDto = new UserDto(user);
         console.log("user dto: ", userDto);
         const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(userDto._id, tokens.refreshToken);
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
         return { ...tokens, user: userDto };
     }
 
     async logout(refreshToken)
     {
-        const token = await tokenService.removeToken(refreshToken);
-        return token;
+        return await tokenService.removeToken(refreshToken);
     }
 
     async refresh(refreshToken)

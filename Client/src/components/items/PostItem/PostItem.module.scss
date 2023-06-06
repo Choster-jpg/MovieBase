@@ -1,0 +1,113 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.postContainer {
+    + .postContainer {
+        margin-top: $margin-sm;
+    }
+
+    padding: $padding-default $padding-default $padding-sm $padding-default;
+
+    background-color: $primary-dark-hover;
+    border-radius: 8px;
+    min-height: 300px;
+
+    .postSubject {
+        position: relative;
+        @include d-flex(start, center, column);
+
+        .poster {
+            border-radius: 8px;
+            width: 70%;
+            height: auto;
+
+            -webkit-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+            -moz-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+            box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+        }
+
+        .posterLabels {
+            margin-top: $margin-sm;
+            width: 100%;
+            @include d-flex(start);
+
+            h3 {
+                width: 100%;
+                color: $primary-white;
+                font-size: 1em;
+                text-align: center;
+            }
+
+            span {
+                margin-left: $margin-xxs;
+                font-size: 0.8em;
+                color: $secondary-text-white;
+            }
+        }
+    }
+
+    .postContent {
+        margin-top: $margin-default;
+
+        .postHeader {
+            @include d-flex();
+
+            .postAuthor {
+                @include d-flex(end, n, column);
+
+                color: $primary-white;
+                margin-left: $margin-xxs;
+
+                h5 {
+                    margin-bottom: $margin-xxs;
+                }
+
+                span {
+                    font-size: 0.7em;
+                    color: $secondary-text-white;
+                }
+            }
+        }
+
+        .postText {
+            margin-top: $margin-sm;
+
+            h4 {
+                color: $primary-white;
+            }
+
+            p {
+                margin-top: $margin-xs;
+                font-size: 0.9em;
+                line-height: 1.2em;
+                color: $secondary-text-white;
+
+                .link {
+                    text-decoration: none;
+                    margin-left: $margin-xxs;
+                    color: $highlight-yellow;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            }
+
+            .comments {
+                color: $secondary-text-white;
+                margin-top: $margin-xs;
+
+                @include d-flex(end, center);
+
+                .icon {
+                    width: 20px;
+                    height: auto;
+                    margin-left: $margin-xxs;
+                }
+
+                span {
+                    font-size: 0.8em;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

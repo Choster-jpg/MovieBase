@@ -4,21 +4,15 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 
-router.post('/register',
-    body('email').isEmail(),
-    body('password').isLength({min: 3, max: 32}),
-    userController.register);
-
-router.post('/login',  userController.login);
+router.post('/register', userController.register);
+router.post('/login', userController.login);
 router.post('/logout', userController.logout);
-router.post('/reset',  userController.reset);
+router.post('/reset', userController.reset);
 router.post('/reset/password', userController.resetPassword);
 router.post('/info', userController.setInfo)
 
 router.get('/activate/:link', userController.activate);
 router.get('/reset/:link', userController.checkResetLink);
 router.get('/refresh', userController.refresh);
-
-router.get('/', userController.getAll);
 
 module.exports = router;

@@ -1,0 +1,9 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.text::after {
+    content: '.';
+    color: $primary-white;
+    margin: 0 $margin-xxs;
+    vertical-align: 20%;
+}

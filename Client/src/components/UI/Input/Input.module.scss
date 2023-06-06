@@ -1,4 +1,4 @@
-@use "./../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/variables" as *;
 
 .label {
     &:global(.MuiFormLabel-root) {
@@ -23,23 +23,23 @@
 .input {
     &:global(.MuiInput-root) {
         font-family: inherit;
-        color: $default-white;
+        color: $primary-white;
         padding-left: $padding-sm;
     }
 
     &:global(.MuiInput-underline:hover) {
-        border-color: $default-white-hover;
+        border-color: $primary-white-hover;
     }
 
     &:global(.MuiInput-underline:before) {
-        border-color: $default-white-hover;
+        border-color: $primary-white-hover;
     }
 
     &:global(.MuiInput-underline:after) {
-        border-color: $default-white-hover;
+        border-color: $primary-white-hover;
     }
 
     .icon {
-        color: $default-white;
+        color: $primary-white;
     }
 }

@@ -3,7 +3,7 @@
 
 
 .background {
-    @include fullscreen-background($default-dark);
+    @include fullscreen-background($primary-dark);
     position: relative;
 
     @include d-flex(n,n,column);
@@ -27,7 +27,7 @@
         padding-bottom: $padding-default;
 
         width: 100%;
-        background-color: $default-white;
+        background-color: $primary-white;
 
         &__container {
             max-width: 200px;
@@ -36,7 +36,7 @@
         h1 {
             font-size: 1.8em;
             font-weight: 600;
-            color: $default-dark;
+            color: $primary-dark;
             display: inline-block;
             margin-top: $margin-sm;
         }

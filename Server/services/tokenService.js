@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const {Token} = require('../models/models');
+const sequelize = require('../database/database');
+const {Token} = require('../models/models').Models(sequelize);
 
 class TokenService
 {
@@ -8,7 +9,7 @@ class TokenService
     {
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '30m'});
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn: '30d'});
-        return {accessToken, refreshToken }
+        return {accessToken, refreshToken}
     }
 
     validateAccessToken(token)

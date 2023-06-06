@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from "../../Logo.jsx";
-import Button from "../../UI/Button.jsx";
+import Logo from "../../UI/Logo/Logo.jsx";
+import Button from "../../UI/Button/Button.jsx";
 import {Link} from "@mui/material";
 import {ArrowRightAlt} from "@mui/icons-material";
 

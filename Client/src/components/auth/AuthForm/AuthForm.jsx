@@ -10,7 +10,7 @@ const AuthForm = ({content, header, subheader}) => {
                 <div className={classes.panel__container}>
                     <IconButton sx={{
                         color: '#272f32',
-                        marginRight: -1
+                        marginLeft: -1
                     }}>
                         {<West/>}
                     </IconButton>

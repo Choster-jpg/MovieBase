@@ -72,3 +72,15 @@
     justify-content: $j-content;
     align-items: $a-items;
 }
+
+@mixin horizontal-scroll() {
+    @include d-flex();
+    //-webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}

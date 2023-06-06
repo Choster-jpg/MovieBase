@@ -17,7 +17,7 @@
         position: absolute;
         height: 100vh;
         width: 100vw;
-        background-color: $tone-xs;
+        background-color: $tone;
         opacity: $tone-opacity;
     }
 
@@ -32,9 +32,9 @@
         margin: $margin-xs 0;
 
         .divider:global(.MuiDivider-withChildren) {
-            color: $default-white;
+            color: $primary-white;
             &:before, &:after {
-                border-color: $default-white;
+                border-color: $primary-white;
             }
         }
     }
@@ -44,7 +44,7 @@
         @include d-flex(start);
 
         span {
-            color: $default-white;
+            color: $primary-white;
         }
 
         .linkContainer {
@@ -52,7 +52,7 @@
 
             .link {
                 font-weight: 600;
-                color: $default-white;
+                color: $primary-white;
             }
         }
     }

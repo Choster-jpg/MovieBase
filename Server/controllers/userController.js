@@ -17,13 +17,8 @@ class UserController
             {
                 // TODO: throw new error
             }
-            const {email, password, display_name} = request.body;
-            const {image} = request.files;
-
-            let fileName = uuid.v4() + '.jpg';
-            //image.mv(path.resolve(__dirname, '..', 'static', 'users', fileName))
-
-            const userData = await userService.register(email, password, display_name, fileName);
+            const {email, password, full_name, nickname} = request.body;
+            const userData = await userService.register(email, password, full_name, nickname);
 
             return response.json(userData);
         }
@@ -137,26 +132,6 @@ class UserController
                 response.setHeader('email', user.email);
                 return response.redirect(process.env.NEW_PASSWORD_URL);
             }
-        }
-        catch(e)
-        {
-            next(e);
-        }
-    }
-
-    async getAll(request, response, next)
-    {
-        try
-        {
-            const params = request.query.search
-            ? {
-                $or: [
-                    { display_name: { $regex: request.query.search, $options: 'i'}},
-                    { email: { $regex: request.query.search, $options: 'i'}}
-                ]
-            } : {};
-            const users = await User.find(params).find({_id: { $ne: request.user._id}});
-            return response.json(users);
         }
         catch(e)
         {

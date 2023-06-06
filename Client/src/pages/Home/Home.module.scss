@@ -1,0 +1,9 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($primary-dark);
+
+    padding: 90px $padding-default $padding-xl $padding-default;
+}
+

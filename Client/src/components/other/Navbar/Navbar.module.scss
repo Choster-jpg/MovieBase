@@ -1,0 +1,35 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+
+    background: $primary-white;
+
+    border-radius: $border-radius-sm $border-radius-sm 0 0;
+
+    @include d-flex(space-around, center);
+
+    color: $primary-dark-hover;
+
+    .navItem {
+        @include d-flex(n, center, column);
+        width: 61px;
+        margin-top: 5px;
+
+        cursor: pointer;
+
+        span {
+            font-size: 0.7em;
+            margin-top: 3px;
+            font-weight: 600;
+        }
+    }
+
+    .navItemSelected {
+        color: $highlight-yellow-dark;
+    }
+}

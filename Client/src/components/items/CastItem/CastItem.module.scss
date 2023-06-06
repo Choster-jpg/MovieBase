@@ -1,0 +1,37 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.link {
+    text-decoration: none;
+}
+
+.container {
+    @include d-flex(start, start, column);
+    max-width: 100px;
+
+    color: $secondary-text-white;
+
+    .image {
+        border-radius: 5px;
+        width: $cast-item-width;
+        height: $cast-item-height;
+        object-fit: cover;
+    }
+
+    span {
+        white-space: normal;
+
+        &:first-of-type {
+            margin-top: $margin-xs;
+            color: $primary-white;
+            font-weight: 600;
+            font-size: 0.8em;
+        }
+
+        &:last-of-type {
+            margin-top: 2px;
+            font-weight: 600;
+            font-size: 0.8em;
+        }
+    }
+}

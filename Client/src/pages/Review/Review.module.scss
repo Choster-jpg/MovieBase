@@ -1,0 +1,178 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.postActionInput {
+    @include d-flex(space-between);
+    padding-left: $padding-default;
+    padding-top: 5px;
+
+    > div {
+        width: 300px;
+        position: relative;
+
+        textarea {
+            color: $primary-dark;
+            font-weight: 500;
+        }
+    }
+
+    z-index: 10;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height: 60px;
+    background: $primary-white;
+    border-radius: $border-radius-xs $border-radius-xs 0 0;
+}
+
+.background {
+    @include fullscreen-background($primary-dark);
+    padding: $padding-default;
+    position: relative;
+
+    .header {
+        @include d-flex();
+        position: relative;
+
+        .headerContent {
+            width: 70%;
+            @include d-flex();
+
+            .poster {
+                border-radius: 10px;
+                width: 100%;
+                height: auto;
+
+                -webkit-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+                -moz-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+                box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
+            }
+        }
+
+        .headerRating {
+            @include d-flex(start, center, column);
+
+            //min-width: 90px;
+
+            margin-left: $margin-sm;
+
+            .rateItem {
+                @include d-flex(center, center, column);
+                border: 1px solid $primary-white;
+                border-radius: 10px;
+                color: $primary-white;
+
+                width: 90px;
+                height: 90px;
+
+                + .rateItem {
+                    margin-top: $margin-default;
+                }
+
+                span {
+                    font-size: 0.8em;
+                    font-weight: 600;
+                    margin-top: $margin-xxs;
+
+                    &:first-of-type {
+                        color: $secondary-text-white;
+                    }
+                }
+            }
+        }
+    }
+
+    .posterLabels {
+        margin-top: $margin-sm;
+        width: 100%;
+        @include d-flex(start);
+
+        h3 {
+            width: 100%;
+            color: $primary-white;
+            font-size: 1em;
+        }
+
+        span {
+            margin-left: $margin-xxs;
+            font-size: 0.8em;
+            color: $secondary-text-white;
+        }
+    }
+
+    .contentHeader {
+        @include d-flex();
+
+        .contentAuthor {
+            @include d-flex(end, n, column);
+
+            color: $primary-white;
+            margin-left: $margin-xxs;
+
+            h5 {
+                margin-bottom: $margin-xxs;
+            }
+
+            span {
+                font-size: 0.7em;
+                color: $secondary-text-white;
+            }
+        }
+    }
+
+    .contentSection {
+        margin-top: $margin-default;
+
+        .contentText {
+            margin-top: $margin-sm;
+
+            h4 {
+                color: $primary-white;
+            }
+
+            p {
+                margin-top: $margin-xs;
+                font-size: 0.9em;
+                line-height: 1.5em;
+                color: $primary-white;
+
+                br {
+                    margin-top: $margin-xxs;
+                }
+
+                .link {
+                    text-decoration: none;
+                    margin-left: $margin-xxs;
+                    color: $highlight-yellow;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .contentReactions {
+            @include d-flex(end);
+            color: $primary-white;
+
+            Button {
+                height: 40px;
+                width: 80px;
+                font-size: 0.8em;
+            }
+
+            .icon {
+                width: 20px;
+                height: auto;
+            }
+        }
+    }
+
+    .commentSection {
+        margin-top: $margin-sm;
+        padding-bottom: $padding-xl;
+
+        h3 {
+            color: $primary-white;
+        }
+    }
+}

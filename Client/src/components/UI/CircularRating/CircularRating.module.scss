@@ -1,0 +1,7 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.text {
+    font-size: 0.8em;
+    font-weight: 600;
+    fill: $primary-white;
+}

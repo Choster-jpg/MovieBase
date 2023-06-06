@@ -3,8 +3,7 @@ import {Route, Routes} from "react-router-dom";
 
 import  {public_routes} from "./routes.js";
 import BrowseMovies from "./pages/BrowseMovies.jsx";
-import Movie from "./pages/Movie.jsx";
-import Login from "./pages/Login/Login.jsx";
+import Movie from "./pages/Movie/Movie.jsx";
 
 function AppRouter() {
   return (

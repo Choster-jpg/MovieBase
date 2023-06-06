@@ -1,0 +1,67 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.postContent {
+    margin-top: $margin-default;
+
+    .postHeader {
+        @include d-flex();
+
+        .postAuthor {
+            @include d-flex(end, n, column);
+
+            color: $primary-white;
+            margin-left: $margin-xxs;
+
+            h5 {
+                margin-bottom: $margin-xxs;
+            }
+
+            span {
+                font-size: 0.7em;
+                color: $secondary-text-white;
+            }
+        }
+    }
+
+    .postText {
+        margin-top: $margin-sm;
+
+        h4 {
+            color: $primary-white;
+        }
+
+        p {
+            margin-top: $margin-xs;
+            font-size: 0.9em;
+            line-height: 1.2em;
+            color: $secondary-text-white;
+
+            .link {
+                text-decoration: none;
+                margin-left: $margin-xxs;
+                color: $highlight-yellow;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+
+        .comments {
+            color: $secondary-text-white;
+            margin-top: $margin-xs;
+
+            @include d-flex(end, center);
+
+            .icon {
+                width: 20px;
+                height: auto;
+                margin-left: $margin-xxs;
+            }
+
+            span {
+                font-size: 0.8em;
+                font-weight: 600;
+            }
+        }
+    }
+}

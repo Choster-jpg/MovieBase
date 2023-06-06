@@ -101,7 +101,7 @@ class ScrapService {
         if($2(kinopoiskSelectors.year).text() === year && engName.slice(0, engName.indexOf(',')) === title)
         {
             kinopoiskRate = $2(kinopoiskSelectors.rate).text();
-        }
+        }//
 
         return {
             imdbRate: $1(imdbSelectors.rate).text(),
@@ -114,10 +114,8 @@ class ScrapService {
             releaseDate: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
             runtime: $1(imdbSelectors.runtime).text(),
             genres,
-            boxOffice: {
-                budget: $1(imdbSelectors.budget).text(),
-                gross: $1(imdbSelectors.gross).text(),
-            },
+            budget: $1(imdbSelectors.budget).text(),
+            gross: $1(imdbSelectors.gross).text(),
             cast,
         };
     }

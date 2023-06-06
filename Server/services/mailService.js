@@ -7,9 +7,9 @@ class MailService
         this.transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: process.env.SMTP_PORT,
+            secure: true,
             auth: {
                 user: process.env.SMTP_USER,
-                // TODO: put into .env
                 pass: process.env.SMTP_PASSWORD
             }
         })
@@ -18,9 +18,9 @@ class MailService
     async sendActivationMail(to, link)
     {
         await this.transporter.sendMail({
-            from: "chosterjpg@outlook.com",
+            from: "chostersupp@gmail.com",
             to: to,
-            subject: "Активация аккаунта в приложении " + process.env.API_URL,
+            subject: "Активация аккаунта в приложении The MovieBase",
             text: '',
             html:
             `
