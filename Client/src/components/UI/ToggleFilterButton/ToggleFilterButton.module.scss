@@ -1,0 +1,26 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.filterButton {
+    @include d-flex(center, center);
+    background: $primary-dark-hover;
+    border-radius: $border-radius-xxs;
+    margin-left: 10px;
+    width: 70px;
+
+    .icon {
+        color: $primary-white;
+    }
+}
+
+.filterButtonSelected {
+    @include d-flex(center, center);
+    background: $primary-white;
+    border-radius: $border-radius-xxs;
+    margin-left: 10px;
+    width: 70px;
+
+    .icon {
+        color: $primary-dark;
+    }
+}

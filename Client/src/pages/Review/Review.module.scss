@@ -4,7 +4,7 @@
 .postActionInput {
     @include d-flex(space-between);
     padding-left: $padding-default;
-    padding-top: 5px;
+    padding-top: $padding-xxs;
 
     > div {
         width: 300px;
@@ -89,7 +89,6 @@
 
         h3 {
             width: 100%;
-            color: $primary-white;
             font-size: 1em;
         }
 
@@ -125,10 +124,6 @@
 
         .contentText {
             margin-top: $margin-sm;
-
-            h4 {
-                color: $primary-white;
-            }
 
             p {
                 margin-top: $margin-xs;
@@ -170,9 +165,5 @@
     .commentSection {
         margin-top: $margin-sm;
         padding-bottom: $padding-xl;
-
-        h3 {
-            color: $primary-white;
-        }
     }
 }

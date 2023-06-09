@@ -1,0 +1,173 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($primary-white);
+    padding-top: 150px;
+
+    .panel {
+        border-radius: $border-radius-sm $border-radius-sm 0 0;
+        background: $primary-dark;
+        min-height: 100vh;
+        padding: 0 $padding-default $padding-xl;
+
+        .avatarContainer {
+            @include d-flex(center);
+
+            .profileAvatar {
+                width: 100px;
+                height: 100px;
+                margin-top: -50px;
+
+                border: 2px solid $secondary-text-white;
+            }
+        }
+
+        .nameContainer {
+            @include d-flex(center, center, column);
+            margin-top: $margin-xs;
+
+            .inputContainer {
+                margin-top: $margin-xs;
+                height: 40px;
+                width: 200px;
+            }
+
+            span {
+                color: $primary-white;
+                font-weight: 600;
+                text-align: center;
+
+                + span {
+                    margin-top: $margin-xxs;
+                    color: $secondary-text-white;
+                }
+            }
+
+        }
+
+        .aboutContainer {
+            margin-top: $margin-sm;
+
+            p {
+                color: $secondary-text-white;
+            }
+        }
+
+        .infoContainer {
+            @include d-flex(space-around);
+            margin-top: $margin-default;
+
+            .infoBlock {
+                @include d-flex(n, center, column);
+
+                span:first-of-type {
+                    font-size: 1.1em;
+                    font-weight: 600;
+                    color: $primary-white;
+                }
+
+                span:last-of-type {
+                    font-size: 1em;
+                    color: $secondary-text-white;
+                }
+            }
+        }
+
+        .buttonsContainer {
+            margin-top: $margin-xs;
+
+            .link {
+                color: $highlight-yellow;
+                font-weight: 600;
+                font-size: 0.9em;
+                text-decoration: none;
+
+                .icon {
+                    width: 15px;
+                    height: auto;
+                    margin-right: 5px;
+                    margin-bottom: -2px;
+                }
+            }
+        }
+
+        .tabsContainer {
+            margin-top: $margin-default;
+            .tabs {
+                color: $secondary-text-white;
+
+                .tabList {
+                    @include d-flex();
+                    border-bottom: 1px solid $secondary-text-white;
+                    position: relative;
+                    list-style: none;
+
+                    .tab {
+                        font-weight: 700;
+                        padding-bottom: $margin-xs;
+                        margin-bottom: -1px;
+
+                        + .tab {
+                            margin-left: $margin-md;
+                        }
+                    }
+                }
+
+                .friendsList {
+                    margin-top: $margin-xs;
+                }
+
+                .reviewsList {
+                    .myReviewItem {
+                        @include d-flex();
+                        margin-top: $margin-sm;
+                        padding: $padding-xs;
+                        background: $primary-dark-hover;
+                        border-radius: $border-radius-xs;
+
+                        img {
+                            width: 90px;
+                            height: auto;
+                            border-radius: $border-radius-xs;
+                        }
+
+                        .textContent {
+                            @include d-flex(space-around, start, column);
+                            margin-left: $margin-xs;
+
+                            span {
+                                font-size: 0.8em;
+                            }
+
+                            p {
+                                font-size: 0.8em;
+
+                                .link {
+                                    margin-left: $margin-xxs;
+                                    text-decoration: none;
+                                    font-weight: 600;
+                                    color: $highlight-yellow;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .likedList {
+                    margin-top: $margin-sm;
+
+                    .inputContainer {
+                        height: 40px;
+                        margin-bottom: $margin-sm;
+                    }
+                }
+            }
+
+            .selectedTab {
+                color: $highlight-yellow;
+                border-bottom: 2px solid $highlight-yellow;
+            }
+        }
+    }
+}

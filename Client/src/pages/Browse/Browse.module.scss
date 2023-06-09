@@ -1,0 +1,84 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($primary-dark);
+    padding: 90px $padding-default 0 $padding-default;
+
+    .tabContainer {
+        .tabs {
+            color: $secondary-text-white;
+
+            .tabList {
+                @include d-flex();
+                border-bottom: 1px solid $secondary-text-white;
+                position: relative;
+                list-style: none;
+
+                .tab {
+                    font-weight: 700;
+                    padding-bottom: $margin-xs;
+                    margin-bottom: -1px;
+
+                    + .tab {
+                        margin-left: $margin-md;
+                    }
+                }
+            }
+
+            .contentSection {
+                margin-top: $margin-default;
+
+                .scrollableList {
+                    @include horizontal-scroll();
+                    margin-left: (-$margin-xs);
+                }
+            }
+
+            .searchHeader {
+                margin-top: $margin-sm;
+
+                .searchBar {
+                    @include d-flex();
+                    height: 50px;
+                }
+
+                .expandedFilter {
+                    margin-top: $margin-xs;
+                    height: 40px;
+                    width: 120px;
+
+                    @include d-flex(start, center);
+
+                    span {
+                        margin-left: $margin-sm;
+                    }
+                }
+            }
+
+            .searchContent {
+                margin-top: $margin-default;
+
+                .startSearchText {
+                    @include d-flex(center, center, column);
+                    margin-top: 60%;
+
+                    span {
+                        text-align: center;
+                        line-height: 1.5em;
+
+                        mark {
+                            background: transparent;
+                            color: $highlight-yellow-dark;
+                        }
+                    }
+                }
+            }
+        }
+
+        .selectedTab {
+            color: $highlight-yellow;
+            border-bottom: 2px solid $highlight-yellow;
+        }
+    }
+}

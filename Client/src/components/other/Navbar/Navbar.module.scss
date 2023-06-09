@@ -18,7 +18,7 @@
     .navItem {
         @include d-flex(n, center, column);
         width: 61px;
-        margin-top: 5px;
+        margin-top: $margin-xxs;
 
         cursor: pointer;
 

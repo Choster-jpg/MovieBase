@@ -1,0 +1,59 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.formElement {
+    width: 100%;
+    height: 100%;
+    + .formElement {
+        margin-top: $margin-sm;
+    }
+
+    &:global(.MuiFormControl-root) {
+        padding-right: 0;
+    }
+}
+
+.input {
+    height: 100%;
+    padding-bottom: 15px;
+
+    &:global(.MuiFilledInput-underline:hover) {
+        border-color: transparent;
+    }
+
+    &:global(.MuiFilledInput-underline:before) {
+        border-color: transparent;
+    }
+
+    &:global(.MuiFilledInput-underline:after) {
+        border-color: transparent;
+    }
+
+    &:global(.MuiFilledInput-root) {
+        background: $primary-dark-hover;
+        border-radius: $border-radius-xxs;
+        font-family: inherit;
+        font-weight: 500;
+    }
+
+    &:global(.MuiFilledInput-root:hover) {
+        background: $primary-dark-hover;
+        border-radius: $border-radius-xxs;
+        font-family: inherit;
+        font-weight: 500;
+    }
+
+    &:global(.MuiFilledInput-root.Mui-focused) {
+        background: $primary-dark-hover;
+    }
+
+    &:global(.MuiFilledInput-root) {
+        color: $primary-white;
+    }
+
+    .iconButton {
+        color: $primary-white;
+        margin-right: -10px;
+        margin-bottom: -15px;
+    }
+}

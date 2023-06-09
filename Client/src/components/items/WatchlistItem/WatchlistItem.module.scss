@@ -1,0 +1,57 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.link {
+    text-decoration: none;
+}
+
+.listItem {
+    background: $primary-dark-hover;
+    border-radius: $border-radius-xs;
+    padding: $padding-xs;
+    margin-top: $margin-xs;
+    position: relative;
+
+    white-space: normal;
+
+    @include d-flex();
+
+    img {
+        height: auto;
+        width: 90px;
+        border-radius: $border-radius-xxs;
+    }
+
+    h5 {
+        text-align: left;
+    }
+
+    > div {
+        margin-left: $margin-xs;
+        @include d-flex(center,n,column)
+    }
+
+    span {
+        font-size: 0.8em;
+        color: $secondary-text-white;
+        font-weight: 500;
+        margin-top: $margin-xs;
+    }
+
+    .buttonContainer {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+
+        .button {
+            width: 30px;
+            height: 30px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            color: $primary-white;
+        }
+    }
+}

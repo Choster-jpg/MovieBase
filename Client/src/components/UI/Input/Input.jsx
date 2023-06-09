@@ -10,7 +10,7 @@ const Input = ({label, type, name, control, rules, errors = {}, isValidationRequ
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     return (
-        <FormControl className={classes.formElement} variant="standard" error={isValidationRequired ? !!errors[name] : false}>
+        <FormControl className={classes.formElement} variant="standart" error={isValidationRequired ? !!errors[name] : false}>
             <InputLabel className={classes.label} htmlFor="adornment-password">{label}</InputLabel>
             {
                 isValidationRequired

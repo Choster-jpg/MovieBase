@@ -1,0 +1,13 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.chip {
+    &:global(.MuiChip-root) {
+        background: $primary-dark-hover;
+        color: $primary-white;
+        font-weight: 600;
+        border-radius: $border-radius-xxs;
+        margin-top: $margin-xs;
+        margin-left: $margin-xs;
+    }
+}

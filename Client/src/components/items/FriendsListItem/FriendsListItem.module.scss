@@ -1,0 +1,42 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.link {
+    text-decoration: none;
+}
+
+.friendsListItem {
+    margin-top: $margin-sm;
+
+    border-radius: $border-radius-xxs;
+    background: $primary-dark-hover;
+
+    height: 50px;
+    padding-left: $padding-xs;
+
+    @include d-flex(start, center);
+
+    .textContainer {
+        @include d-flex(center, start, column);
+    }
+
+    span {
+        display: block;
+        color: $primary-white;
+        font-size: 0.9em;
+        margin-left: $margin-xs;
+        font-weight: 500;
+
+        &:last-of-type {
+            color: $secondary-text-white;
+            font-size: 0.8em;
+            margin-top: $margin-xxs;
+        }
+    }
+
+    .buttonContainer {
+        flex-grow: 1;
+        @include d-flex(end);
+        margin-right: $margin-xxs;
+    }
+}

@@ -1,0 +1,26 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.customAutocomplete {
+    width: 100%;
+}
+
+.customInput {
+    background: $primary-dark-hover;
+
+    input {
+        color: $primary-white;
+        font-weight: 600;
+    }
+
+
+    label {
+        font-family: inherit;
+        color: $secondary-text-white;
+        font-weight: 500;
+
+        &:global(.MuiFormLabel-root.Mui-focused) {
+            color: $secondary-text-white;
+        }
+    }
+}

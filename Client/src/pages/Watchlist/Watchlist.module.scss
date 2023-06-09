@@ -1,0 +1,38 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($primary-dark);
+
+    padding: 90px $padding-default $padding-xl $padding-default;
+
+    .header {
+        @include d-flex();
+        height: 55px;
+    }
+
+    .chipList {
+        margin-top: $margin-xxs;
+        margin-left: (-$margin-xs);
+    }
+
+    .extendedFilters {
+        border-radius: $border-radius-xxs;
+        margin-top: $margin-sm;
+        @include d-flex(space-between, center);
+
+        span {
+            color: $primary-white;
+            font-weight: 600;
+        }
+
+        .year {
+            width: 70px;
+            height: 40px;
+        }
+    }
+
+    .content {
+        margin-top: $margin-default;
+    }
+}

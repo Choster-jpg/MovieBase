@@ -1,7 +1,4 @@
 // auth routes, with sign in
-
-export const friends_route = '/friends';
-export const feed_route = '/feed';
 export const account_route = '/account';
 export const watchlist_route = '/watchlist';
 

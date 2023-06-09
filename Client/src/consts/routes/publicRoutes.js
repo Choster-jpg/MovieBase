@@ -8,11 +8,8 @@ export const sign_in_route = '/login/sign_in';
 export const home_route = '/home';
 export const search_route = '/search';
 
-export const browse_movies_route = '/movies';
+export const browse_route = '/browse';
 export const movie_route = '/movies/:id';
-
-export const browse_tv_series_route = '/tv_series';
-export const tv_series_route = '/tv_series/:id';
 
 export const user_route = '/user/:id';
 export const review_route = '/review/:id';

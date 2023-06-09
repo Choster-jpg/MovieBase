@@ -7,6 +7,7 @@ import {
     Favorite,
     FavoriteBorder, KeyboardArrowDown, KeyboardArrowUp, Share, West
 } from "@mui/icons-material";
+
 import {Avatar, AvatarGroup, IconButton} from "@mui/material";
 import Button from "../../components/UI/Button/Button.jsx";
 import CircularRating from "../../components/UI/CircularRating/CircularRating.jsx";
