@@ -4,7 +4,7 @@ import {FormControl, InputLabel, FilledInput as MuiFilledInput, InputAdornment, 
 import classes from './FilledInput.module.scss';
 import {Search, Visibility, VisibilityOff} from "@mui/icons-material";
 
-const FilledInput = ({placeholder, isSearch = false, onClick, onChange, value, multiline = false}) => {
+const FilledInput = ({placeholder, onClick, onChange, value, multiline = false, endAdornment}) => {
     return (
         <FormControl variant="filled" className={classes.formElement}>
             <MuiFilledInput
@@ -16,15 +16,9 @@ const FilledInput = ({placeholder, isSearch = false, onClick, onChange, value, m
                 type="text"
                 placeholder={placeholder}
                 endAdornment={
-                    isSearch
-                        ?
-                        <InputAdornment position="end">
-                            <IconButton onClick={onClick} className={classes.iconButton}>
-                                <Search/>
-                            </IconButton>
-                        </InputAdornment>
-                        :
-                        <></>
+                    <InputAdornment position={"end"}>
+                        {endAdornment}
+                    </InputAdornment>
                 }
             />
         </FormControl>

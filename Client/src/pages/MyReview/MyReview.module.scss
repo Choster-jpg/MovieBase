@@ -1,0 +1,124 @@
+@use "../../styles/abstracts/variables" as *;
+@use "../../styles/abstracts/mixins" as *;
+
+.background {
+    @include fullscreen-background($primary-dark);
+    padding: $padding-default;
+
+    > h3 {
+        display: inline-block;
+        margin-top: $margin-sm;
+    }
+
+    > span {
+        color: $secondary-text-white;
+        font-weight: 600;
+        margin-left: $margin-xs;
+    }
+
+    .textEditorContainer {
+        margin-top: $padding-default;
+    }
+
+    .displayedRatesContainer {
+        margin-top: $margin-sm;
+        @include d-flex(space-between);
+
+        .rateItem {
+            @include d-flex(center, center, column);
+            border: 1px solid $primary-white;
+            border-radius: 10px;
+            color: $primary-white;
+
+            width: 80px;
+            height: 80px;
+
+            span {
+                font-size: 0.8em;
+                font-weight: 600;
+                margin-top: $margin-xxs;
+
+                &:first-of-type {
+                    color: $secondary-text-white;
+                }
+            }
+        }
+
+        .highlight {
+            box-shadow: 0 0 10px 2px $primary-white;
+            border-color: transparent;
+        }
+    }
+
+    .tipContainer {
+        margin-top: $margin-default;
+
+        span {
+            font-weight: 500;
+            color: $secondary-text-white;
+        }
+
+        mark {
+            background-color: transparent;
+            color: $highlight-yellow;
+            line-height: 1.1em;
+        }
+    }
+
+    .ratesContainer {
+        @include d-flex(space-between);
+        height: 40px;
+        margin-top: $margin-sm;
+
+        .inputItem {
+            width: 50px;
+        }
+
+        .sliderContainer {
+            min-width: 150px;
+
+            > div {
+                @include d-flex(space-between);
+
+                span {
+                    color: $secondary-text-white;
+                    font-weight: 500;
+                }
+            }
+
+            .slider {
+                &:global(.MuiSlider-colorPrimary) {
+                    color: $primary-white;
+                    font-family: inherit;
+                }
+
+                &:global(.MuiSlider-root) {
+
+                    > span:first-of-type {
+                        opacity: 100%;
+                    }
+
+                    span:last-of-type {
+                        span:first-of-type {
+                            background-color: $primary-dark-hover;
+                        }
+
+                        span {
+                            span {
+                                span {
+                                    font-weight: 600;
+                                    font-family: inherit;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .buttonContainer {
+        margin-top: $margin-xs;
+        padding-left: 200px;
+    }
+}

@@ -160,6 +160,7 @@ const Movie = () => {
                         <TabList className={classes.tabList}>
                             <Tab className={classes.tab}>About</Tab>
                             <Tab className={classes.tab}>Reviews</Tab>
+                            <Tab className={classes.tab}>My Review</Tab>
                         </TabList>
                         <TabPanel className={classes.tabPanelAbout}>
                             <h5>Storyline</h5>

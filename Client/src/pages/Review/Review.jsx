@@ -41,15 +41,15 @@ const Review = () => {
                             <span>Story</span>
                             <span>4.3 / 10</span>
                         </div>
+                        <div className={classes.mainCriteria}>
+                            <Movie/>
+                            <span>Overall</span>
+                            <span>4.3 / 10</span>
+                        </div>
                         <div className={classes.rateItem}>
                             <Photo/>
                             <span>Visual</span>
                             <span>8.3 / 10</span>
-                        </div>
-                        <div className={classes.rateItem}>
-                            <Movie/>
-                            <span>Overall</span>
-                            <span>4.3 / 10</span>
                         </div>
                     </div>
                 </section>

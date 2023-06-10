@@ -5,6 +5,7 @@
     @include d-flex(space-between);
     padding-left: $padding-default;
     padding-top: $padding-xxs;
+    padding-right: $padding-default;
 
     > div {
         width: 300px;
@@ -68,6 +69,30 @@
                 + .rateItem {
                     margin-top: $margin-default;
                 }
+
+                span {
+                    font-size: 0.8em;
+                    font-weight: 600;
+                    margin-top: $margin-xxs;
+
+                    &:first-of-type {
+                        color: $secondary-text-white;
+                    }
+                }
+            }
+
+            .mainCriteria {
+                box-shadow: 0 0 10px 2px #00FF7F;
+                border-color: transparent;
+
+                @include d-flex(center, center, column);
+                border-radius: 10px;
+                color: $primary-white;
+
+                width: 90px;
+                height: 90px;
+
+                margin: $margin-default 0;
 
                 span {
                     font-size: 0.8em;

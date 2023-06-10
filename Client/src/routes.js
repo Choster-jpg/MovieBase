@@ -6,7 +6,8 @@ import {
 
 import {
     watchlist_route,
-    account_route
+    account_route,
+    new_review_route,
 } from './consts/routes/authRoutes.js';
 
 import Home from './pages/Home/Home.jsx';
@@ -16,6 +17,7 @@ import Review from "./pages/Review/Review.jsx";
 import Watchlist from "./pages/Watchlist/Watchlist.jsx";
 import Browse from "./pages/Browse/Browse.jsx";
 import Account from "./pages/Account/Account.jsx";
+import MyReview from "./pages/MyReview/MyReview.jsx";
 
 
 export const public_routes = [
@@ -54,7 +56,12 @@ export const public_routes = [
     {
         path: account_route,
         pageComponent: Account,
+    },
+    {
+        path: new_review_route,
+        pageComponent: MyReview,
     }
+
 ]
 
 export const auth_routes = [
