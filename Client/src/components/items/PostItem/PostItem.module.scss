@@ -6,19 +6,18 @@
         margin-top: $margin-sm;
     }
 
-    padding: $padding-default $padding-default $padding-sm $padding-default;
+    padding: $padding-xs $margin-sm;
 
     background-color: $primary-dark-hover;
     border-radius: 8px;
     min-height: 300px;
 
     .postSubject {
-        position: relative;
-        @include d-flex(start, center, column);
+        @include d-flex(space-between);
 
         .poster {
             border-radius: 8px;
-            width: 50%;
+            width: 70px;
             height: auto;
 
             -webkit-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
@@ -27,46 +26,49 @@
         }
 
         .posterLabels {
-            margin-top: $margin-sm;
-            width: 100%;
-            @include d-flex(start);
+            @include d-flex(center, start, column);
 
-            h3 {
+            > h3 {
                 width: 100%;
                 font-size: 0.9em;
-                text-align: center;
+                margin-top: $margin-sm;
+
+                > span {
+                    margin-left: $margin-xxs;
+                    font-size: 0.8em;
+                    color: $secondary-text-white;
+                }
             }
 
-            span {
-                margin-left: $margin-xxs;
-                font-size: 0.8em;
-                color: $secondary-text-white;
+            .postHeader {
+                @include d-flex();
+
+                .avatar {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .postAuthor {
+                    @include d-flex(end, n, column);
+
+                    color: $primary-white;
+                    margin-left: $margin-xxs;
+
+                    h5 {
+                        margin-bottom: $margin-xxs;
+                    }
+
+                    span {
+                        font-size: 0.7em;
+                        color: $secondary-text-white;
+                    }
+                }
             }
         }
     }
 
     .postContent {
         margin-top: $margin-default;
-
-        .postHeader {
-            @include d-flex();
-
-            .postAuthor {
-                @include d-flex(end, n, column);
-
-                color: $primary-white;
-                margin-left: $margin-xxs;
-
-                h5 {
-                    margin-bottom: $margin-xxs;
-                }
-
-                span {
-                    font-size: 0.7em;
-                    color: $secondary-text-white;
-                }
-            }
-        }
 
         .postText {
             margin-top: $margin-sm;

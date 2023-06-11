@@ -5,5 +5,25 @@
     @include fullscreen-background($primary-dark);
 
     padding: 90px $padding-default $padding-xl $padding-default;
+
+    .searchPanel {
+        background-color: transparent;
+        height: 50px;
+        margin-bottom: $margin-default;
+
+        @include d-flex();
+
+        .inputContainer {
+            margin-right: $margin-sm;
+        }
+
+        .buttonContainer {
+
+        }
+    }
+
+    .postsContainer {
+        margin-top: $margin-default;
+    }
 }
 

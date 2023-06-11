@@ -5,6 +5,7 @@ $screen-sm-min: 576px;
 $screen-md-min: 768px;
 $screen-lg-min: 992px;
 $screen-xl-min: 1200px;
+$screen-xxl-min: 1560px;
 
 
 // Colors
@@ -39,6 +40,7 @@ $border-radius-sm: 30px;
 $border-radius-md: 50px;
 
 $tone-opacity: 65%;
+$tone-opacity-lg: 75%;
 
 $padding-xxs: 5px;
 $padding-xs: 10px;
@@ -61,4 +63,7 @@ $title-fontsize: 3em;
 
 $cast-item-height: 120px;
 $cast-item-width: 90px;
+
+$cast-item-width-lg: 135px;
+$cast-item-height-lg: 180px;
 

@@ -4,6 +4,10 @@
 .postContent {
     margin-top: $margin-default;
 
+    @include lg {
+        margin-top: $margin-lg;
+    }
+
     .postHeader {
         @include d-flex();
 
@@ -13,12 +17,25 @@
             color: $primary-white;
             margin-left: $margin-xxs;
 
+            @include lg {
+                margin-left: $margin-xs;
+            }
+
             h5 {
                 margin-bottom: $margin-xxs;
+
+                @include lg {
+                    font-size: 1.2em;
+                }
             }
 
             span {
                 font-size: 0.7em;
+
+                @include lg {
+                    font-size: 0.9em;
+                    font-weight: 500;
+                }
                 color: $secondary-text-white;
             }
         }
@@ -33,30 +50,16 @@
             line-height: 1.2em;
             color: $secondary-text-white;
 
+            @include lg {
+                font-size: 1.1em;
+            }
+
             .link {
                 text-decoration: none;
                 margin-left: $margin-xxs;
                 color: $highlight-yellow;
                 font-weight: 600;
                 cursor: pointer;
-            }
-        }
-
-        .comments {
-            color: $secondary-text-white;
-            margin-top: $margin-xs;
-
-            @include d-flex(end, center);
-
-            .icon {
-                width: 20px;
-                height: auto;
-                margin-left: $margin-xxs;
-            }
-
-            span {
-                font-size: 0.8em;
-                font-weight: 600;
             }
         }
     }

@@ -18,6 +18,7 @@ import classes from './Movie.module.scss';
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import CastItem from "../../components/items/CastItem/CastItem.jsx";
 import CutReviewItem from "../../components/items/CutReviewItem/CutReviewItem.jsx";
+import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
 
 const Movie = () => {
 
@@ -59,6 +60,55 @@ const Movie = () => {
             role: "John Wick",
             href: "#"
         },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+        {
+            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+            name: "Keanu Reeves",
+            role: "John Wick",
+            href: "#"
+        },
+
     ])
 
     const addToFav = () => {
@@ -84,85 +134,84 @@ const Movie = () => {
                         <Share/>
                     </IconButton>
                 </div>
-                <div className={classes.panel__poster}>
-                    <img src="https://m.media-amazon.com/images/M/MV5BNzRlMTZmZGItMTEwYS00NTZhLWFhODUtZTVmNGU1NWMzNzgwXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_QL75_UX190_CR0,2,190,281_.jpg"/>
-                    <IconButton className={classes.iconButton} onClick={addToFav}>
-                        {
-                            isFavClicked ? <Favorite className={classes.iconButton__iconFilled}/> : <FavoriteBorder className={classes.iconButton__iconOutlined}/>
-                        }
-                    </IconButton>
-                </div>
-                <div className={classes.titleContainer}>
-                    <h1 className={classes.title}>John Wick: Chapter 3 - Parabellum</h1>
-                </div>
-                <div className={classes.briefDataContainer}>
-                    <ul>
-                        <li>2019</li>
-                        <li>2h 10m</li>
-                    </ul>
-                </div>
-                <div className={classes.ratesContainer}>
-                    <div className={classes.ratesContainer__rotten}>
-                        <RottenImageRate rate={rotten} className={classes.icon}/>
-                        <div>
-                            <span>{rotten}%</span>
-                            <span>Tomatometer</span>
-                        </div>
+                <div className={classes.adaptiveContainer}>
+                    <div className={classes.panel__poster}>
+                        <img src="https://m.media-amazon.com/images/M/MV5BNzRlMTZmZGItMTEwYS00NTZhLWFhODUtZTVmNGU1NWMzNzgwXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_QL75_UX190_CR0,2,190,281_.jpg"/>
+                        <IconButton className={classes.iconButton} onClick={addToFav}>
+                            {
+                                isFavClicked ? <Favorite className={classes.iconButton__iconFilled}/> : <FavoriteBorder className={classes.iconButton__iconOutlined}/>
+                            }
+                        </IconButton>
                     </div>
-                    <div className={classes.ratesContainer__imdb}>
-                        <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/c/cc/IMDb_Logo_Square.svg"/>
-                        <div className={classes.ratesContainer__imdb__data}>
-                            <div className={classes.digits}>
-                                <span>7.4</span>
-                                <span>/10</span>
+                    <div className={classes.adaptiveContentContainer}>
+                        <div className={classes.titleContainer}>
+                            <h1 className={classes.title}>John Wick: Chapter 3 - Parabellum</h1>
+                        </div>
+                        <div className={classes.briefDataContainer}>
+                            <ul>
+                                <li>2019</li>
+                                <li>2h 10m</li>
+                            </ul>
+                        </div>
+                        <div className={classes.ratesContainer}>
+                            <div className={classes.rotten}>
+                                <RottenImageRate rate={rotten} className={classes.icon}/>
+                                <div>
+                                    <span>{rotten}%</span>
+                                    <span>Tomatometer</span>
+                                </div>
                             </div>
-                            <span className={classes.label}>IMDb rating</span>
+                            <div className={classes.rotten}>
+                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/c/cc/IMDb_Logo_Square.svg"/>
+                                <div className={classes.data}>
+                                    <div className={classes.digits}>
+                                        <span>7.4</span>
+                                        <span>/10</span>
+                                    </div>
+                                    <span className={classes.label}>IMDb rating</span>
+                                </div>
+                            </div>
+                            <div className={classes.rotten}>
+                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Kinopoisk_colored_favicon.svg"/>
+                                <div>
+                                    <span>7.8</span>
+                                    <span>Kinopoisk</span>
+                                </div>
+                            </div>
+                            <div className={classes.rotten}>
+                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg"/>
+                                <div>
+                                    <span>73</span>
+                                    <span>Metacritic</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className={classes.ratesContainer__rotten}>
-                        <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Kinopoisk_colored_favicon.svg"/>
-                        <div>
-                            <span>7.8</span>
-                            <span>Kinopoisk</span>
+                        <div className={classes.statisticsContainer}>
+                            <div className={classes.watchLater}>
+                                <Button variant="outlined" onClick={addToWatchLater}>
+                                    {isWatchLaterClicked ? <BookmarkAdded/> : <BookmarkAddOutlined/>}
+                                </Button>
+                                <span>Watch later</span>
+                            </div>
+                            <div className={classes.avatarGroup}>
+                                <AvatarGroup max={3}>
+                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                                </AvatarGroup>
+                                <span>Like this</span>
+                            </div>
+                            <div className={classes.audienceScore}>
+                                <CircularRating percentage={73} size={60}/>
+                                <span>Audience <br/> score</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className={classes.ratesContainer__rotten}>
-                        <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg"/>
-                        <div>
-                            <span>73</span>
-                            <span>Metacritic</span>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.thirdLine}>
-                    <div className={classes.thirdLine__watchLater}>
-                        <Button variant="outlined" onClick={addToWatchLater}>
-                            {isWatchLaterClicked ? <BookmarkAdded/> : <BookmarkAddOutlined/>}
-                        </Button>
-                        <span>Watch later</span>
-                    </div>
-                    <div className={classes.thirdLine__avatarGroup}>
-                        <AvatarGroup max={3}>
-                            <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                            <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                            <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                            <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                        </AvatarGroup>
-                        <span>Like this</span>
-                    </div>
-                    <div className={classes.thirdLine__audienceScore}>
-                        <CircularRating percentage={73} size={60}/>
-                        <span>Audience <br/> score</span>
                     </div>
                 </div>
                 <div className={classes.tabContainer}>
-                    <Tabs className={classes.tabs} selectedTabClassName={classes.selectedTab}>
-                        <TabList className={classes.tabList}>
-                            <Tab className={classes.tab}>About</Tab>
-                            <Tab className={classes.tab}>Reviews</Tab>
-                            <Tab className={classes.tab}>My Review</Tab>
-                        </TabList>
-                        <TabPanel className={classes.tabPanelAbout}>
+                    <CustomTabs tabHeaders={["About", "Reviews", "My Review"]} tabPanels={[
+                        <div className={classes.tabPanelAbout}>
                             <h5>Storyline</h5>
                             <p>
                                 John Wick is on the run after killing a member of the international assassins' guild,
@@ -228,13 +277,15 @@ const Movie = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <CutReviewItem/>
-                            <CutReviewItem/>
-                            <CutReviewItem/>
-                        </TabPanel>
-                    </Tabs>
+                        </div>,
+                        <div className={classes.tabPanel}>
+                            <div className={classes.reviewsContainer}>
+                                <CutReviewItem/>
+                                <CutReviewItem/>
+                                <CutReviewItem/>
+                            </div>
+                        </div>
+                    ]}/>
                 </div>
             </div>
         </div>

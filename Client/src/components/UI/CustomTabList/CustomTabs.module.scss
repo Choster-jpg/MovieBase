@@ -1,0 +1,28 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.selectedTab {
+    color: $highlight-yellow;
+    border-bottom: 2px solid $highlight-yellow;
+}
+
+.tabs {
+    color: $secondary-text-white;
+
+    .tabList {
+        @include d-flex();
+        border-bottom: 1px solid $secondary-text-white;
+        position: relative;
+        list-style: none;
+
+        .tab {
+            font-weight: 700;
+            padding-bottom: $margin-xs;
+            margin-bottom: -1px;
+
+            + .tab {
+                margin-left: $margin-md;
+            }
+        }
+    }
+}

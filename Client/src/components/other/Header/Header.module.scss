@@ -13,10 +13,18 @@
 
     color: $primary-white;
 
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 1000ms;
+
     @include d-flex(space-between);
 
     div {
         @include d-flex(center, center);
+    }
+
+    .clickableArea {
+        cursor: pointer;
     }
 
     h1 {
@@ -34,4 +42,12 @@
             }
         }
     }
+}
+
+.down {
+    top: -100px;
+}
+
+.up {
+    top: initial;
 }

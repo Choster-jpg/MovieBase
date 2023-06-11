@@ -46,6 +46,12 @@
     }
 }
 
+@mixin xxl {
+    @media (min-width: #{$screen-xxl-min}) {
+        @content;
+    }
+}
+
 @mixin set-background-image($url) {
     background-image: url($url);
     background-size: cover;

@@ -9,6 +9,7 @@ import ForYouItem from "../../components/items/ForYouItem/ForYouItem.jsx";
 import FilledInput from "../../components/UI/FilledInput/FilledInput.jsx";
 import ToggleFilterButton from "../../components/UI/ToggleFilterButton/ToggleFilterButton.jsx";
 import BrowseItem from "../../components/items/BrowseItem/BrowseItem.jsx";
+import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
 
 const Browse = () => {
     const [isFilterExpanded, setFilterExpanded] = useState(false);
@@ -23,13 +24,8 @@ const Browse = () => {
             <Header title="Browse"/>
             <div className={classes.background}>
                 <div className={classes.tabContainer}>
-                    <Tabs className={classes.tabs} selectedTabClassName={classes.selectedTab}>
-                        <TabList className={classes.tabList}>
-                            <Tab className={classes.tab}>Browse</Tab>
-                            <Tab className={classes.tab}>For you</Tab>
-                            <Tab className={classes.tab}>People</Tab>
-                        </TabList>
-                        <TabPanel>
+                    <CustomTabs tabHeaders={["Browse", "For you", "People"]} tabPanels={[
+                        <>
                             <div className={classes.searchHeader}>
                                 <div className={classes.searchBar}>
                                     <FilledInput placeholder="Type anything here..." isSearch={true} value={searchQuery} onChange={onSearchChange}/>
@@ -45,23 +41,23 @@ const Browse = () => {
                             <div className={classes.searchContent}>
                                 {
                                     searchQuery === ""
-                                        ?
-                                        <div className={classes.startSearchText}>
-                                            <span>
-                                                Type anything into Input above to search! Use <mark>year filter</mark> for more accuracy!
-                                            </span>
-                                        </div>
-                                        :
-                                        <>
-                                            <BrowseItem/>
-                                            <BrowseItem/>
-                                            <BrowseItem/>
-                                            <BrowseItem/>
-                                        </>
+                                    ?
+                                    <div className={classes.startSearchText}>
+                                        <span>
+                                            Type anything into Input above to search! Use <mark>year filter</mark> for more accuracy!
+                                        </span>
+                                    </div>
+                                    :
+                                    <>
+                                        <BrowseItem/>
+                                        <BrowseItem/>
+                                        <BrowseItem/>
+                                        <BrowseItem/>
+                                    </>
                                 }
                             </div>
-                        </TabPanel>
-                        <TabPanel>
+                        </>,
+                        <>
                             <section className={classes.contentSection}>
                                 <h3>For you</h3>
                                 <div className={classes.scrollableList}>
@@ -80,11 +76,11 @@ const Browse = () => {
                                     <ForYouItem/>
                                 </div>
                             </section>
-                        </TabPanel>
-                        <TabPanel>
+                        </>,
+                        <>
                             Sex 3
-                        </TabPanel>
-                    </Tabs>
+                        </>
+                    ]}/>
                 </div>
             </div>
             <Navbar/>

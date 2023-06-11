@@ -6,79 +6,53 @@
     padding: 90px $padding-default 0 $padding-default;
 
     .tabContainer {
-        .tabs {
-            color: $secondary-text-white;
+        .contentSection {
+            margin-top: $margin-default;
 
-            .tabList {
+            .scrollableList {
+                @include horizontal-scroll();
+                margin-left: (-$margin-xs);
+            }
+        }
+
+        .searchHeader {
+            margin-top: $margin-sm;
+
+            .searchBar {
                 @include d-flex();
-                border-bottom: 1px solid $secondary-text-white;
-                position: relative;
-                list-style: none;
-
-                .tab {
-                    font-weight: 700;
-                    padding-bottom: $margin-xs;
-                    margin-bottom: -1px;
-
-                    + .tab {
-                        margin-left: $margin-md;
-                    }
-                }
+                height: 50px;
             }
 
-            .contentSection {
-                margin-top: $margin-default;
+            .expandedFilter {
+                margin-top: $margin-xs;
+                height: 40px;
+                width: 120px;
 
-                .scrollableList {
-                    @include horizontal-scroll();
-                    margin-left: (-$margin-xs);
-                }
-            }
+                @include d-flex(start, center);
 
-            .searchHeader {
-                margin-top: $margin-sm;
-
-                .searchBar {
-                    @include d-flex();
-                    height: 50px;
-                }
-
-                .expandedFilter {
-                    margin-top: $margin-xs;
-                    height: 40px;
-                    width: 120px;
-
-                    @include d-flex(start, center);
-
-                    span {
-                        margin-left: $margin-sm;
-                    }
-                }
-            }
-
-            .searchContent {
-                margin-top: $margin-default;
-
-                .startSearchText {
-                    @include d-flex(center, center, column);
-                    margin-top: 60%;
-
-                    span {
-                        text-align: center;
-                        line-height: 1.5em;
-
-                        mark {
-                            background: transparent;
-                            color: $highlight-yellow-dark;
-                        }
-                    }
+                span {
+                    margin-left: $margin-sm;
                 }
             }
         }
 
-        .selectedTab {
-            color: $highlight-yellow;
-            border-bottom: 2px solid $highlight-yellow;
+        .searchContent {
+            margin-top: $margin-default;
+
+            .startSearchText {
+                @include d-flex(center, center, column);
+                margin-top: 60%;
+
+                span {
+                    text-align: center;
+                    line-height: 1.5em;
+
+                    mark {
+                        background: transparent;
+                        color: $highlight-yellow-dark;
+                    }
+                }
+            }
         }
     }
 }

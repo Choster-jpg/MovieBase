@@ -7,7 +7,11 @@
 
 .container {
     @include d-flex(start, start, column);
-    max-width: 100px;
+    max-width: $cast-item-width;
+
+    @include lg {
+        max-width: $cast-item-width-lg;
+    }
 
     color: $secondary-text-white;
 
@@ -16,6 +20,11 @@
         width: $cast-item-width;
         height: $cast-item-height;
         object-fit: cover;
+
+        @include lg {
+            width: $cast-item-width-lg;
+            height: $cast-item-height-lg;
+        }
     }
 
     span {
@@ -26,12 +35,20 @@
             color: $primary-white;
             font-weight: 600;
             font-size: 0.8em;
+
+            @include lg {
+                font-size: 1em;
+            }
         }
 
         &:last-of-type {
             margin-top: 2px;
             font-weight: 600;
             font-size: 0.8em;
+
+            @include lg {
+                font-size: 1em;
+            }
         }
     }
 }

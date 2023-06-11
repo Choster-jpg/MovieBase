@@ -19,7 +19,6 @@ const MyReview = () => {
     const [percentageVisual, setPercentageVisual] = useState(50);
 
     const validateValue = (value) => {
-        console.log(value);
         if(value === "") return true;
         if(!/^\d+$/.test(value)) return false;
 
@@ -32,6 +31,7 @@ const MyReview = () => {
         setPercentageStory(newValue);
         setPercentageVisual(100 - Number(newValue));
         const number = Number(percentageStory) / 100 * Number(storyInputValue) + Number(percentageVisual) / 100 * Number(visualInputValue);
+        console.log(Number(percentageStory) / 100 * Number(storyInputValue));
         setOverallValue(Math.round(number * 10) / 10);
     }
 
