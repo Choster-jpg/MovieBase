@@ -95,7 +95,25 @@ const MyReview = () => {
                 <Editor apiKey="xb4ufeqri5yg2v4f272jhgalx2t372j8q1aduvya0ua7aphl"
                         onEditorChange={(newValue) => {
                             setValue(newValue);
-                        }}/>
+                        }} init={{
+                            selector: 'textarea',
+                            toolbar: 'blur',
+                            setup: function (editor) {
+                                editor.ui.registry.addButton('blur', {
+                                    icon: 'blur',
+                                    tooltip: 'Blur selected text',
+                                    onAction: function () {
+                                        const selection = editor.selection.getContent();
+
+                                        // Wrap selected text with a span element with a CSS blur filter applied
+                                        const blurredText = '<span style="filter: blur(3px);">' + selection + '</span>';
+    
+                                        // Replace the selected text in the editor with the blurred text
+                                        editor.selection.setContent(blurredText);
+                                    }
+                                });
+                            }
+                }}/>
             </div>
             <div className={classes.buttonContainer}>
                 <Button variant="contained">

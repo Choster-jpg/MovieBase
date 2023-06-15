@@ -25,7 +25,7 @@ body {
             img {
                 width: 105%;
                 height: auto;
-                margin: -$margin-xxs -$margin-xxs 0 -$margin-xxs;
+                margin: (-$margin-xxs) (-$margin-xxs) 0 (-$margin-xxs);
                 filter: blur(8px);
                 z-index: 1;
             }

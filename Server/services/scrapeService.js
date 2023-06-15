@@ -8,7 +8,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 
-class ScrapService {
+class ScrapeService {
 
     constructor() {
         this.config = {
@@ -18,7 +18,7 @@ class ScrapService {
         }
     }
 
-    async scrapMediaByName(query, limit = 25) {
+    async scrapeTitleByName(query, limit = 25) {
         let { data } = await axios.get(routesService.getImdbTitleSearch(query), this.config);
         let $ = cheerio.load(data);
         const listItems = $(imdbSelectors.searchList);
@@ -49,8 +49,46 @@ class ScrapService {
         return result;
     }
 
-    async scrapInfoByTitle(title, year, imdb) {
+    async scrapeInfoByTitleFast(title, year, imdb) {
+        const data_kinopoisk = await axios.get(routesService.getKinopoiskSearch(`${title} ${year}`), this.config);
+        const data_imdb = await axios.get(routesService.getImdbTitleInfo(imdb), this.config);
 
+        const $1 = cheerio.load(data_imdb.data);
+        const $2 = cheerio.load(data_kinopoisk.data);
+
+        let cast = [];
+        $1(imdbSelectors.castList).each((index, element) => {
+            cast.push({
+                name: $1(element).find(imdbSelectors.personName).text(),
+                roleName: $1(element).find(imdbSelectors.personRoleName).text(),
+                image: $1(element).find(imdbSelectors.personImage).attr('src'),
+                imdbPage: $1(element).find(imdbSelectors.personImdbPage).attr('href').split('/')[2],
+            })
+        })
+
+
+        let kinopoiskRate = "";
+        let engName = $2(kinopoiskSelectors.engName).text();
+        if($2(kinopoiskSelectors.year).text() === year && engName.slice(0, engName.indexOf(',')) === title)
+        {
+            kinopoiskRate = $2(kinopoiskSelectors.rate).text();
+        }
+
+        return {
+            imdbRate: $1(imdbSelectors.rate).text(),
+            kinopoiskRate,
+            metacriticsRate: $1(imdbSelectors.metacriticsRate).text(),
+            plot: $1(imdbSelectors.plot).text(),
+            director: $1(imdbSelectors.director).text(),
+            poster: $1(imdbSelectors.poster).attr('src'),
+            releaseDate: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
+            budget: $1(imdbSelectors.budget).text(),
+            gross: $1(imdbSelectors.gross).text(),
+            cast,
+        };
+    }
+
+    async scrapeInfoByTitleSlow(title, year, imdb) {
         const browser = await puppeteer.launch({headless: false});
         const page = await browser.newPage();
 
@@ -61,29 +99,8 @@ class ScrapService {
         await page.waitForSelector(rottenSelectors.searchList);
         const rottenHTML = await page.content();
 
-        const data_kinopoisk = await axios.get(routesService.getKinopoiskSearch(`${title} ${year}`), this.config);
-
         const $1 = cheerio.load(imdbHTML);
-        const $2 = cheerio.load(data_kinopoisk.data);
         const $3 = cheerio.load(rottenHTML);
-
-        await browser.close();
-
-        let cast = [];
-        $1(imdbSelectors.castList).each((index, element) => {
-            cast.push({
-                name: $1(element).find(imdbSelectors.personName).text(),
-                roleName: $1(element).find(imdbSelectors.personRoleName).text(),
-                image: $1(element).find(imdbSelectors.personImage).attr('src'),
-                imdbPage: $1(element).find(imdbSelectors.personImdbPage).attr('href'),
-            })
-        })
-
-        const string = $1('script:contains(genre)').text();
-        const indexStart = string.indexOf('[');
-        const indexEnd = string.indexOf(']', indexStart) + 1;
-        const stringArray = string.slice(indexStart, indexEnd);
-        const genres = JSON.parse(stringArray);
 
         let rottenRate = "";
         $3(rottenSelectors.searchList).each((index, element) => {
@@ -96,35 +113,55 @@ class ScrapService {
             }
         })
 
-        let kinopoiskRate = "";
-        let engName = $2(kinopoiskSelectors.engName).text();
-        if($2(kinopoiskSelectors.year).text() === year && engName.slice(0, engName.indexOf(',')) === title)
-        {
-            kinopoiskRate = $2(kinopoiskSelectors.rate).text();
-        }//
+        const string = $1('script:contains(genre)').text();
+        const indexStart = string.indexOf('[');
+        const indexEnd = string.indexOf(']', indexStart) + 1;
+        const stringArray = string.slice(indexStart, indexEnd);
+        const genres = JSON.parse(stringArray);
+
+        await browser.close();
 
         return {
-            imdbRate: $1(imdbSelectors.rate).text(),
-            kinopoiskRate,
-            metacriticsRate: $1(imdbSelectors.metacriticsRate).text(),
-            rottenRate,
-            plot: $1(imdbSelectors.plot).text(),
-            director: $1(imdbSelectors.director).text(),
-            poster: $1(imdbSelectors.poster).attr('src'),
-            releaseDate: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
-            runtime: $1(imdbSelectors.runtime).text(),
             genres,
-            budget: $1(imdbSelectors.budget).text(),
-            gross: $1(imdbSelectors.gross).text(),
-            cast,
-        };
+            rottenRate
+        }
     }
 
-    async scrapCelebritiesByName() {
+    async scrapeCelebritiesByName() {
 
     }
 
+    async scrapeCelebrityInfo(imdb_page) {
+        const data_imdb = await axios.get(routesService.getImdbCelebrityInfo(imdb_page), this.config);
+        const $ = cheerio.load(data_imdb.data);
+
+        let born = "";
+        $(imdbSelectors.celebrityBornData).each((index, element) => {
+            $(element).find('a').each((i, item) => {
+                born += (`${$(item).text()}, `);
+            })
+        });
+
+        return {
+            name: $(imdbSelectors.celebrityName).text().trim(),
+            height: $(imdbSelectors.celebrityDataSection).find(imdbSelectors.celebrityHeight).text().trim(),
+            image: $(imdbSelectors.celebrityImage).attr('src'),
+            born: born.trim(),
+        }
+    }
+
+    async scrapeGenres() {
+        const data_imdb = await axios.get(routesService.getImdbGenres(), this.config);
+        const $ = cheerio.load(data_imdb.data);
+
+        const genres = [];
+        $(imdbSelectors.genres).each((index, element) => {
+            genres.push($(element).text().trim());
+        });
+
+        return genres;
+    }
 
 }
 
-module.exports = new ScrapService();
+module.exports = new ScrapeService();

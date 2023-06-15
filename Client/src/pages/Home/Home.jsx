@@ -62,7 +62,7 @@ const Home = () => {
                         </List>
                     </Popover>
                 </div>
-                <CustomTabs tabHeaders={["Popular", "Subscriptions"]} tabPanels={[
+                <CustomTabs tabHeaders={["Popular", "Friends"]} tabPanels={[
                     <div className={classes.postsContainer}>
                         <PostItem/>
                         <PostItem/>
@@ -87,7 +87,6 @@ const Home = () => {
                         sex 2
                     </div>
                 ]}/>
-
             </div>
             <Navbar/>
         </>

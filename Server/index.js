@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -9,14 +10,18 @@ const router = require('./routes/index');
 
 dotenv.config();
 
-const PORT = process.env.SERVER_PORT || 1000;
+const PORT = process.env.SERVER_PORT || 3000;
 
 const sequelize = require('./database/database');
-const models = require('./models/models').Models(sequelize);
 
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.resolve(__dirname, 'static', 'movies')));
+app.use(express.static(path.resolve(__dirname, 'static', 'users')));
+
+app.use(fileUpload({}));
 
 app.use('/api', router);
 

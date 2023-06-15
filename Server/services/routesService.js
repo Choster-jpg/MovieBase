@@ -4,11 +4,19 @@ class RoutesService {
     }
 
     getImdbTitleSearch(query) {
-        return `https://www.imdb.com/find/?s=tt&q=${query}&ref_=nv_sr_sm`;
+        return this.getImdbIndex() + `/find/?s=tt&q=${query}&ref_=nv_sr_sm`;
     }
 
     getImdbTitleInfo(id) {
-        return `https://www.imdb.com/title/${id}`;
+        return this.getImdbIndex() + `/title/${id}`;
+    }
+
+    getImdbGenres() {
+        return this.getImdbIndex() + "/article/contribution/titles/genres/GZDRMS6R742JRGAG?ref_=helpms_helpart_inline#";
+    }
+
+    getImdbCelebrityInfo(link) {
+        return this.getImdbIndex() + `/name/${link}/?ref_=tt_cl_t_1`;
     }
 
     getKinopoiskSearch(query) {

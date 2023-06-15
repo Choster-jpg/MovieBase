@@ -12,7 +12,7 @@ class UserService
 {
     async register(email, password, full_name, nickname)
     {
-        let candidate = await User.findOne( { email });
+        let candidate = await User.findOne({ where: {email: email}});
 
         if(candidate)
         {
@@ -35,7 +35,12 @@ class UserService
 
     async activate(activationLink)
     {
-        let user = await User.findOne({activationLink: activationLink});
+        let user = await User.findOne({
+            where: {
+                activationLink: activationLink
+            }
+        });
+
         console.log(user);
         if(!user)
         {
@@ -48,7 +53,11 @@ class UserService
 
     async checkResetLink(resetLink)
     {
-        let user = await User.findOne({resetLink: resetLink});
+        let user = await User.findOne({
+            where: {
+                resetLink: resetLink
+            }
+        });
         console.log(user);
         if(!user)
         {
@@ -60,7 +69,11 @@ class UserService
 
     async login(email, password)
     {
-        const user = await User.findOne({email});
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        });
 
         if(!user)
         {
@@ -110,7 +123,11 @@ class UserService
             // TODO: throw new error
         }
 
-        const user = User.findOne({email: userData.email});
+        const user = User.findOne({
+            where: {
+                email: userData.email
+            }
+        });
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto._id, tokens.refreshToken);
@@ -120,7 +137,11 @@ class UserService
 
     async reset(email)
     {
-        let candidate = await User.findOne({email: email});
+        let candidate = await User.findOne({
+            where: {
+                email: email
+            }
+        });
 
         if(!candidate)
         {
@@ -142,7 +163,11 @@ class UserService
 
     async resetPassword(email, password)
     {
-        let candidate = await User.findOne({email: email});
+        let candidate = await User.findOne({
+            where: {
+                email: email
+            }
+        });
 
         if(!candidate)
         {
@@ -150,11 +175,8 @@ class UserService
         }
 
         let hashPassword = await bcrypt.hash(password, 3);
-
         let user = await User.updateOne({email: email},{password: hashPassword});
-
         let userDto = new UserDto(user);
-
         return { user: userDto };
     }
 }

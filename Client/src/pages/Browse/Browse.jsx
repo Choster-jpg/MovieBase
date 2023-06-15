@@ -12,7 +12,6 @@ import BrowseItem from "../../components/items/BrowseItem/BrowseItem.jsx";
 import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
 
 const Browse = () => {
-    const [isFilterExpanded, setFilterExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
     const onSearchChange = (event) => {
@@ -29,13 +28,6 @@ const Browse = () => {
                             <div className={classes.searchHeader}>
                                 <div className={classes.searchBar}>
                                     <FilledInput placeholder="Type anything here..." isSearch={true} value={searchQuery} onChange={onSearchChange}/>
-                                    <ToggleFilterButton isFilterExpanded={isFilterExpanded} setFilterExpanded={setFilterExpanded}/>
-                                </div>
-                                <div hidden={!isFilterExpanded}>
-                                    <div className={classes.expandedFilter}>
-                                        <FilledInput />
-                                        <span>Year</span>
-                                    </div>
                                 </div>
                             </div>
                             <div className={classes.searchContent}>
@@ -44,7 +36,7 @@ const Browse = () => {
                                     ?
                                     <div className={classes.startSearchText}>
                                         <span>
-                                            Type anything into Input above to search! Use <mark>year filter</mark> for more accuracy!
+                                            Type anything into Input above to search! You can also specify <mark>release year</mark> for more accuracy!
                                         </span>
                                     </div>
                                     :

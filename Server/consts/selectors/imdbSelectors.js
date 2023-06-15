@@ -27,7 +27,15 @@ function return_list() {
         searchYearSpan: 'div:nth-child(2) > div:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > span:nth-child(1)',
         searchImdbPage: 'div:nth-child(2) > div:nth-child(1) > a:nth-child(1)',
         searchShowMoreButton: 'button.ipc-btn--single-padding',
-        searchWaitForSelector: 'li.ipc-metadata-list-summary-item:nth-child(26)'
+        searchWaitForSelector: 'li.ipc-metadata-list-summary-item:nth-child(26)',
+
+        genres: 'div.article__second_section:nth-child(4) > p:nth-child(1) > a',
+
+        celebrityName: '.sc-afe43def-1',
+        celebrityDataSection: 'section.ipc-page-section:contains(Personal details)',
+        celebrityHeight: 'div:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > span:nth-child(1)',
+        celebrityBornData: 'li.ipc-metadata-list__item:nth-child(2) > div:nth-child(2) > ul:nth-child(1) > li',
+        celebrityImage: '.sc-385ac629-7 > div:nth-child(1) > div:nth-child(1) > img:nth-child(1)',
     }
 }
 
