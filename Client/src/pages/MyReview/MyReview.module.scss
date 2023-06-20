@@ -1,9 +1,41 @@
 @use "../../styles/abstracts/variables" as *;
 @use "../../styles/abstracts/mixins" as *;
 
+
 .background {
     @include fullscreen-background($primary-dark);
     padding: $padding-default;
+
+    .accordionsContainer {
+        margin-top: $margin-sm;
+
+        .rating {
+            font-weight: 600;
+            margin-left: $margin-sm;
+            margin-top: 1px;
+        }
+
+        mark {
+            background: transparent;
+            color: $highlight-yellow;
+        }
+
+        .summary {
+            margin-top: $margin-sm;
+            h4, span {
+                display: inline;
+            }
+        }
+    }
+
+    .titleInput {
+        height: 50px;
+        margin-top: $margin-default;
+
+        h3 {
+            margin-bottom: $margin-xs;
+        }
+    }
 
     > h3 {
         display: inline-block;
@@ -17,7 +49,11 @@
     }
 
     .textEditorContainer {
-        margin-top: $padding-default;
+        margin-top: $margin-xl;
+
+        h3 {
+            margin-bottom: $margin-xs;
+        }
     }
 
     .displayedRatesContainer {

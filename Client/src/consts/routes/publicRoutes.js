@@ -6,7 +6,6 @@ export const sign_up_route = '/login/sign_up';
 export const sign_in_route = '/login/sign_in';
 
 export const home_route = '/home';
-export const search_route = '/search';
 
 export const browse_route = '/browse';
 export const movie_route = '/movies/:id';

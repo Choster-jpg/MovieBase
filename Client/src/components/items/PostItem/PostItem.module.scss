@@ -10,7 +10,6 @@
 
     background-color: $primary-dark-hover;
     border-radius: 8px;
-    min-height: 300px;
 
     .postSubject {
         @include d-flex(space-between);
@@ -46,6 +45,7 @@
                 .avatar {
                     width: 50px;
                     height: 50px;
+                    margin-bottom: -5px;
                 }
 
                 .postAuthor {

@@ -38,6 +38,17 @@
 
         .button {
             margin-top: $margin-default;
+
+            .dividerContainer {
+                margin: $margin-xs 0;
+
+                .divider:global(.MuiDivider-withChildren) {
+                    color: $primary-white;
+                    &:before, &:after {
+                        border-color: $primary-white;
+                    }
+                }
+            }
         }
 
         .textButton {

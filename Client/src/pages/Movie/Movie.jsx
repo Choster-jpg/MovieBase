@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link, useParams} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 
 import {
     BookmarkAdded,
@@ -8,285 +8,279 @@ import {
     FavoriteBorder, KeyboardArrowDown, KeyboardArrowUp, Share, West
 } from "@mui/icons-material";
 
-import {Avatar, AvatarGroup, IconButton} from "@mui/material";
+import {Avatar, AvatarGroup, CircularProgress, IconButton} from "@mui/material";
 import Button from "../../components/UI/Button/Button.jsx";
 import CircularRating from "../../components/UI/CircularRating/CircularRating.jsx";
 import RottenImageRate from "../../components/UI/RottenImageRate/RottenImageRate.jsx";
 
 import classes from './Movie.module.scss';
 
-import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import CastItem from "../../components/items/CastItem/CastItem.jsx";
 import CutReviewItem from "../../components/items/CutReviewItem/CutReviewItem.jsx";
 import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
+import {useDispatch, useSelector} from "react-redux";
+
+import {fetchMovieData,
+        getIsInLikeList,
+        getIsInWatchList,
+        fetchFriendsThatLiked,
+        fetchAudienceScore } from "../../store/slices/moviePageSlice.js";
+import { setIsInLikeList, setIsInWatchList } from '../../store/slices/moviePageSlice.js';
 
 const Movie = () => {
-
+    const navigate = useNavigate();
     const { id } = useParams();
-    const [rotten, setRotten] = useState("68");
-
-    const [isFavClicked, setFavClicked] = useState(false);
-    const [isWatchLaterClicked, setWatchLaterClicked] = useState(false);
-    const [isCastListExpanded, setCastListExpanded] = useState(false)
-
-    const [castList, setCastList] = useState([
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNGJmMWEzOGQtMWZkNS00MGNiLTk5NGEtYzg1YzAyZTgzZTZmXkEyXkFqcGdeQXVyMTE1MTYxNDAw._V1_QL75_UX140_CR0,12,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BOWU4MTI2OTctODQ1ZS00MGM1LWJkM2EtODE3MGNkNmIyZDEwXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Toby Leonard Moore",
-            role: "Ms. Perkins",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BMTQ4MjM4OTA2OF5BMl5BanBnXkFtZTcwNDM3NzIzOQ@@._V1_QL75_UX140_CR0,13,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BMjg5NDg3OTQtYzMyYS00YjhhLTk2NmEtZTExNGViYTczZTU2XkEyXkFqcGdeQXVyMTU1MTU2MDI@._V1_QL75_UX140_CR0,1,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-        {
-            image: "https://m.media-amazon.com/images/M/MV5BNTEyMjMxNDg5NF5BMl5BanBnXkFtZTcwNzczOTY4MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-            name: "Keanu Reeves",
-            role: "John Wick",
-            href: "#"
-        },
-
-    ])
+    const location = useLocation();
+    const { title, year } = location.state;
+    const [isCastListExpanded, setCastListExpanded] = useState(false);
+    const dispatch = useDispatch();
+    const { loading, loading_slow, error,
+            movie, isInLikeList, isInWatchList,
+            friendsList, audienceScore } = useSelector(state => state.moviePage);
 
     const addToFav = () => {
-        setFavClicked(!isFavClicked);
+        dispatch(setIsInLikeList({ value: !isInLikeList }));
     }
 
     const addToWatchLater = () => {
-        setWatchLaterClicked(!isWatchLaterClicked);
+        dispatch(setIsInWatchList({ value: !isInWatchList }));
+    }
+
+    useEffect(() => {
+        dispatch(fetchMovieData({title, year, imdb_link: id}));
+    }, []);
+
+    useEffect(() => {
+        if(movie.id)
+        {
+            dispatch(fetchFriendsThatLiked({user_id: 1}));
+            dispatch(fetchAudienceScore({imdb_link: id}));
+            dispatch(getIsInWatchList({ movie_id: movie.id, user_id: 1}));
+            dispatch(getIsInLikeList({ movie_id: movie.id, user_id: 1}))
+        }
+    }, [movie])
+
+    const onAddReviewClick = () => {
+        navigate('/review/new', { state: { movie: {...movie, title, year, imdb_link: id} }});
     }
 
     return (
         <div className={classes.background}>
             <div className={classes.background__image}>
-                <img src="https://m.media-amazon.com/images/M/MV5BNzRlMTZmZGItMTEwYS00NTZhLWFhODUtZTVmNGU1NWMzNzgwXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_QL75_UX380_CR0,4,380,562_.jpg"/>
+                <picture>
+                    <source srcSet={movie.poster}/>
+                    <source srcSet={`https://localhost:5000/${movie.poster}`}/>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                         alt="background image of the page"/>
+                </picture>
             </div>
 
             <div className={classes.panel}>
-                <div className={classes.panel__controlButtons}>
-                    <IconButton className={classes.iconButton}>
-                        <West/>
-                    </IconButton>
-                    <IconButton className={classes.iconButton}>
-                        <Share/>
-                    </IconButton>
-                </div>
-                <div className={classes.adaptiveContainer}>
-                    <div className={classes.panel__poster}>
-                        <img src="https://m.media-amazon.com/images/M/MV5BNzRlMTZmZGItMTEwYS00NTZhLWFhODUtZTVmNGU1NWMzNzgwXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_QL75_UX190_CR0,2,190,281_.jpg"/>
-                        <IconButton className={classes.iconButton} onClick={addToFav}>
-                            {
-                                isFavClicked ? <Favorite className={classes.iconButton__iconFilled}/> : <FavoriteBorder className={classes.iconButton__iconOutlined}/>
-                            }
-                        </IconButton>
-                    </div>
-                    <div className={classes.adaptiveContentContainer}>
-                        <div className={classes.titleContainer}>
-                            <h1 className={classes.title}>John Wick: Chapter 3 - Parabellum</h1>
+                {
+                    loading
+                    ?
+                    <CircularProgress color="inherit" />
+                    :
+                    <>
+                        <div className={classes.panel__controlButtons}>
+                            <IconButton className={classes.iconButton}
+                                        onClick={() => {navigate(-1)}}>
+                                <West/>
+                            </IconButton>
+                            {/*
+                                <IconButton className={classes.iconButton}>
+                                    <Share/>
+                                </IconButton>
+                            */}
                         </div>
-                        <div className={classes.briefDataContainer}>
-                            <ul>
-                                <li>2019</li>
-                                <li>2h 10m</li>
-                            </ul>
-                        </div>
-                        <div className={classes.ratesContainer}>
-                            <div className={classes.rotten}>
-                                <RottenImageRate rate={rotten} className={classes.icon}/>
-                                <div>
-                                    <span>{rotten}%</span>
-                                    <span>Tomatometer</span>
-                                </div>
-                            </div>
-                            <div className={classes.rotten}>
-                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/c/cc/IMDb_Logo_Square.svg"/>
-                                <div className={classes.data}>
-                                    <div className={classes.digits}>
-                                        <span>7.4</span>
-                                        <span>/10</span>
-                                    </div>
-                                    <span className={classes.label}>IMDb rating</span>
-                                </div>
-                            </div>
-                            <div className={classes.rotten}>
-                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Kinopoisk_colored_favicon.svg"/>
-                                <div>
-                                    <span>7.8</span>
-                                    <span>Kinopoisk</span>
-                                </div>
-                            </div>
-                            <div className={classes.rotten}>
-                                <img className={classes.icon} src="https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg"/>
-                                <div>
-                                    <span>73</span>
-                                    <span>Metacritic</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.statisticsContainer}>
-                            <div className={classes.watchLater}>
-                                <Button variant="outlined" onClick={addToWatchLater}>
-                                    {isWatchLaterClicked ? <BookmarkAdded/> : <BookmarkAddOutlined/>}
-                                </Button>
-                                <span>Watch later</span>
-                            </div>
-                            <div className={classes.avatarGroup}>
-                                <AvatarGroup max={3}>
-                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                                    <Avatar alt="R" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
-                                </AvatarGroup>
-                                <span>Like this</span>
-                            </div>
-                            <div className={classes.audienceScore}>
-                                <CircularRating percentage={73} size={60}/>
-                                <span>Audience <br/> score</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.tabContainer}>
-                    <CustomTabs tabHeaders={["About", "Reviews", "My Review"]} tabPanels={[
-                        <div className={classes.tabPanelAbout}>
-                            <h5>Storyline</h5>
-                            <p>
-                                John Wick is on the run after killing a member of the international assassins' guild,
-                                and with a $14 million price tag on his head, he is the target of hit men and women everywhere.
-                            </p>
-                            <div className={classes.genresContainer}>
-                                <Link className={classes.link} to="#">Action</Link>
-                                <Link className={classes.link} to="#">Comedy</Link>
-                                <Link className={classes.link} to="#">Drama</Link>
-                            </div>
-                            <div className={classes.castElements}>
-                                <div className={classes.headerContainer}>
-                                    <h5>Cast</h5>
-                                    <Button type="text" color="secondary" onClick={() => setCastListExpanded(!isCastListExpanded)}>
-                                        {
-                                            isCastListExpanded ?
-                                                <>
-                                                    Hide
-                                                    <KeyboardArrowUp/>
-                                                </>
-                                                :
-                                                <>
-                                                    Expand
-                                                    <KeyboardArrowDown/>
-                                                </>
-                                        }
-                                    </Button>
-                                </div>
-                                <div className={isCastListExpanded ? classes.castContainerExpanded : classes.castContainerNotExpanded}>
+                        <div className={classes.adaptiveContainer}>
+                            <div className={classes.panel__poster}>
+                                <picture>
+                                    <source srcSet={movie.poster}/>
+                                    <source srcSet={`https://localhost:5000/${movie.poster}`}/>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                                         alt="background image of the page"/>
+                                </picture>
+                                <IconButton className={classes.iconButton} onClick={addToFav}>
                                     {
-                                        castList.map(item =>
-                                            <CastItem item={item}/>
-                                        )
+                                        isInLikeList
+                                        ?
+                                        <Favorite className={classes.iconButton__iconFilled}/>
+                                        :
+                                        <FavoriteBorder className={classes.iconButton__iconOutlined}/>
                                     }
+                                </IconButton>
+                            </div>
+                            <div className={classes.adaptiveContentContainer}>
+                                <div className={classes.titleContainer}>
+                                    <h1 className={classes.title}>{title}</h1>
+                                </div>
+                                <div className={classes.briefDataContainer}>
+                                    <ul>
+                                        <li>{year}</li>
+                                        <li>{movie.runtime}</li>
+                                    </ul>
+                                </div>
+                                <div className={classes.ratesContainer}>
+                                    <div className={classes.rotten}>
+                                        <RottenImageRate rate={movie.rotten_rate} className={classes.icon}/>
+                                        <div>
+                                            <span>{movie.rotten_rate || "--"}</span>
+                                            <span>Tomatometer</span>
+                                        </div>
+                                    </div>
+                                    <div className={classes.rotten}>
+                                        <img className={classes.icon}
+                                             src="https://upload.wikimedia.org/wikipedia/commons/c/cc/IMDb_Logo_Square.svg"
+                                             alt="Imdb logo"/>
+                                        <div className={classes.data}>
+                                            <div className={classes.digits}>
+                                                <span>{movie.imdb_rate || "--"}</span>
+                                                <span>/10</span>
+                                            </div>
+                                            <span className={classes.label}>IMDb rating</span>
+                                        </div>
+                                    </div>
+                                    <div className={classes.rotten}>
+                                        <img className={classes.icon}
+                                             src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Kinopoisk_colored_favicon.svg"
+                                             alt="Kinopoisk logo"/>
+                                        <div>
+                                            <span>{movie.kinopoisk_rate || "--"}</span>
+                                            <span>Kinopoisk</span>
+                                        </div>
+                                    </div>
+                                    <div className={classes.rotten}>
+                                        <img className={classes.icon}
+                                             src="https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg"
+                                             alt="Metacritic logo"/>
+                                        <div>
+                                            <span>{movie.metacritic_rate || "--"}</span>
+                                            <span>Metacritic</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={classes.statisticsContainer}>
+                                    <div className={classes.watchLater}>
+                                        <Button variant="outlined" onClick={addToWatchLater}>
+                                            {isInWatchList ? <BookmarkAdded/> : <BookmarkAddOutlined/>}
+                                        </Button>
+                                        <span>{isInWatchList ? "Saved!" : "Watch later"}</span>
+                                    </div>
+                                    <div className={classes.avatarGroup}>
+                                        <AvatarGroup max={3}>
+                                            {
+                                                friendsList.length > 0
+                                                    ?
+                                                friendsList.map(item => <Avatar src={item}/>)
+                                                    :
+                                                <span className={classes.placeholder}>no one from <br/>your friends yet :(</span>
+                                            }
+                                        </AvatarGroup>
+                                        <span>Like this</span>
+                                    </div>
+                                    <div className={classes.audienceScore}>
+                                        <CircularRating percentage={audienceScore} size={60}/>
+                                        <span>Audience <br/> score</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={classes.details}>
-                                <h5>Details</h5>
-                                <ul>
-                                    <li>
-                                        Director
-                                        <span>Chad Stahelski, David Leitch</span>
-                                    </li>
-                                    <li>
-                                        Release date
-                                        <span>April 10, 2015 (United Kingdom)</span>
-                                    </li>
-                                    <li>
-                                        Countries of origin
-                                        <span>United States, United Kingdom, China</span>
-                                    </li>
-                                    <li>
-                                        Runtime
-                                        <span>1 hour 41 minutes</span>
-                                    </li>
-                                    <li>
-                                        Budget
-                                        <span>$200,000,000 (estimated)</span>
-                                    </li>
-                                    <li>
-                                        Gross worldwide
-                                        <span>$1,086,081,850</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>,
-                        <div className={classes.tabPanel}>
-                            <div className={classes.reviewsContainer}>
-                                <CutReviewItem/>
-                                <CutReviewItem/>
-                                <CutReviewItem/>
-                            </div>
                         </div>
-                    ]}/>
-                </div>
+                        <div className={classes.tabContainer}>
+                            <CustomTabs tabHeaders={["About", "Reviews"]} tabPanels={[
+                                <div className={classes.tabPanelAbout}>
+                                    <h5>Storyline</h5>
+                                    <p>
+                                        {movie.plot}
+                                    </p>
+                                    <div className={classes.genresContainer}>
+                                        {
+                                            movie.genres.map
+                                            ?
+                                            movie.genres.map(item => <span className={classes.link}>{item}</span>)
+                                            :
+                                            movie.genres.split(',').map(item => <span className={classes.link}>{item}</span>)
+                                        }
+                                    </div>
+                                    <div className={classes.castElements}>
+                                        <div className={classes.headerContainer}>
+                                            <h5>Cast</h5>
+                                            <Button type="text" color="secondary" onClick={() => setCastListExpanded(!isCastListExpanded)}>
+                                                {
+                                                    isCastListExpanded ?
+                                                        <>
+                                                            Hide
+                                                            <KeyboardArrowUp/>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            Expand
+                                                            <KeyboardArrowDown/>
+                                                        </>
+                                                }
+                                            </Button>
+                                        </div>
+                                        <div className={isCastListExpanded ? classes.castContainerExpanded : classes.castContainerNotExpanded}>
+                                            {
+                                                loading_slow
+                                                ?
+                                                <CircularProgress color="inherit"/>
+                                                :
+                                                    movie.cast
+                                                    ?
+                                                    movie.cast.map(item =>
+                                                    <CastItem item={item}/>)
+                                                    :
+                                                    movie.Celebrities.map(item =>
+                                                    <CastItem item={item}/>)
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={classes.details}>
+                                        <h5>Details</h5>
+                                        <ul>
+                                            <li>
+                                                Director
+                                                <span>{movie.director}</span>
+                                            </li>
+                                            <li>
+                                                Release date
+                                                <span>{movie.release_date}</span>
+                                            </li>
+                                            <li>
+                                                Countries
+                                                <span>{movie.counties}</span>
+                                            </li>
+                                            <li>
+                                                Runtime
+                                                <span>{movie.runtime}</span>
+                                            </li>
+                                            <li>
+                                                Budget
+                                                <span>{movie.budget}</span>
+                                            </li>
+                                            <li>
+                                                Gross worldwide
+                                                <span>{movie.gross}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>,
+                                <div className={classes.tabPanel}>
+                                    <div className={classes.reviewsContainer}>
+                                        <span className={classes.link}
+                                              onClick={onAddReviewClick}>
+                                            I want to write my own!
+                                        </span>
+                                        <CutReviewItem/>
+                                        <CutReviewItem/>
+                                        <CutReviewItem/>
+                                    </div>
+                                </div>
+                            ]}/>
+                        </div>
+                    </>
+                }
             </div>
         </div>
     );

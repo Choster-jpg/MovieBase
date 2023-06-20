@@ -1,14 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import classes from './SignIn.module.scss';
-import {Divider, IconButton, Link} from "@mui/material";
+import {CircularProgress, Divider, IconButton, Link} from "@mui/material";
 import {East, Google} from "@mui/icons-material";
 import Input from "../../UI/Input/Input.jsx";
 import Button from "../../UI/Button/Button.jsx";
 import AuthForm from "../AuthForm/AuthForm.jsx";
 import {useForm} from "react-hook-form";
 
+import { login } from '../../../store/slices/userDataSlice.js';
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {toast, ToastContainer} from "react-toastify";
+
 const SignIn = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user, error, loading } = useSelector(state => state.userData);
 
     const { handleSubmit, reset, control, formState: {errors} } = useForm({
         mode: 'onBlur',
@@ -18,10 +26,18 @@ const SignIn = () => {
         }
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
         reset();
+        dispatch(login(data));
     }
+
+    useEffect(() => {
+        if(user) navigate('/browse');
+    }, [user]);
+
+    useEffect(() => {
+        console.log(error);
+    }, [error]);
 
     return (
         <div className={classes.background}>
@@ -40,18 +56,23 @@ const SignIn = () => {
                            rules={{
                                required: "Password is required."
                            }}/>
-                    <Button variant="contained" color="primary" sx={{marginTop: 4}} type="submit">Sign In</Button>
-                    <div className={classes.dividerContainer}>
+                    <Button variant="contained" color="primary" sx={{marginTop: 4}} type="submit">
+                        {
+                            !loading ? "Sign In" : <CircularProgress color='inherit'/>
+                        }
+                    </Button>
+                    {/*<div className={classes.dividerContainer}>
                         <Divider className={classes.divider} textAlign="center">or</Divider>
                     </div>
                     <Button variant="contained" startIcon={<Google/>}>
                         Sign in with google
-                    </Button>
+                    </Button>*/}
                     <div className={classes.linkContainer}>
-                        <Link className={classes.link} href="#" underline="none">Forgot password?</Link>
+                        <Link className={classes.link} href="/login/sign_up" underline="none">Don't have an account?</Link>
                     </div>
                 </form>
             } backIcon={<East/>} header={"Welcome back!"} subheader={"Continue your adventure."}/>
+            <ToastContainer position="bottom-right"/>
         </div>
     );
 };

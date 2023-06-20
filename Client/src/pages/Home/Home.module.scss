@@ -24,6 +24,10 @@
 
     .postsContainer {
         margin-top: $margin-default;
+
+        .loaderContainer {
+            @include d-flex(center);
+        }
     }
 }
 

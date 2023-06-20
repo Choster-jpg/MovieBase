@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import classes from './Browse.module.scss';
 import Header from "../../components/other/Header/Header.jsx";
@@ -10,46 +10,95 @@ import FilledInput from "../../components/UI/FilledInput/FilledInput.jsx";
 import ToggleFilterButton from "../../components/UI/ToggleFilterButton/ToggleFilterButton.jsx";
 import BrowseItem from "../../components/items/BrowseItem/BrowseItem.jsx";
 import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
+import {fetchMovies, fetchUsers} from "../../store/slices/browsePageSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {Avatar, CircularProgress, IconButton} from "@mui/material";
+import {PersonAdd} from "@mui/icons-material";
+import BrowseUserItem from "../../components/items/BrowseUserItem/BrowseUserItem.jsx";
+
+import { resetBrowseMovies, resetBrowseUsers } from '../../store/slices/browsePageSlice.js';
+
 
 const Browse = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [movieSearchQuery, setMovieSearchQuery] = useState("");
+    const [userSearchQuery, setUserSearchQuery] = useState("");
 
-    const onSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const onMovieSearchChange = (event) => {
+        setMovieSearchQuery(event.target.value);
     }
+
+    const onPeopleSearchChange = (event) => {
+        setUserSearchQuery(event.target.value);
+    }
+
+    const dispatch = useDispatch();
+    const { loading, error, browseMovies, browseUsers } = useSelector(state => state.browsePage);
+
+    const timerIdRef = useRef(null);
+
+    useEffect(() => {
+        dispatch(resetBrowseMovies({}));
+        if (timerIdRef.current) {
+            clearTimeout(timerIdRef.current);
+        }
+        if(movieSearchQuery)
+        {
+            timerIdRef.current = setTimeout(async () => {
+                dispatch(fetchMovies({query: movieSearchQuery}));
+            }, 1000);
+        }
+    }, [movieSearchQuery]);
+
+    useEffect(() => {
+        dispatch(resetBrowseUsers({}));
+        if (timerIdRef.current) {
+            clearTimeout(timerIdRef.current);
+        }
+        timerIdRef.current = setTimeout(async () => {
+            dispatch(fetchUsers({query: userSearchQuery}));
+        }, 1000);
+    }, [userSearchQuery]);
 
     return (
         <div>
             <Header title="Browse"/>
             <div className={classes.background}>
                 <div className={classes.tabContainer}>
-                    <CustomTabs tabHeaders={["Browse", "For you", "People"]} tabPanels={[
+                    <CustomTabs tabHeaders={["Titles", "People"]} tabPanels={[
                         <>
                             <div className={classes.searchHeader}>
                                 <div className={classes.searchBar}>
-                                    <FilledInput placeholder="Type anything here..." isSearch={true} value={searchQuery} onChange={onSearchChange}/>
+                                    <FilledInput placeholder="Type anything here..." isSearch={true} value={movieSearchQuery} onChange={onMovieSearchChange}/>
                                 </div>
                             </div>
                             <div className={classes.searchContent}>
                                 {
-                                    searchQuery === ""
+                                    movieSearchQuery === "" || loading
                                     ?
                                     <div className={classes.startSearchText}>
-                                        <span>
-                                            Type anything into Input above to search! You can also specify <mark>release year</mark> for more accuracy!
-                                        </span>
+                                        {
+                                            loading && movieSearchQuery
+                                            ?
+                                                <CircularProgress color="inherit" />
+                                            :
+                                                <span>
+                                                    Type anything into Input above to search! You can also specify
+                                                    <mark> release year</mark> for more accuracy!
+                                                </span>
+                                        }
                                     </div>
                                     :
                                     <>
-                                        <BrowseItem/>
-                                        <BrowseItem/>
-                                        <BrowseItem/>
-                                        <BrowseItem/>
+                                        {
+                                            browseMovies.map((item, index) =>
+                                                <BrowseItem index={index} movie={item}/>
+                                            )
+                                        }
                                     </>
                                 }
                             </div>
                         </>,
-                        <>
+                        /*<>
                             <section className={classes.contentSection}>
                                 <h3>For you</h3>
                                 <div className={classes.scrollableList}>
@@ -68,9 +117,39 @@ const Browse = () => {
                                     <ForYouItem/>
                                 </div>
                             </section>
-                        </>,
+                        </>,*/
                         <>
-                            Sex 3
+                            <div className={classes.searchHeader}>
+                                <div className={classes.searchBar}>
+                                    <FilledInput placeholder="Type anything here..." isSearch={true} value={userSearchQuery} onChange={onPeopleSearchChange}/>
+                                </div>
+                            </div>
+                            <div className={classes.searchContent}>
+                                {
+                                    userSearchQuery === "" || loading
+                                        ?
+                                        <div className={classes.startSearchText}>
+                                            {
+                                                loading && movieSearchQuery
+                                                    ?
+                                                    <CircularProgress color="inherit" />
+                                                    :
+                                                    <span>
+                                                    Type anything into Input above to search! You can specify
+                                                    <mark> nickname</mark> or <mark> user name</mark>!
+                                                </span>
+                                            }
+                                        </div>
+                                        :
+                                        <>
+                                            {
+                                                browseUsers.map((item, index) =>
+                                                    <BrowseUserItem user={item}/>
+                                                )
+                                            }
+                                        </>
+                                }
+                            </div>
                         </>
                     ]}/>
                 </div>

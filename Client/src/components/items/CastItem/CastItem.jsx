@@ -8,9 +8,16 @@ const CastItem = ({item}) => {
         <div>
             <Link to={item.href} className={classes.link}>
                 <div className={classes.container}>
-                    <img className={classes.image} src={item.image}/>
+                    <picture>
+                        <source srcSet={item.image}/>
+                        <img className={classes.image} src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"/>
+                    </picture>
                     <span>{item.name}</span>
-                    <span>{item.role}</span>
+                    <span>
+                        {
+                            item.role_name ? item.role_name : item.MovieCast.role_name
+                        }
+                    </span>
                 </div>
             </Link>
         </div>

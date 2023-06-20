@@ -6,37 +6,54 @@ import classes from './PostItem.module.scss';
 import TextRating from "../../UI/TextRating/TextRating.jsx";
 import {Comment, Forum} from "@mui/icons-material";
 
-const PostItem = () => {
+const PostItem = ({item}) => {
+
+    const dateObject = new Date(item.createdAt);
+    let hours = dateObject.getHours();
+    let minutes = dateObject.getMinutes();
+    let timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    let options = { day: 'numeric', month: 'long', year: 'numeric' };
+    let dateFormatted = dateObject.toLocaleDateString('en-US', options);
+
+    function removeHtmlTags(str) {
+        return str.replace(/<[^>]*>/g, '');
+    }
+
+    let plain_text = removeHtmlTags(item.html_content).slice(0, 175);
+
+    if(plain_text.length === 175) {
+        plain_text += '...';
+    }
+
     return (
         <div className={classes.postContainer}>
             <div className={classes.postSubject}>
                 <div className={classes.posterLabels}>
                     <div className={classes.postHeader}>
-                        <Avatar className={classes.avatar} src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                        <Avatar className={classes.avatar} src={`http://localhost:5000/${item.User.image}`}/>
                         <div className={classes.postAuthor}>
-                            <h5>Mahershala Ali</h5>
-                            <span>10 minutes ago, 18 may 2018</span>
+                            <h5>{item.User.full_name}</h5>
+                            <span>{`${timeFormatted}, ${dateFormatted}`}</span>
                         </div>
                     </div>
                     <h3>
-                        The Dark Knight
-                        <span>(1996)</span>
+                        {item.Movie.title}
+                        <span>({new Date(item.Movie.release_date).getFullYear()})</span>
                     </h3>
                 </div>
                 <Link>
-                    <img className={classes.poster} src="https://m.media-amazon.com/images/M/MV5BY2NmM2M2MWItNjdlMC00ZWI3LTkwODUtZDNkYWZjYjgzZjY3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_QL75_UX380_CR0,2,380,562_.jpg 380w"/>
+                    <img className={classes.poster} src={item.Movie.poster}/>
                 </Link>
             </div>
             <div className={classes.postContent}>
-
                 <div className={classes.postText}>
                     <h4>
-                        <TextRating rate={8.8}/>
-                        The best movie ever
+                        <TextRating rate={item.overall_rate}/>
+                        {item.title}
                     </h4>
                     <p>
-                        It is a long established fact that a reader will be distracted by the readable content
-                        of a page when looking at its layout. The point of using Lorem Ipsum is that it has...
+                        {plain_text}
                         <Link className={classes.link}>Read more</Link>
                     </p>
                     <div className={classes.comments}>

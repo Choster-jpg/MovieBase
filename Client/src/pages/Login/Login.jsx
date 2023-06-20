@@ -3,9 +3,11 @@ import React, {lazy} from 'react';
 import classes from './Login.module.scss'
 import Welcome from "../../components/auth/Wellcome/Welcome.jsx";
 import {useLocation} from "react-router-dom";
+import SignUp from "../../components/auth/SignUp/SignUp.jsx";
+import SignIn from "../../components/auth/SignIn/SignIn.jsx";
 
-const SignIn = lazy(() => import('../../components/auth/SignIn/SignIn.jsx'));
-const SignUp = lazy(() => import('../../components/auth/SignUp/SignUp.jsx'));
+/*const SignIn = lazy(() => import('../../components/auth/SignIn/SignIn.jsx'));
+const SignUp = lazy(() => import('../../components/auth/SignUp/SignUp.jsx'));*/
 
 const Login = () => {
 

@@ -1,8 +1,14 @@
 const sequelize = require('../database/database');
-const { Movie, Watchlist, LikeList } = require('../models/models').Models(sequelize);
+const ApiError = require('../error/apiError');
+
+const { Movie, Watchlist, LikeList, Review, Celebrity, MovieCast } = require('../models/models').Models(sequelize);
 
 const scrapeService = require('../services/scrapeService');
 const movieService = require('../services/movieService');
+const userService = require('../services/userService');
+
+const { Sequelize, Op } = require("sequelize");
+//const  = require("sequelize");
 
 class MovieController {
     /*async create(req, res, next) {
@@ -27,31 +33,36 @@ class MovieController {
         try {
             const {query, limit} = req.query;
 
-            const result = await scrapeService.scrapeTitleByName(query, limit);
+            const result = await scrapeService.scrapeTitlesByName(query, limit);
             return res.json(result);
         }
         catch (e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
     async getInfo(req, res, next) {
         try {
-            const {title, year, imdb} = req.query;
+            const { title, year, imdb_link } = req.query;
 
             const movie = await Movie.findOne({
-                where: {
-                    imdb_link: imdb
-                }
+                where: { imdb_link },
+                include: [{
+                    model: Celebrity,
+                    through: {
+                        attributes: ["role_name"],
+                    },
+                }],
+
             });
 
             if(movie) return res.json(movie);
 
-            const result = await scrapeService.scrapeInfoByTitleFast(title, year, imdb);
+            const result = await scrapeService.scrapeInfoByTitle(title, year, imdb_link);
             return res.json(result);
         }
         catch (e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -64,25 +75,30 @@ class MovieController {
             return res.json(movies);
         }
         catch(e) {
-            next(e);
+            next(new ApiError.Internal(e.message));
         }
     }*/
 
     async addToWatchlist(req, res, next) {
         try {
             const { user_id, movie } = req.body;
-            const candidate = await Movie.findOne({
-                where: {
-                    id: movie.id
-                }
-            })
 
-            if(!candidate) await movieService.createMovie(movie);
+            if(!movie.id)
+            {
+                const candidate = await Movie.findOne({
+                    where: {
+                        imdb_link: movie.imdb_page
+                    }
+                })
+
+                if(!candidate) await movieService.createMovie(movie);
+            }
+
             const result = await Watchlist.create({user_id, movie_id: movie.id})
             return res.json(result);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -96,7 +112,7 @@ class MovieController {
             return res.json(result);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -110,25 +126,30 @@ class MovieController {
             return res.json(result || null);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
     async addToLikeList(req, res, next) {
         try {
             const { user_id, movie } = req.body
-            const candidate = await Movie.findOne({
-                where: {
-                    id: movie.id
-                }
-            })
 
-            if(!candidate) await movieService.createMovie(movie);
+            if(!movie.id)
+            {
+                const candidate = await Movie.findOne({
+                    where: {
+                        imdb_link: movie.imdb_page
+                    }
+                })
+
+                if(!candidate) await movieService.createMovie(movie);
+            }
+
             const result = await LikeList.create({user_id, movie_id: movie.id})
             return res.json(result);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -142,7 +163,7 @@ class MovieController {
             return res.json(result);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -156,7 +177,7 @@ class MovieController {
             return res.json(result || null);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -168,13 +189,18 @@ class MovieController {
                     user_id
                 },
                 attributes: [],
-                include: Movie
+                include: {
+                    model: Movie,
+                    on: {
+                        [Op.eq]: Sequelize.col('Watchlist.movie_id')
+                    }
+                }
             })
 
             return res.json(movies);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -192,7 +218,37 @@ class MovieController {
             return res.json(movies);
         }
         catch(e) {
-            next(e);
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+    async getWatchlistMoviesByGenre(req, res, next) {
+        try {
+            const { values } = req.query;
+            const decodedValues = JSON.parse(decodeURIComponent(values));
+
+            return res.json(decodedValues);
+        }
+        catch(e) {
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+    async getMovieAudienceScore(req, res, next) {
+        try {
+            const { imdb_link } = req.query;
+            const id = await movieService.isFilmExistsInDatabase(imdb_link);
+            if(id) {
+                return await Review.findAll({
+                    attributes: [[Sequelize.fn('AVG', Sequelize.col('overall_rate')), 'avg_rating']],
+                    where: {id},
+                });
+            }
+
+            return null;
+        }
+        catch(e) {
+            next(ApiError.Internal(e.message));
         }
     }
 }

@@ -7,14 +7,14 @@ class MovieService {
     async createMovie(movie) {
         const { poster, title, release_date, runtime, imdb_rate,
             rotten_rate, kinopoisk_rate, metacritic_rate, plot,
-            director, genres, budget, gross, cast } = movie;
+            director, genres, budget, gross, cast, imdb_link, Celebrities } = movie;
 
         const result = await Movie.create({
             poster, title, release_date, runtime, imdb_rate,
             rotten_rate, kinopoisk_rate, metacritic_rate, plot,
-            director, genres, budget, gross});
+            director, genres, budget, gross, imdb_link, Celebrities });
 
-        await castService.create(cast, result.id);
+        await castService.create(cast ? cast : Celebrities, result.id);
 
         return result;
     }
@@ -33,9 +33,7 @@ class MovieService {
 
     async getUserLikedList(userId) {
         return await LikeList.findAll({
-            where: {
-                user_id: userId
-            },
+            where: { user_id: userId },
             include: {
                 model: Movie,
                 attributes: ['title', 'genres']
@@ -45,6 +43,13 @@ class MovieService {
 
     async getRecommended() {
 
+    }
+
+    async isFilmExistsInDatabase(imdb_link) {
+        return await Movie.findOne({
+            where: { imdb_link },
+            attributes: ["id"],
+        });
     }
 }
 

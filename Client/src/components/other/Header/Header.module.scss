@@ -19,6 +19,13 @@
 
     @include d-flex(space-between);
 
+    .link {
+        font-weight: 600;
+        color: $primary-white;
+        margin-top: 6px;
+        cursor: pointer;
+    }
+
     div {
         @include d-flex(center, center);
     }

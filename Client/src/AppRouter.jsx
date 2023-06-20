@@ -1,23 +1,28 @@
 import { useState } from 'react'
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 
-import  {public_routes} from "./routes.js";
-import Browse from "./pages/Browse/Browse.jsx";
-import Movie from "./pages/Movie/Movie.jsx";
+import  {public_routes, auth_routes} from "./routes.js";
+import {useSelector} from "react-redux";
 
 function AppRouter() {
-  return (
-      <Routes>
-          {
-            public_routes.map((route) => <Route key={new Date()} path={route.path} element={<route.pageComponent/>}/>)
-          }
-          <Route key={new Date()} path="/movies">
-              <Route key={new Date()} index element={<Browse/>}/>
-              <Route key={new Date()} path=":id" element={<Movie/>}/>
-          </Route>
-          <Route key={new Date()} path="*" element={<div>Not found</div>}/>
-      </Routes>
-  )
+    const { user } = useSelector(state => state.userData);
+
+    return (
+        <Routes>
+            {
+                public_routes.map((route) => <Route key={new Date()} path={route.path} element={<route.pageComponent/>}/>)
+            }
+            {
+                auth_routes.map((route) => {
+                    return <Route key={new Date()} path={route.path}
+                                element={
+                                    user ? <route.pageComponent/> : <Navigate to="/login/index"/>
+                                }/>
+                })
+            }
+            <Route key={new Date()} path="*" element={<div>Not found</div>}/>
+        </Routes>
+    )
 }
 
 export default AppRouter

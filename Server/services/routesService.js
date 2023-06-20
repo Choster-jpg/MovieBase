@@ -27,6 +27,10 @@ class RoutesService {
     getRottenSearch(title) {
         return `https://www.rottentomatoes.com/search?search=${title}`;
     }
+
+    getOmdbData(imdb) {
+        return `http://www.omdbapi.com/?i=${imdb}&plot=full&apikey=7c23b757`;
+    }
 }
 
 module.exports = new RoutesService();

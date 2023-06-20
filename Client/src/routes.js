@@ -49,23 +49,19 @@ export const public_routes = [
         path: browse_route,
         pageComponent: Browse,
     },
+]
+
+export const auth_routes = [
     {
         path: watchlist_route,
         pageComponent: Watchlist,
     },
     {
+        path: new_review_route,
+        pageComponent: MyReview,
+    },
+    {
         path: account_route,
         pageComponent: Account,
     },
-    {
-        path: new_review_route,
-        pageComponent: MyReview,
-    }
-
-]
-
-export const auth_routes = [
-    {
-
-    }
 ]

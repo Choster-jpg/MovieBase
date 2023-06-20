@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 
 const commentController = require('../controllers/commentController');
 
 router.route('/')
     .get(commentController.getComments)
-    .post(commentController.createComment)
-    .put(commentController.updateComment)
-    .delete(commentController.deleteComment);
+    .post(authMiddleware, commentController.createComment)
+    .put(authMiddleware, commentController.updateComment)
+    .delete(authMiddleware, commentController.deleteComment);
 
 router.route('/reply')
     .get(commentController.getReplies)
-    .post(commentController.createReply)
-    .put(commentController.updateReply)
-    .delete(commentController.deleteReply);
+    .post(authMiddleware, commentController.createReply)
+    .put(authMiddleware, commentController.updateReply)
+    .delete(authMiddleware, commentController.deleteReply);
 
 module.exports = router;

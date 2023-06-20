@@ -51,5 +51,6 @@ $authHost.interceptors.response.use(
 export
 {
     $host,
-    $authHost
+    $authHost,
+    SERVER_API_ROUTE
 }

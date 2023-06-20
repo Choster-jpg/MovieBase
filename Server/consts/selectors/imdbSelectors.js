@@ -2,7 +2,7 @@ function return_list() {
     return {
         rate: 'div.sc-3a4309f8-0:nth-child(2) > div:nth-child(1) > div:nth-child(1) > a:nth-child(2) > span:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > span:nth-child(1)',
         director: '.sc-52d569c6-3 > div:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)',
-        plot: '.sc-2eb29e65-1',
+        plot: '.sc-cd57914c-0',
         poster: '.ipc-media--poster-l > img:nth-child(1)',
         castList: '.ipc-sub-grid--wraps-at-above-l > div',
         genreList: 'ul.ipc-metadata-list:nth-child(8) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1) > li',

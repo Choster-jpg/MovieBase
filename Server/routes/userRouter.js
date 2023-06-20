@@ -25,6 +25,8 @@ router.route('/friends')
     .post(userController.createFriend)
     .delete(userController.removeFriend);
 
+router.get('/friends/like', userController.getFriendsLikedMovie);
+
 router.get('/find', userController.getUsersByName);
 
 module.exports = router;

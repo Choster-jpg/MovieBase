@@ -3,7 +3,7 @@
 
 .background {
     @include fullscreen-background($primary-dark);
-    padding: 90px $padding-default 0 $padding-default;
+    padding: 90px $padding-default $padding-xxl $padding-default;
 
     .tabContainer {
         .contentSection {

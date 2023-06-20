@@ -6,7 +6,8 @@ const tokenService = require('./tokenService');
 const UserDto = require('../dto/userDto');
 
 const sequelize = require('../database/database');
-const {User} = require('../models/models').Models(sequelize);
+const ApiError = require("../error/apiError");
+const { User, UserRelationship } = require('../models/models').Models(sequelize);
 
 class UserService
 {
@@ -16,8 +17,7 @@ class UserService
 
         if(candidate)
         {
-            // TODO: use error middleware
-            throw new Error('User with this email already exists.');
+            throw ApiError.BadRequest('User with this email already exists.');
         }
 
         let hashPassword = await bcrypt.hash(password, 3);
@@ -26,7 +26,7 @@ class UserService
         let completeActivationLink = `${process.env.API_URL}/api/user/activate/${activationLink}`;
 
         let user = await User.create({email, password: hashPassword, activationLink, full_name, nickname});
-        await mailService.sendActivationMail(email, completeActivationLink);
+        //await mailService.sendActivationMail(email, completeActivationLink);
 
         let userDto = new UserDto(user);
 
@@ -44,8 +44,7 @@ class UserService
         console.log(user);
         if(!user)
         {
-            // TODO: use error middleware
-            throw new Error('Wrong activation link');
+            throw ApiError.BadRequest('Wrong activation link');
         }
 
         await User.updateOne({activationLink: activationLink}, {is_activated: true});
@@ -61,7 +60,7 @@ class UserService
         console.log(user);
         if(!user)
         {
-            // TODO: throw new error
+            throw ApiError.BadRequest('Wrong reset link')
         }
 
         return new UserDto(user);
@@ -77,8 +76,7 @@ class UserService
 
         if(!user)
         {
-            // TODO: throw new error
-            throw new Error('There is no user with such email.');
+            throw ApiError.BadRequest('There is no user with such email.');
         }
 
         console.log(password, user.password);
@@ -86,8 +84,7 @@ class UserService
         const isPassEquals = await bcrypt.compare(password, user.password);
         if(!isPassEquals)
         {
-            // TODO: throw new error
-            throw new Error('Wrong password');
+            throw ApiError.BadRequest('Wrong password');
         }
 
         /*if(user.is_activated === false)
@@ -113,14 +110,14 @@ class UserService
     {
         if(!refreshToken)
         {
-            // TODO: throw new error
+            throw ApiError.Unauthorized();
         }
         const userData = tokenService.validateRefreshToken(refreshToken);
         const tokenFromDb = await tokenService.findToken(refreshToken);
 
         if(!userData || !tokenFromDb)
         {
-            // TODO: throw new error
+            throw ApiError.Unauthorized();
         }
 
         const user = User.findOne({
@@ -145,7 +142,7 @@ class UserService
 
         if(!candidate)
         {
-            // TODO: throw new error
+            throw ApiError.BadRequest("Wrong email");
         }
 
         let resetLink = uuid.v4();
@@ -161,8 +158,7 @@ class UserService
         return { user: user, temporaryPassword: temporaryPassword};
     }
 
-    async resetPassword(email, password)
-    {
+    async resetPassword(email, password) {
         let candidate = await User.findOne({
             where: {
                 email: email
@@ -178,6 +174,16 @@ class UserService
         let user = await User.updateOne({email: email},{password: hashPassword});
         let userDto = new UserDto(user);
         return { user: userDto };
+    }
+
+    async getFriendsIds(user_id) {
+        return (await UserRelationship.findAll({
+            attributes: ['friend_id'],
+            where: {
+                friend_owner_id: user_id,
+            },
+            raw: true,
+        })).map(item => item.friend_id);
     }
 }
 

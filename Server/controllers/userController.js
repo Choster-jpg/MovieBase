@@ -1,5 +1,5 @@
 const sequelize = require('../database/database');
-const { User, UserRelationship } = require('../models/models').Models(sequelize);
+const { User, UserRelationship, LikeList } = require('../models/models').Models(sequelize);
 const userService = require('../services/userService');
 const { Op, QueryTypes } = require("sequelize");
 
@@ -154,12 +154,7 @@ class UserController
     async getFriends(req, res, next) {
         try {
             const { user_id } = req.query;
-            const ids = await UserRelationship.findAll({
-                attributes: ['friend_id'],
-                where: {
-                    friend_owner_id: user_id,
-                }
-            });
+            const ids = await userService.getFriendsIds(user_id);
 
             const friends = await User.findAll({
                 attributes: ['full_name', 'nickname', 'image'],
@@ -220,7 +215,8 @@ class UserController
                             }
                         }
                     ]
-                }
+                },
+                attributes: ["full_name", "nickname", "image"],
             })
 
             return res.json(result);
@@ -235,13 +231,13 @@ class UserController
             const { user_id } = req.query;
 
             const result = await sequelize.query("SELECT User.image, User.nickname, User.full_name, User.about, User.createdAt," +
-                " COUNT(UserRelationship.id) AS friends," +
-                " COUNT(LikeList.id) AS likes," +
-                " COUNT(Review.id) AS reviews" +
+                " COUNT(DISTINCT `UserRelationship`.id) AS friends," +
+                " COUNT(DISTINCT `LikeList`.id) AS likes," +
+                " COUNT(DISTINCT `Review`.id) AS reviews" +
                 " FROM `User`" +
-                " JOIN `UserRelationship` ON User.id = UserRelationship.friend_owner_id" +
-                " JOIN `LikeList` ON User.id = LikeList.user_id" +
-                " JOIN `Review` ON User.id = Review.UserId WHERE User.id = ?;",
+                " LEFT JOIN `UserRelationship` ON `User`.id = `UserRelationship`.friend_owner_id" +
+                " LEFT JOIN `LikeList` ON User.id = LikeList.user_id" +
+                " LEFT JOIN `Review` ON User.id = Review.UserId WHERE User.id = ? GROUP BY `User`.id;",
                 {
                     replacements: [user_id],
                     type: QueryTypes.SELECT
@@ -252,6 +248,31 @@ class UserController
         catch(e) {
             next(e);
         }
+    }
+
+    async getFriendsLikedMovie(req, res, next) {
+        const { user_id } = req.query;
+        const ids = await userService.getFriendsIds(user_id);
+
+        const friends_ids = await LikeList.findAll({
+            where: {
+                user_id: {
+                    [Op.in]: ids,
+                }
+            },
+            attributes: ["user_id"]
+        });
+
+        const result = await User.findAll({
+            where: {
+                id: {
+                    [Op.in]: friends_ids,
+                }
+            },
+            attributes: ["image"],
+        });
+
+        return res.json(result);
     }
 }
 

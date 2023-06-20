@@ -21,7 +21,7 @@ let modelsSetUp = (sequelize) => {
             password: DataTypes.STRING,
             full_name: DataTypes.STRING,
             nickname: {type: DataTypes.STRING, allowNull: false, unique: true},
-            about: {type: DataTypes.STRING, allowNull: true},
+            about: {type: DataTypes.TEXT, allowNull: true},
             image: {type: DataTypes.STRING, allowNull: true},
             is_activated: {type: DataTypes.BOOLEAN, defaultValue: false},
             activation_link: {type: DataTypes.STRING},
@@ -43,7 +43,7 @@ let modelsSetUp = (sequelize) => {
             meaning_depth_rate: DataTypes.STRING,
             overall_rate : DataTypes.STRING,
             title : DataTypes.STRING,
-            html_content : DataTypes.STRING,
+            html_content : DataTypes.TEXT,
             is_deleted: { type: DataTypes.BOOLEAN, defaultValue: false }
         },
         {
@@ -200,7 +200,7 @@ let modelsSetUp = (sequelize) => {
     User.hasMany(Reply);
     Reply.belongsTo(User);
 
-    return {User, Movie, Review, Watchlist, LikeList, Celebrity, Comment, UserRelationship, Reply, Token, ReviewReaction};
+    return {User, Movie, Review, Watchlist, LikeList, Celebrity, Comment, UserRelationship, Reply, Token, ReviewReaction, MovieCast};
 }
 
 module.exports.Models = (sequelize) => modelsSetUp(sequelize);

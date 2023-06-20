@@ -1,14 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import classes from './SignUp.module.scss';
 import {Google, West} from "@mui/icons-material";
 import Input from "../../UI/Input/Input.jsx";
 import Button from "../../UI/Button/Button.jsx";
-import {Divider, IconButton, Link} from "@mui/material";
+import {CircularProgress, Divider, IconButton, Link} from "@mui/material";
 import AuthForm from "../AuthForm/AuthForm.jsx";
 import { useForm } from 'react-hook-form';
 
+import { register, resetRegistered } from '../../../store/slices/userDataSlice.js';
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+
 const SignUp = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user, error, loading, registered } = useSelector(state => state.userData);
 
     const { handleSubmit, reset, watch, control, formState: {errors} } = useForm({
         mode: 'onBlur',
@@ -21,14 +28,39 @@ const SignUp = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         reset();
+        dispatch(register(data));
     }
+
+    useEffect(() => {
+        dispatch(resetRegistered());
+    }, [])
+
+    useEffect(() => {
+        console.log(error);
+    }, [error]);
+
+    useEffect(() => {
+        if(!loading && registered) navigate('/login/sign_in');
+    }, [loading])
     
     return (
         <div className={classes.image}>
             <AuthForm content={
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <Input type="text" label="Full Name" name="full_name"
+                           control={control} errors={errors}
+                           rules={{
+                               required: "Full Name is required.",
+                               minLength: {
+                                   value: 4,
+                                   message: "Full Name must be at least 4 symbols"
+                               },
+                               maxLength: {
+                                   value: 25,
+                                   message: "Full Name must not be longer than 25 symbols"
+                               }
+                           }}/>
                     <Input type="text" label="Nickname" name="nickname"
                            control={control} errors={errors}
                            rules={{
@@ -38,8 +70,8 @@ const SignUp = () => {
                                    message: "Nickname must be at least 4 symbols"
                                },
                                maxLength: {
-                                   value: 40,
-                                   message: "Nickname must not be longer than 40 symbols"
+                                   value: 25,
+                                   message: "Nickname must not be longer than 25 symbols"
                                }
                            }}/>
                     <Input type="text" label="Email" name="email"
@@ -67,17 +99,23 @@ const SignUp = () => {
                                    }
                                }
                            }}/>
-                    <Button sx={{marginTop: 4}} variant="contained" type="submit">Sign Up</Button>
-                    <div className={classes.dividerContainer}>
-                        <Divider className={classes.divider} textAlign="center">or</Divider>
-                    </div>
-                    <Button variant="contained" startIcon={<Google/>}>
-                        Sign up with google
+                    <Button sx={{marginTop: 4}} variant="contained" type="submit">
+                        {
+                            !loading ? 'Sign Up' : <CircularProgress color='inherit'/>
+                        }
                     </Button>
+                    {/*
+                        <div className={classes.dividerContainer}>
+                            <Divider className={classes.divider} textAlign="center">or</Divider>
+                        </div>
+                        <Button variant="contained" startIcon={<Google/>}>
+                        Sign up with google
+                        </Button>
+                    */}
                     <div className={classes.container}>
                         <span>Have an account?</span>
                         <div className={classes.linkContainer}>
-                            <Link className={classes.link} href="#" underline="none">Sign in</Link>
+                            <Link className={classes.link} href="/login/sign_in" underline="none">Sign in</Link>
                         </div>
                     </div>
                 </form>

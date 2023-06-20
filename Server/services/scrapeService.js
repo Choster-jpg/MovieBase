@@ -18,7 +18,7 @@ class ScrapeService {
         }
     }
 
-    async scrapeTitleByName(query, limit = 25) {
+    async scrapeTitlesByName(query, limit = 25) {
         let { data } = await axios.get(routesService.getImdbTitleSearch(query), this.config);
         let $ = cheerio.load(data);
         const listItems = $(imdbSelectors.searchList);
@@ -27,9 +27,13 @@ class ScrapeService {
 
         listItems.each((index, element) => {
             const title = $(element).find(imdbSelectors.searchTitle).text();
-            const image = $(element).find(imdbSelectors.searchImageHref).attr('src');
+
+            const images = $(element).find(imdbSelectors.searchImageHref).attr('srcset');
+            const srcset = images ? images.split(' ') : null;
+            const image = srcset?.[srcset.length - 2].trim();
+
             const castingSpan = $(element).find(imdbSelectors.searchCastingSpan);
-            const yearSpan = $(element).find(imdbSelectors.searchYearSpan);
+            let yearSpan = $(element).find(imdbSelectors.searchYearSpan);
             const imdb_page = $(element).find(imdbSelectors.searchImdbPage).attr('href').split('/')[2];
 
             let casting, year;
@@ -49,7 +53,7 @@ class ScrapeService {
         return result;
     }
 
-    async scrapeInfoByTitleFast(title, year, imdb) {
+    async scrapeInfoByTitle(title, year, imdb) {
         const data_kinopoisk = await axios.get(routesService.getKinopoiskSearch(`${title} ${year}`), this.config);
         const data_imdb = await axios.get(routesService.getImdbTitleInfo(imdb), this.config);
 
@@ -60,75 +64,39 @@ class ScrapeService {
         $1(imdbSelectors.castList).each((index, element) => {
             cast.push({
                 name: $1(element).find(imdbSelectors.personName).text(),
-                roleName: $1(element).find(imdbSelectors.personRoleName).text(),
+                role_name: $1(element).find(imdbSelectors.personRoleName).text(),
                 image: $1(element).find(imdbSelectors.personImage).attr('src'),
-                imdbPage: $1(element).find(imdbSelectors.personImdbPage).attr('href').split('/')[2],
+                imdb_page: $1(element).find(imdbSelectors.personImdbPage).attr('href').split('/')[2],
             })
         })
 
-
-        let kinopoiskRate = "";
+        let kinopoisk_rate = "";
         let engName = $2(kinopoiskSelectors.engName).text();
         if($2(kinopoiskSelectors.year).text() === year && engName.slice(0, engName.indexOf(',')) === title)
         {
-            kinopoiskRate = $2(kinopoiskSelectors.rate).text();
+            kinopoisk_rate = $2(kinopoiskSelectors.rate).text();
         }
 
+        const { data } = await axios.get(routesService.getOmdbData(imdb));
+        const posters = $1(imdbSelectors.poster).attr('srcset').split(' ');
+        const poster = posters[posters.length - 2];
+
         return {
-            imdbRate: $1(imdbSelectors.rate).text(),
-            kinopoiskRate,
-            metacriticsRate: $1(imdbSelectors.metacriticsRate).text(),
+            imdb_rate: $1(imdbSelectors.rate).text(),
+            kinopoisk_rate,
+            metacritic_rate: $1(imdbSelectors.metacriticsRate).text(),
             plot: $1(imdbSelectors.plot).text(),
             director: $1(imdbSelectors.director).text(),
-            poster: $1(imdbSelectors.poster).attr('src'),
-            releaseDate: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
+            poster,
+            release_date: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
             budget: $1(imdbSelectors.budget).text(),
             gross: $1(imdbSelectors.gross).text(),
+            genres: data.Genre.split(','),
+            counties: data.Country,
+            rotten_rate: data.Ratings.find(item => item.Source === "Rotten Tomatoes").Value,
+            runtime:  $1(imdbSelectors.runtime).text(),
             cast,
         };
-    }
-
-    async scrapeInfoByTitleSlow(title, year, imdb) {
-        const browser = await puppeteer.launch({headless: false});
-        const page = await browser.newPage();
-
-        await page.goto(routesService.getImdbTitleInfo(imdb), { waitUntil: 'networkidle0' })
-        const imdbHTML = await page.content();
-
-        await page.goto(routesService.getRottenSearch(title), { waitUntil: 'networkidle0' });
-        await page.waitForSelector(rottenSelectors.searchList);
-        const rottenHTML = await page.content();
-
-        const $1 = cheerio.load(imdbHTML);
-        const $3 = cheerio.load(rottenHTML);
-
-        let rottenRate = "";
-        $3(rottenSelectors.searchList).each((index, element) => {
-            const _title = $3(element).find(rottenSelectors.elementTitle).text().trim();
-            const _year = $3(element).attr('releaseyear');
-            if(_title === title && _year.includes(year))
-            {
-                rottenRate = $3(element).attr('tomatometerscore');
-                return false;
-            }
-        })
-
-        const string = $1('script:contains(genre)').text();
-        const indexStart = string.indexOf('[');
-        const indexEnd = string.indexOf(']', indexStart) + 1;
-        const stringArray = string.slice(indexStart, indexEnd);
-        const genres = JSON.parse(stringArray);
-
-        await browser.close();
-
-        return {
-            genres,
-            rottenRate
-        }
-    }
-
-    async scrapeCelebritiesByName() {
-
     }
 
     async scrapeCelebrityInfo(imdb_page) {
@@ -147,21 +115,9 @@ class ScrapeService {
             height: $(imdbSelectors.celebrityDataSection).find(imdbSelectors.celebrityHeight).text().trim(),
             image: $(imdbSelectors.celebrityImage).attr('src'),
             born: born.trim(),
+            imdb_page,
         }
     }
-
-    async scrapeGenres() {
-        const data_imdb = await axios.get(routesService.getImdbGenres(), this.config);
-        const $ = cheerio.load(data_imdb.data);
-
-        const genres = [];
-        $(imdbSelectors.genres).each((index, element) => {
-            genres.push($(element).text().trim());
-        });
-
-        return genres;
-    }
-
 }
 
 module.exports = new ScrapeService();
