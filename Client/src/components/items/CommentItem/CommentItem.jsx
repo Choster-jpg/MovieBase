@@ -24,12 +24,6 @@ const CommentItem = () => {
                 commodo consequat?
             </p>
             <div className={classes.commentReactions}>
-                <Button endIcon={<ThumbUpOutlined className={classes.icon}/>} type="text" color="secondary">
-                    1,4K
-                </Button>
-                <Button endIcon={<ThumbDownOutlined className={classes.icon}/>} type="text" color="secondary">
-                    1,1k
-                </Button>
                 <Button type="text" color="secondary">
                     Reply
                 </Button>

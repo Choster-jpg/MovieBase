@@ -126,8 +126,6 @@ let modelsSetUp = (sequelize) => {
     Watchlist.init(
         {
             id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-            user_id: {type: DataTypes.INTEGER, allowNull: false},
-            movie_id: {type: DataTypes.INTEGER, allowNull: false},
         },
         {
             sequelize
@@ -148,8 +146,6 @@ let modelsSetUp = (sequelize) => {
     LikeList.init(
         {
             id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-            user_id: {type: DataTypes.INTEGER, allowNull: false},
-            movie_id: {type: DataTypes.INTEGER, allowNull: false},
         },
         {
             sequelize
@@ -199,6 +195,12 @@ let modelsSetUp = (sequelize) => {
 
     User.hasMany(Reply);
     Reply.belongsTo(User);
+
+    User.belongsToMany(Movie, {through: Watchlist});
+    Movie.belongsToMany(User, {through: Watchlist});
+
+    User.belongsToMany(Movie, {through: LikeList});
+    Movie.belongsToMany(User, {through: LikeList});
 
     return {User, Movie, Review, Watchlist, LikeList, Celebrity, Comment, UserRelationship, Reply, Token, ReviewReaction, MovieCast};
 }

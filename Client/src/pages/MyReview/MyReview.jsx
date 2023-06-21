@@ -11,11 +11,11 @@ import DOMPurify from 'dompurify';
 
 import { createReview } from '../../dataService/reviewDataService.js';
 import {useLocation, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 
 const MyReview = () => {
-    const user = useSelector(state => state.userData);
+    const { user } = useSelector(state => state.userData);
 
     const maxTitleLength = 40;
 
@@ -80,7 +80,7 @@ const MyReview = () => {
             html_content: purifiedValue,
             movie_id: movie.id || null,
             movie,
-            user_id: 1,
+            user_id: user.id,
         })
         console.log("Review was sent successfully!", result);
         if(result) navigate(`/movies/${movie.imdb_link}`, { state: { movie: {...movie, year: movie.year, title: movie.title} }})

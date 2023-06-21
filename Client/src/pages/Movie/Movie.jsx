@@ -31,12 +31,14 @@ const Movie = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const location = useLocation();
-    const { title, year } = location.state;
     const [isCastListExpanded, setCastListExpanded] = useState(false);
     const dispatch = useDispatch();
     const { loading, loading_slow, error,
             movie, isInLikeList, isInWatchList,
             friendsList, audienceScore } = useSelector(state => state.moviePage);
+
+    let title = location?.state?.title;
+    if (!title) title = movie.title;
 
     const addToFav = () => {
         dispatch(setIsInLikeList({ value: !isInLikeList }));
@@ -63,6 +65,9 @@ const Movie = () => {
     const onAddReviewClick = () => {
         navigate('/review/new', { state: { movie: {...movie, title, year, imdb_link: id} }});
     }
+
+    let dateObject = new Date(movie.release_date);
+    let year = dateObject.getFullYear();
 
     return (
         <div className={classes.background}>

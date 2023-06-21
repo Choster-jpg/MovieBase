@@ -236,7 +236,7 @@ class UserController
                 " COUNT(DISTINCT `Review`.id) AS reviews" +
                 " FROM `User`" +
                 " LEFT JOIN `UserRelationship` ON `User`.id = `UserRelationship`.friend_owner_id" +
-                " LEFT JOIN `LikeList` ON User.id = LikeList.user_id" +
+                " LEFT JOIN `LikeList` ON User.id = LikeList.UserId" +
                 " LEFT JOIN `Review` ON User.id = Review.UserId WHERE User.id = ? GROUP BY `User`.id;",
                 {
                     replacements: [user_id],
@@ -246,6 +246,7 @@ class UserController
             return res.json(result);
         }
         catch(e) {
+            console.log(e);
             next(e);
         }
     }
@@ -256,11 +257,11 @@ class UserController
 
         const friends_ids = await LikeList.findAll({
             where: {
-                user_id: {
+                UserId: {
                     [Op.in]: ids,
                 }
             },
-            attributes: ["user_id"]
+            attributes: ["UserId"]
         });
 
         const result = await User.findAll({

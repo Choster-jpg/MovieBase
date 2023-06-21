@@ -89,6 +89,9 @@ class ReviewController {
                     {
                         model: Movie,
                         attributes: ["title", "release_date", "poster"]
+                    },
+                    {
+                        model: ReviewReaction,
                     }]
             });
 
@@ -110,7 +113,7 @@ class ReviewController {
             return res.json(reviews);
         }
         catch(e) {
-            next(e);
+            next(e);//
         }
     }
 

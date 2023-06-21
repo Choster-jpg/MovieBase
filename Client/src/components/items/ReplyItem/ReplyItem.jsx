@@ -19,12 +19,6 @@ const ReplyItem = () => {
                 Lorem ipsum dolor sit amet, con sec tetur adipiscing elit?
             </p>
             <div className={classes.reactions}>
-                <Button endIcon={<ThumbUpOutlined className={classes.icon}/>} type="text" color="secondary">
-                    1,4K
-                </Button>
-                <Button endIcon={<ThumbDownOutlined className={classes.icon}/>} type="text" color="secondary">
-                    1,1k
-                </Button>
                 <Button type="text" color="secondary">
                     Reply
                 </Button>

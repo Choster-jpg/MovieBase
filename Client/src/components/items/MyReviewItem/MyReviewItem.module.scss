@@ -1,0 +1,36 @@
+@use "../../../styles/abstracts/variables" as *;
+@use "../../../styles/abstracts/mixins" as *;
+
+.myReviewItem {
+    @include d-flex();
+    margin-top: $margin-sm;
+    padding: $padding-xs;
+    background: $primary-dark-hover;
+    border-radius: $border-radius-xs;
+
+    img {
+        width: 90px;
+        height: auto;
+        border-radius: $border-radius-xs;
+    }
+
+    .textContent {
+        @include d-flex(space-around, start, column);
+        margin-left: $margin-xs;
+
+        span {
+            font-size: 0.8em;
+        }
+
+        p {
+            font-size: 0.8em;
+
+            .link {
+                margin-left: $margin-xxs;
+                text-decoration: none;
+                font-weight: 600;
+                color: $highlight-yellow;
+            }
+        }
+    }
+}

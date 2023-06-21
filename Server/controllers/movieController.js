@@ -1,7 +1,7 @@
 const sequelize = require('../database/database');
 const ApiError = require('../error/apiError');
 
-const { Movie, Watchlist, LikeList, Review, Celebrity, MovieCast } = require('../models/models').Models(sequelize);
+const { Movie, Watchlist, LikeList, Review, Celebrity, MovieCast, User } = require('../models/models').Models(sequelize);
 
 const scrapeService = require('../services/scrapeService');
 const movieService = require('../services/movieService');
@@ -94,7 +94,7 @@ class MovieController {
                 if(!candidate) await movieService.createMovie(movie);
             }
 
-            const result = await Watchlist.create({user_id, movie_id: movie.id})
+            const result = await Watchlist.create({UserId: user_id, MovieId: movie.id})
             return res.json(result);
         }
         catch(e) {
@@ -106,7 +106,7 @@ class MovieController {
         try {
             const { user_id, movie_id } = req.body;
             const result = await Watchlist.destroy({
-                where: { user_id, movie_id }
+                where: { UserId: user_id, MovieId: movie_id }
             });
 
             return res.json(result);
@@ -120,7 +120,7 @@ class MovieController {
         try {
             const { user_id, movie_id } = req.body;
             const result = await Watchlist.findOne({
-                where: { user_id, movie_id }
+                where: { UserId: user_id, MovieId: movie_id }
             });
 
             return res.json(result || null);
@@ -145,7 +145,7 @@ class MovieController {
                 if(!candidate) await movieService.createMovie(movie);
             }
 
-            const result = await LikeList.create({user_id, movie_id: movie.id})
+            const result = await LikeList.create({UserId: user_id, MovieId: movie.id})
             return res.json(result);
         }
         catch(e) {
@@ -157,7 +157,7 @@ class MovieController {
         try {
             const { user_id, movie_id } = req.body;
             const result = await LikeList.destroy({
-                where: { user_id, movie_id }
+                where: { UserId: user_id, MovieId: movie_id }
             });
 
             return res.json(result);
@@ -171,7 +171,7 @@ class MovieController {
         try {
             const { user_id, movie_id } = req.body;
             const result = await LikeList.findOne({
-                where: { user_id, movie_id }
+                where: { UserId: user_id, MovieId: movie_id }
             });
 
             return res.json(result || null);
@@ -184,17 +184,12 @@ class MovieController {
     async getWatchlist(req, res, next) {
         try {
             const { user_id } = req.query;
-            const movies = await Watchlist.findAll({
-                where: {
-                    user_id
-                },
+            const movies = await User.findByPk(user_id, {
                 attributes: [],
-                include: {
+                include: [{
                     model: Movie,
-                    on: {
-                        [Op.eq]: Sequelize.col('Watchlist.movie_id')
-                    }
-                }
+                    through: { model: Watchlist, attributes: []}
+                }]
             })
 
             return res.json(movies);
@@ -207,17 +202,18 @@ class MovieController {
     async getLikeList(req, res, next) {
         try {
             const { user_id } = req.query;
-            const movies = await LikeList.findAll({
-                where: {
-                    user_id
-                },
+            const movies = await User.findByPk(user_id, {
                 attributes: [],
-                include: Movie
+                include: [{
+                    model: Movie,
+                    through: { model: LikeList, attributes: []}
+                }]
             })
 
             return res.json(movies);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }

@@ -85,7 +85,7 @@
                 color: $highlight-yellow;
                 font-weight: 600;
                 font-size: 0.9em;
-                text-decoration: none;
+                cursor: pointer;
 
                 .icon {
                     width: 15px;
@@ -98,73 +98,34 @@
 
         .tabsContainer {
             margin-top: $margin-default;
-            .tabs {
-                color: $secondary-text-white;
 
-                .tabList {
-                    @include d-flex();
-                    border-bottom: 1px solid $secondary-text-white;
-                    position: relative;
-                    list-style: none;
+            .tabList {
+                @include d-flex();
+                border-bottom: 1px solid $secondary-text-white;
+                position: relative;
+                list-style: none;
 
-                    .tab {
-                        font-weight: 700;
-                        padding-bottom: $margin-xs;
-                        margin-bottom: -1px;
+                .tab {
+                    font-weight: 700;
+                    padding-bottom: $margin-xs;
+                    margin-bottom: -1px;
 
-                        + .tab {
-                            margin-left: $margin-md;
-                        }
+                    + .tab {
+                        margin-left: $margin-md;
                     }
                 }
+            }
 
-                .friendsList {
-                    margin-top: $margin-xs;
-                }
+            .friendsList {
+                margin-top: $margin-xs;
+            }
 
-                .reviewsList {
-                    .myReviewItem {
-                        @include d-flex();
-                        margin-top: $margin-sm;
-                        padding: $padding-xs;
-                        background: $primary-dark-hover;
-                        border-radius: $border-radius-xs;
+            .likedList {
+                margin-top: $margin-sm;
 
-                        img {
-                            width: 90px;
-                            height: auto;
-                            border-radius: $border-radius-xs;
-                        }
-
-                        .textContent {
-                            @include d-flex(space-around, start, column);
-                            margin-left: $margin-xs;
-
-                            span {
-                                font-size: 0.8em;
-                            }
-
-                            p {
-                                font-size: 0.8em;
-
-                                .link {
-                                    margin-left: $margin-xxs;
-                                    text-decoration: none;
-                                    font-weight: 600;
-                                    color: $highlight-yellow;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .likedList {
-                    margin-top: $margin-sm;
-
-                    .inputContainer {
-                        height: 40px;
-                        margin-bottom: $margin-sm;
-                    }
+                .inputContainer {
+                    height: 40px;
+                    margin-bottom: $margin-sm;
                 }
             }
 

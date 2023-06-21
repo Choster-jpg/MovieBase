@@ -5,29 +5,34 @@ import {Delete, MoreHoriz} from "@mui/icons-material";
 import classes from './WatchlistItem.module.scss';
 import {Link} from "react-router-dom";
 
-const WatchlistItem = () => {
-
+const WatchlistItem = ({item}) => {
     const [anchorEl, setAnchorEl] = useState(null);
-
     const handleClick = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
     };
-
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popper' : undefined;
 
+    let dateObject = new Date(item.release_date);
+    let year = dateObject.getFullYear();
+
+    const text = item.plot.slice(0, 80);
+    const cut_text = text.slice(0, text.lastIndexOf(' ')).concat('...');
+
     return (
-        <Link className={classes.link}>
+        <Link className={classes.link} to={`/movies/${item.imdb_link}`}>
             <div className={classes.listItem}>
-                <img src="https://m.media-amazon.com/images/M/MV5BYzE4MTllZTktMTIyZS00Yzg1LTg1YzAtMWQwZTZkNjNkODNjXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_QL75_UX380_CR0,0,380,562_.jpg 380w"/>
+                <picture>
+                    <source srcSet={item.poster}/>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt={`Movie poster`}/>
+                </picture>
                 <div>
-                    <h5>Teenage Mutant Ninja Turtles: Mutant Mayhem</h5>
-                    <span>2008</span>
-                    <span>Christian Bale, Heath Ledger</span>
+                    <h5>{ item.title }</h5>
+                    <span>{ year }</span>
+                    <span>{ cut_text }</span>
                 </div>
                 <div className={classes.buttonContainer}>
                     <IconButton className={classes.button} onClick={handleClick}>

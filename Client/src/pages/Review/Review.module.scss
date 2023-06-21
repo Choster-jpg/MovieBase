@@ -32,120 +32,99 @@
     position: relative;
 
     .header {
-        @include d-flex();
-        position: relative;
-
         .headerContent {
-            width: 70%;
             @include d-flex();
 
-            .poster {
+            .image {
                 border-radius: 10px;
-                width: 100%;
-                height: auto;
+                width: auto;
+                height: 120px;
 
                 -webkit-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
                 -moz-box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
                 box-shadow: 0 10px 25px 0 rgba(35, 41, 45, 0.8);
             }
-        }
 
-        .headerRating {
-            @include d-flex(start, center, column);
+            .content {
+                margin-left: $margin-sm;
+                @include d-flex(space-around, start, column);
 
-            //min-width: 90px;
-
-            margin-left: $margin-sm;
-
-            .rateItem {
-                @include d-flex(center, center, column);
-                border: 1px solid $primary-white;
-                border-radius: 10px;
-                color: $primary-white;
-
-                width: 90px;
-                height: 90px;
-
-                + .rateItem {
-                    margin-top: $margin-default;
+                h3 {
+                    width: 100%;
+                    font-size: 1em;
+                    color: $secondary-text-white;
                 }
 
                 span {
+                    margin-left: $margin-xxs;
                     font-size: 0.8em;
-                    font-weight: 600;
-                    margin-top: $margin-xxs;
-
-                    &:first-of-type {
-                        color: $secondary-text-white;
-                    }
+                    color: $secondary-text-white;
                 }
-            }
 
-            .mainCriteria {
-                box-shadow: 0 0 10px 2px #00FF7F;
-                border-color: transparent;
+                .contentHeader {
+                    @include d-flex();
 
-                @include d-flex(center, center, column);
-                border-radius: 10px;
-                color: $primary-white;
+                    .contentAuthor {
+                        @include d-flex(end, n, column);
 
-                width: 90px;
-                height: 90px;
+                        color: $primary-white;
+                        margin-left: $margin-xs;
 
-                margin: $margin-default 0;
+                        h5 {
+                            margin-bottom: $margin-xxs;
+                        }
 
-                span {
-                    font-size: 0.8em;
-                    font-weight: 600;
-                    margin-top: $margin-xxs;
-
-                    &:first-of-type {
-                        color: $secondary-text-white;
+                        span {
+                            font-size: 0.7em;
+                            color: $secondary-text-white;
+                            margin-left: 0;
+                        }
                     }
                 }
             }
         }
     }
 
-    .posterLabels {
+    .rates {
+        background: $primary-dark-hover;
+        border-radius: $border-radius-xs;
+        padding: $padding-xxs $padding-sm;
+        margin-top: $margin-default;
+
+        .sliderContainer {
+            @include d-flex(space-between, center);
+
+            .textContainer {
+                width: 70vw;
+
+                span {
+                    color: $secondary-text-white;
+                    font-weight: 700;
+                }
+
+                span:last-of-type {
+                    margin-left: $margin-xs;
+                    color: $primary-white;
+                }
+            }
+        }
+    }
+
+    .overallContainer {
         margin-top: $margin-sm;
-        width: 100%;
-        @include d-flex(start);
-
-        h3 {
-            width: 100%;
-            font-size: 1em;
-        }
-
         span {
-            margin-left: $margin-xxs;
-            font-size: 0.8em;
-            color: $secondary-text-white;
-        }
-    }
-
-    .contentHeader {
-        @include d-flex();
-
-        .contentAuthor {
-            @include d-flex(end, n, column);
-
+            font-weight: 700;
             color: $primary-white;
-            margin-left: $margin-xxs;
+        }
 
-            h5 {
-                margin-bottom: $margin-xxs;
-            }
-
-            span {
-                font-size: 0.7em;
-                color: $secondary-text-white;
-            }
+        span:last-of-type {
+            color: $highlight-yellow;
+            margin-left: $margin-xs;
         }
     }
 
     .contentSection {
-        margin-top: $margin-default;
+        margin-top: $margin-sm;
 
         .contentText {
             margin-top: $margin-sm;

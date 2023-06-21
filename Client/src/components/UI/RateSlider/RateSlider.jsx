@@ -1,7 +1,7 @@
 import React from 'react';
 import {Slider} from "@mui/material";
 
-const RateSlider = ({value, setValue}) => {
+const RateSlider = ({value, setValue, disabled = false}) => {
     const masterpiece = "#00FF7F";
     const good = "#3BCA6D";
     const medium = "#77945C";
@@ -16,7 +16,7 @@ const RateSlider = ({value, setValue}) => {
 
     return (
         <Slider value={value} onChange={(e) => setValue(e.target.value)} marks
-            step={1} max={10} min={1} sx={{
+                disabled={disabled} step={1} max={10} min={1} sx={{
             width: "200px",
             '& .MuiSlider-thumb': {
                 boxShadow: '0px 0px 0px rgb(0, 0, 0)',
