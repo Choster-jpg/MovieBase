@@ -33,6 +33,10 @@
     }
 
     .content {
-        margin-top: $margin-default;
+        margin-top: $margin-xs;
+
+        h3 {
+            margin-bottom: $margin-default;
+        }
     }
 }

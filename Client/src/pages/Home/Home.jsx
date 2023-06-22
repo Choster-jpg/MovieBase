@@ -20,11 +20,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {useDispatch, useSelector} from "react-redux";
 import { fetchFeed, fetchFriends,
          setPageFriends, setPageFeed, resetPosts } from '../../store/slices/homePageSlice.js';
+import {useParams} from "react-router-dom";
 
 const Home = () => {
     const sortOptions = ["Newest", "Most popular"];
     const [sortOption, setSortOption] = useState(sortOptions[0]);
-    const [openedTab, setOpenedTab] = useState("Popular");
+    const [openedTab, setOpenedTab] = useState("Actual");
 
     const { user } = useSelector(state => state.userData);
     const { loading, error, posts, page, limit, hasMore } = useSelector(state => state.homePage);
@@ -47,7 +48,7 @@ const Home = () => {
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const popover_id = open ? 'simple-popover' : undefined;
 
     const onFilterChangeClick = (e) => {
         setSortOption(e.target.innerText);
@@ -55,7 +56,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(resetPosts());
-        if(openedTab === "Popular") {
+        if(openedTab === "Actual") {
 
             dispatch(fetchFeed({ filter: sortOption, limit, page: page}));
         }
@@ -78,14 +79,14 @@ const Home = () => {
         <>
             <Header title="Home"/>
             <div className={classes.background}>
-                <div className={classes.searchPanel}>
+                {/*<div className={classes.searchPanel}>
                     <div className={classes.inputContainer}>
                         <FilledInput placeholder="Type anything here.."/>
                     </div>
                     <ToggleFilterButton isFilterExpanded={isFilterExpanded} setFilterExpanded={setFilterExpanded}
                                         onClick={handleClick}/>
                     <Popover
-                        id={id}
+                        id={popover_id}
                         open={open}
                         anchorEl={anchorEl}
                         onClose={handleClose}
@@ -109,8 +110,8 @@ const Home = () => {
                             }
                         </List>
                     </Popover>
-                </div>
-                <CustomTabs setOpenedTab={setOpenedTab} tabHeaders={ user === null ? ["Popular"] : ["Popular", "Friends"]} tabPanels={[
+                </div>*/}
+                <CustomTabs setOpenedTab={setOpenedTab} tabHeaders={ user === null ? ["Actual"] : ["Actual", "Subscriptions"]} tabPanels={[
                     <div className={classes.postsContainer}>
                         <InfiniteScroll next={fetchMoreFeed}
                                         hasMore={hasMore}

@@ -8,7 +8,7 @@ import {CircularProgress, Divider, IconButton, Link} from "@mui/material";
 import AuthForm from "../AuthForm/AuthForm.jsx";
 import { useForm } from 'react-hook-form';
 
-import { register, resetRegistered } from '../../../store/slices/userDataSlice.js';
+import {register, resetError, resetRegistered} from '../../../store/slices/userDataSlice.js';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -42,7 +42,15 @@ const SignUp = () => {
 
     useEffect(() => {
         if(!loading && registered) navigate('/sign_in');
-    }, [loading])
+    }, [loading]);
+
+    useEffect(() => {
+        if(error) {
+            setTimeout(() => {
+                dispatch(resetError());
+            }, 5000);
+        }
+    }, [error]);
     
     return (
         <div className={classes.image}>
@@ -99,6 +107,11 @@ const SignUp = () => {
                                    }
                                }
                            }}/>
+                    <span>
+                        {
+                            error ? <span style={{color: "red", fontFamily: "inherit", fontWeight: "600", marginTop: "20px"}}>Error: {error}</span> : <></>
+                        }
+                    </span>
                     <Button sx={{marginTop: 4}} variant="contained" type="submit">
                         {
                             !loading ? 'Sign Up' : <CircularProgress color='inherit'/>

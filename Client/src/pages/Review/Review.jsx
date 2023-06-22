@@ -33,7 +33,7 @@ const Review = () => {
 
     const { user } = useSelector(state => state.userData);
 
-    const { error, loading, data, comments, replies, need_fetch,
+    const { error, loading, data, comments, replies, need_fetch, likes, dislikes,
             user_reaction, input_text, buttons_disabled, reply_item} = useSelector(state => state.reviewPage);
 
     useEffect(() => {
@@ -102,7 +102,7 @@ const Review = () => {
             dispatch(fetchReviewComments({ review_id: id }));
             dispatch(resetNeedFetch());
         }
-    }, [need_fetch])
+    }, [need_fetch]);
 
     return (
         <>
@@ -162,7 +162,9 @@ const Review = () => {
                                 </Link>
                                 <div className={classes.content}>
                                     <div className={classes.contentHeader}>
-                                        <Avatar src={`http://localhost:5000/${data.User?.image}`}/>
+                                        <Link to={`/user/${data.User?.id}`}>
+                                            <Avatar src={`http://localhost:5000/${data.User?.image}`}/>
+                                        </Link>
                                         <div className={classes.contentAuthor}>
                                             <h5>{data.User?.full_name}</h5>
                                             <span>{`${data.timeFormatted}, ${data.dateFormatted}`}</span>
@@ -241,7 +243,7 @@ const Review = () => {
                                             :
                                             <ThumbUp className={classes.icon}/>}
                                         type="text" color="secondary" disabled={buttons_disabled}>
-                                    {data.likes}
+                                    {likes}
                                 </Button>
                                 <Button onClick={dislikeClick}
                                         endIcon={
@@ -251,7 +253,7 @@ const Review = () => {
                                             :
                                             <ThumbDown className={classes.icon}/>}
                                         type="text" color="secondary" disabled={buttons_disabled}>
-                                    {data.dislikes}
+                                    {dislikes}
                                 </Button>
                             </div>
                         </section>

@@ -36,19 +36,17 @@ class TokenService
         }
     }
 
-    async saveToken(userEmail, refreshToken)
+    async saveToken(user_id, refreshToken)
     {
         let tokenData = await Token.findOne({
-            where: {
-                user: userEmail
-            }
+            where: { user: user_id }
         });
         if(tokenData)
         {
             tokenData.refreshToken = refreshToken;
             return tokenData.save();
         }
-        return await Token.create({user: userEmail, refreshToken: refreshToken});
+        return await Token.create({user: user_id, refreshToken: refreshToken});
     }
 
     async parseTokenFromRequest(request)

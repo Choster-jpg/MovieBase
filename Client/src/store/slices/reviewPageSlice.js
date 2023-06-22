@@ -165,6 +165,8 @@ const initialState = {
     input_text: "",
     buttons_disabled: false,
     need_fetch: false,
+    dislikes: 0,
+    likes: 0
 }
 
 const reviewPageSlice = createSlice({
@@ -206,8 +208,8 @@ const reviewPageSlice = createSlice({
 
         [fetchReviewReactions.fulfilled]: (state, action) => {
             state.loading = false;
-            state.data.likes = action.payload.likes;
-            state.data.dislikes = action.payload.dislikes;
+            state.likes = action.payload.likes;
+            state.dislikes = action.payload.dislikes;
         },
 
 
@@ -223,7 +225,7 @@ const reviewPageSlice = createSlice({
         },
 
         [fetchUserReaction.fulfilled]: (state, action) => {
-            state.user_reaction = action.payload.reaction_type;
+            state.user_reaction = action.payload?.reaction_type;
         },
 
 

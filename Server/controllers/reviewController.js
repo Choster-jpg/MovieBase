@@ -84,7 +84,7 @@ class ReviewController {
                 include: [
                     {
                         model: User,
-                        attributes: ["image", "nickname", "full_name"]
+                        attributes: ["image", "nickname", "full_name", "id"]
                     },
                     {
                         model: Movie,
@@ -147,7 +147,7 @@ class ReviewController {
             if(filter === "Newest") {
                 reviews = await Review.findAll({
                     order: [
-                        ['createdAt', 'ASC']
+                        ['createdAt', 'DESC']
                     ],
                     where: {
                         USerId: {
@@ -156,7 +156,7 @@ class ReviewController {
                         is_deleted: false,
                     },
                     include: [
-                        { model: User, attributes: ["image", "nickname", "full_name"] },
+                        { model: User, attributes: ["image", "nickname", "full_name", "id"] },
                         { model: Movie, attributes: ["title", "release_date", "poster"], }
                     ],
                 })
@@ -173,7 +173,7 @@ class ReviewController {
                     ],
                     include: [
                         ReviewReaction,
-                        { model: User, attributes: ["image", "nickname", "full_name"] },
+                        { model: User, attributes: ["image", "nickname", "full_name", "id"] },
                         { model: Movie, attributes: ["title", "release_date", "poster"] }
                     ],
                     where: {
@@ -205,13 +205,13 @@ class ReviewController {
             if(filter === "Newest") {
                 reviews = await Review.findAll({
                     order: [
-                        ['createdAt', 'ASC']
+                        ['createdAt', 'DESC']
                     ],
                     where: {
                         is_deleted: false,
                     },
                     include: [
-                        { model: User, attributes: ["image", "nickname", "full_name"] },
+                        { model: User, attributes: ["image", "nickname", "full_name", "id"] },
                         { model: Movie, attributes: ["title", "release_date", "poster"] }
                     ],
                 })
@@ -228,7 +228,7 @@ class ReviewController {
                     ],
                     include: [
                         ReviewReaction,
-                        { model: User, attributes: ["image", "nickname", "full_name"] },
+                        { model: User, attributes: ["image", "nickname", "full_name", "id"] },
                         { model: Movie, attributes: ["title", "release_date", "poster"] }
                     ],
                     where: {

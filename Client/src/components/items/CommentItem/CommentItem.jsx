@@ -6,18 +6,14 @@ import classes from './CommentItem.module.scss';
 import ReplyItem from "../ReplyItem/ReplyItem.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setReplyItem} from "../../../store/slices/reviewPageSlice.js";
+import {getPublicationDate} from "../../../utils/getPublicationDate.js";
 
 const CommentItem = ({item, replies}) => {
-    const dispatch = useDispatch();
-    const dateObject = new Date(item.createdAt);
-    let hours = dateObject.getHours();
-    let minutes = dateObject.getMinutes();
-    let options = { day: 'numeric', month: 'long', year: 'numeric' };
 
     const { data, reply_item, buttons_disabled } = useSelector(state => state.reviewPage);
+    const dispatch = useDispatch();
 
-    const timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    const dateFormatted = dateObject.toLocaleDateString('en-US', options);
+    const { timeFormatted, dateFormatted } = getPublicationDate(item.createdAt);
 
     const onReplyClick = () => {
         dispatch(setReplyItem({comment_id: item.id, nickname: item.User?.nickname}));

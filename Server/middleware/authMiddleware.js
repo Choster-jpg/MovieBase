@@ -5,6 +5,7 @@ module.exports = function (req, res, next) {
     try
     {
         const authorizationHeader = req.headers.authorization;
+
         if(!authorizationHeader)
         {
             return next(ApiError.Unauthorized());

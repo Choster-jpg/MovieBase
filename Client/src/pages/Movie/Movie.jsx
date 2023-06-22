@@ -42,7 +42,7 @@ const Movie = () => {
     const dispatch = useDispatch();
     const { loading, loading_slow, error,
             movie, isInLikeList, isInWatchList,
-            friendsList, audienceScore, buttons_disabled } = useSelector(state => state.moviePage);
+            friendsList, audienceScore, buttons_disabled, reviews } = useSelector(state => state.moviePage);
 
     const { user } = useSelector(state => state.userData);
 
@@ -305,9 +305,9 @@ const Movie = () => {
                                               onClick={onAddReviewClick}>
                                             I want to write my own!
                                         </span>
-                                        <CutReviewItem/>
-                                        <CutReviewItem/>
-                                        <CutReviewItem/>
+                                        {
+                                            reviews.map(item => <CutReviewItem item={item}/>)
+                                        }
                                     </div>
                                 </div>
                             ]}/>

@@ -13,16 +13,16 @@ router.get('/info/score', movieController.getMovieAudienceScore);
 
 router.route('/watchlist')
     .get(/*authMiddleware,*/ movieController.getWatchlist)
-    .post(/*authMiddleware,*/ movieController.addToWatchlist)
-    .delete(/*authMiddleware,*/ movieController.removeFromWatchlist);
+    .post(authMiddleware, movieController.addToWatchlist)
+    .delete(authMiddleware, movieController.removeFromWatchlist);
 
 router.get('/watchlist/check', /*authMiddleware,*/ movieController.isInWatchList);
 router.get('/watchlist/find', /*authMiddleware,*/ movieController.getWatchlistMoviesByGenre);
 
 router.route('/likelist')
     .get(/*authMiddleware,*/ movieController.getLikeList)
-    .post(/*authMiddleware,*/ movieController.addToLikeList)
-    .delete(/*authMiddleware,*/ movieController.removeFromLikeList);
+    .post(authMiddleware, movieController.addToLikeList)
+    .delete(authMiddleware, movieController.removeFromLikeList);
 
 router.get('/likelist/check', /*authMiddleware,*/ movieController.isInLikeList);
 

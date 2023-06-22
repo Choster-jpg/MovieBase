@@ -9,15 +9,15 @@ const FriendsListItem = ({item}) => {
     return (
         <Link className={classes.link}>
             <div className={classes.friendsListItem}>
-                <Avatar src={`http://localhost:5000/${item.image}`}/>
+                <Link to={`/user/${item.id}`}>
+                    <Avatar src={`http://localhost:5000/${item.image}`}/>
+                </Link>
                 <div className={classes.textContainer}>
                     <span>{item.full_name}</span>
                     <span>@{item.nickname}</span>
                 </div>
                 <div className={classes.buttonContainer}>
-                    <IconButton>
-                        <PersonRemove/>
-                    </IconButton>
+
                 </div>
             </div>
         </Link>

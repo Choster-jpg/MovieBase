@@ -128,11 +128,20 @@ class UserController
     async setInfo(request, response, next) {
         try {
             const { user_id, nickname, about } = request.body;
+
+            const candidate = await User.findOne({
+                where: { nickname, }
+            });
+
+            if(candidate && candidate.id !== user_id) {
+                next(ApiError.BadRequest("User with this nickname already exists"));
+            }
+
             const user = await User.findOne({
                 where: {
                     id: user_id,
                 }
-            })
+            });
 
             user.nickname = nickname;
             user.about = about;
@@ -167,7 +176,7 @@ class UserController
             const ids = await userService.getFriendsIds(user_id);
 
             const friends = await User.findAll({
-                attributes: ['full_name', 'nickname', 'image'],
+                attributes: ['full_name', 'nickname', 'image', 'id'],
                 where: {
                     id: ids,
                 }
@@ -185,7 +194,6 @@ class UserController
         try {
             const { friend_owner_id, friend_id } = req.body;
             const result = await UserRelationship.create({friend_owner_id, friend_id});
-            await UserRelationship.create({friend_owner_id: friend_id, friend_id: friend_owner_id});
             return res.json(result);
         }
         catch (e) {
@@ -196,12 +204,9 @@ class UserController
 
     async removeFriend(req, res, next) {
         try {
-            const { friend_owner_id, friend_id } = req.body;
+            const { friend_owner_id, friend_id } = req.query;
             const result = await UserRelationship.destroy({
                 where: {friend_owner_id, friend_id}
-            })
-            await UserRelationship.destroy({
-                where: {friend_owner_id: friend_id, friend_id: friend_owner_id}
             })
             return res.json(result);
         }
@@ -229,10 +234,28 @@ class UserController
                         }
                     ]
                 },
-                attributes: ["full_name", "nickname", "image"],
+                attributes: ["full_name", "nickname", "image", "id"],
             })
 
             return res.json(result);
+        }
+        catch(e) {
+            console.log(e);
+            next(ApiError.Internal(e));
+        }
+    }
+
+    async checkIsInFriendList(req, res, next) {
+        try {
+            const { searched_user_id, searching_user_id } = req.query;
+            const result = await UserRelationship.findOne({
+                where: {
+                    friend_owner_id: searching_user_id,
+                    friend_id: searched_user_id,
+                }
+            })
+
+            return res.json(result || false);
         }
         catch(e) {
             console.log(e);

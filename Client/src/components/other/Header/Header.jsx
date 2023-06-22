@@ -39,11 +39,7 @@ const Header = ({title}) => {
                 ?
                 <span className={classes.link} onClick={handleSignInClick}>Sign In</span>
                 :
-                <IconButton className={classes.iconButton}>
-                    <Badge color="primary" variant="dot" className={classes.badge}>
-                        <Notifications/>
-                    </Badge>
-                </IconButton>
+                <></>
             }
 
         </div>

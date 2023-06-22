@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {$host} from "../../dataService/index.js";
+import {$authHost, $host} from "../../dataService/index.js";
 
 export const fetchWatchlist = createAsyncThunk(
     "watchlistPage/fetchWatchlist",
@@ -22,7 +22,7 @@ export const removeFromWatchlist = createAsyncThunk(
     "watchlistPage/removeFromWatchlist",
     async ({ user_id, movie_id }, { rejectWithValue}) => {
         try {
-            const { data } = await $host.delete(`api/movie/watchlist`, {
+            const { data } = await $authHost.delete(`api/movie/watchlist`, {
                 params: { user_id, movie_id }
             });
 

@@ -5,25 +5,36 @@ import TextRating from "../../UI/TextRating/TextRating.jsx";
 import {Link} from "react-router-dom";
 import {Forum} from "@mui/icons-material";
 
-const CutReviewItem = () => {
+import { removeHtml } from "../../../utils/removeHtml.js";
+import {getPublicationDate} from "../../../utils/getPublicationDate.js";
+
+const CutReviewItem = ({item}) => {
+
+    const purified_text = removeHtml(item.html_content).slice(0, 155);
+    let text = purified_text;
+    if(purified_text.length === 155) {
+        text = purified_text.slice(0, purified_text.lastIndexOf(' ')).concat('...');
+    }
+
+    const { timeFormatted, dateFormatted } = getPublicationDate(item.createdAt);
+
     return (
         <div className={classes.postContent}>
             <div className={classes.postHeader}>
-                <Avatar src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"/>
+                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
                 <div className={classes.postAuthor}>
-                    <h5>Mahershala Ali</h5>
-                    <span>10 minutes ago, 18 may 2018</span>
+                    <h5>{item.User?.full_name}</h5>
+                    <span>{timeFormatted}, {dateFormatted}</span>
                 </div>
             </div>
             <div className={classes.postText}>
                 <h4>
-                    <TextRating rate={8.8}/>
-                    The best movie ever
+                    <TextRating rate={item.overall_rate}/>
+                    {item.title}
                 </h4>
                 <p>
-                    It is a long established fact that a reader will be distracted by the readable content
-                    of a page when looking at its layout. The point of using Lorem Ipsum is that it has...
-                    <Link className={classes.link}>Read more</Link>
+                    {text}
+                    <Link className={classes.link} to={`/review/${item.id}`}>Read more</Link>
                 </p>
             </div>
         </div>

@@ -76,7 +76,7 @@ const Watchlist = () => {
                     !loading
                     ?
                     <>
-                        <div className={classes.header}>
+                        {/*<div className={classes.header}>
                             <Autocomplete options={genres} onChange={onAutocompleteChange}/>
                             <ToggleFilterButton isFilterExpanded={isFilterExpanded} setFilterExpanded={setFilterExpanded}/>
                         </div>
@@ -99,7 +99,7 @@ const Watchlist = () => {
                                     <FilledInput/>
                                 </div>
                             </div>
-                        </div>
+                        </div>*/}
                         <div className={classes.content}>
                             <h3>Saved titles</h3>
                             <div>

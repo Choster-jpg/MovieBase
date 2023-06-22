@@ -3,18 +3,15 @@ import classes from "./MyReviewItem.module.scss";
 import TextRating from "../../UI/TextRating/TextRating.jsx";
 import {Link, useNavigate} from "react-router-dom";
 
+import { removeHtml } from "../../../utils/removeHtml.js";
+
 const MyReviewItem = ({item}) => {
     const navigate = useNavigate();
 
     let dateObject = new Date(item.Movie.release_date);
     let year = dateObject.getFullYear();
 
-    function removeHtmlTags(str) {
-        let result = str.replace(/<[^>]*>/g, '');
-        return result.replace(/&nbsp;/g, "");
-    }
-
-    let plain_text = removeHtmlTags(item.html_content).slice(0, 74);
+    let plain_text = removeHtml(item.html_content).slice(0, 74);
     if(plain_text.length === 74) plain_text += '...';
 
     const handleItemClick = () => {

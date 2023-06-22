@@ -2,11 +2,13 @@ const express = require('express');
 const {body} = require('express-validator');
 const router = express.Router();
 
+const authMiddleware = require('../middleware/authMiddleware');
+
 const userController = require('../controllers/userController');
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-router.post('/logout', userController.logout);
+router.post('/logout', authMiddleware, userController.logout);
 router.post('/reset', userController.reset);
 router.post('/reset/password', userController.resetPassword);
 
@@ -24,6 +26,8 @@ router.route('/friends')
     .get(userController.getFriends)
     .post(userController.createFriend)
     .delete(userController.removeFriend);
+
+router.get('/friends/check', userController.checkIsInFriendList);
 
 router.get('/friends/like', userController.getFriendsLikedMovie);
 

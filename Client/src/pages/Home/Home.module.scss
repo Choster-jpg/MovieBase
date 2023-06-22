@@ -4,7 +4,7 @@
 .background {
     @include fullscreen-background($primary-dark);
 
-    padding: 90px $padding-default $padding-xl $padding-default;
+    padding: 90px $padding-default $padding-xxl $padding-default;
 
     .searchPanel {
         background-color: transparent;

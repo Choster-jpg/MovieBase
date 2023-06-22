@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {$host} from "../../dataService/index.js";
+import {$host, $authHost} from "../../dataService/index.js";
 
 export const fetchMovieData = createAsyncThunk(
     "moviePage/fetchDataFast",
@@ -103,7 +103,7 @@ export const addToWatchList = createAsyncThunk(
     "moviePage/addToWatchList",
     async({ user_id, movie }, {rejectWithValue}) => {
         try {
-            const { data } = await $host.post(`api/movie/watchlist`, { user_id, movie });
+            const { data } = await $authHost.post(`api/movie/watchlist`, { user_id, movie });
             return data;
         }
         catch(e) {
@@ -116,7 +116,7 @@ export const removeFromWatchList = createAsyncThunk(
     "moviePage/removeFromWatchList",
     async({ user_id, movie_id }, {rejectWithValue}) => {
         try {
-            const { data } = await $host.delete(`api/movie/watchlist`, {
+            const { data } = await $authHost.delete(`api/movie/watchlist`, {
                 params: { user_id, movie_id }
             });
 
@@ -132,7 +132,7 @@ export const addToLikeList = createAsyncThunk(
     "moviePage/addToLikeList",
     async({ user_id, movie }, {rejectWithValue}) => {
         try {
-            const { data } = await $host.post(`api/movie/likelist`, { user_id, movie });
+            const { data } = await $authHost.post(`api/movie/likelist`, { user_id, movie });
             return data;
         }
         catch(e) {
@@ -145,7 +145,7 @@ export const removeFromLikeList = createAsyncThunk(
     "moviePage/removeFromLikeList",
     async({ user_id, movie_id }, {rejectWithValue}) => {
         try {
-            const { data } = await $host.delete(`api/movie/likelist`, {
+            const { data } = await $authHost.delete(`api/movie/likelist`, {
                 params: { user_id, movie_id }
             });
 

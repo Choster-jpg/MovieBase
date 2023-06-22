@@ -5,6 +5,8 @@ export const login_route = '/';
 export const sign_up_route = '/sign_up';
 export const sign_in_route = '/sign_in';
 
+export const user_account_route = '/user/:id';
+
 export const home_route = '/home';
 
 export const browse_route = '/browse';

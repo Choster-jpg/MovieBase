@@ -8,7 +8,7 @@ import Button from "../../UI/Button/Button.jsx";
 import AuthForm from "../AuthForm/AuthForm.jsx";
 import {useForm} from "react-hook-form";
 
-import { login } from '../../../store/slices/userDataSlice.js';
+import { login, resetError } from '../../../store/slices/userDataSlice.js';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast, ToastContainer} from "react-toastify";
@@ -36,7 +36,11 @@ const SignIn = () => {
     }, [user]);
 
     useEffect(() => {
-        console.log(error);
+        if(error) {
+            setTimeout(() => {
+                dispatch(resetError());
+            }, 5000);
+        }
     }, [error]);
 
     return (
@@ -56,6 +60,11 @@ const SignIn = () => {
                            rules={{
                                required: "Password is required."
                            }}/>
+                    <span>
+                        {
+                            error ? <span style={{color: "red", fontFamily: "inherit", fontWeight: "600", marginTop: "20px"}}>Error: {error}</span> : <></>
+                        }
+                    </span>
                     <Button variant="contained" color="primary" sx={{marginTop: 4}} type="submit">
                         {
                             !loading ? "Sign In" : <CircularProgress color='inherit'/>

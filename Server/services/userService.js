@@ -96,7 +96,7 @@ class UserService
         const userDto = new UserDto(user);
         console.log("user dto: ", userDto);
         const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        await tokenService.saveToken(userDto.id, tokens.refreshToken, userDto.email);
 
         return { ...tokens, user: userDto };
     }
@@ -120,14 +120,16 @@ class UserService
             throw ApiError.Unauthorized();
         }
 
-        const user = User.findOne({
+        const user = await User.findOne({
             where: {
                 email: userData.email
             }
         });
+
+
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(userDto._id, tokens.refreshToken);
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
         return { ...tokens, user: userDto };
     }

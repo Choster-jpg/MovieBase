@@ -1,7 +1,7 @@
 import {
     home_route,
     movie_route,
-    login_route, sign_up_route, sign_in_route, review_route, browse_route,
+    login_route, sign_up_route, sign_in_route, review_route, browse_route, user_account_route,
 } from './consts/routes/publicRoutes.js';
 
 import {
@@ -18,6 +18,7 @@ import Watchlist from "./pages/Watchlist/Watchlist.jsx";
 import Browse from "./pages/Browse/Browse.jsx";
 import Account from "./pages/Account/Account.jsx";
 import MyReview from "./pages/MyReview/MyReview.jsx";
+import UserAccount from "./pages/UserAccount/UserAccount.jsx";
 
 
 export const public_routes = [
@@ -49,6 +50,10 @@ export const public_routes = [
         path: browse_route,
         pageComponent: Browse,
     },
+    {
+        path: user_account_route,
+        pageComponent: UserAccount,
+    }
 ]
 
 export const auth_routes = [
