@@ -13,7 +13,7 @@ const BrowseItem = ({index, movie}) => {
     }
 
     return (
-        <div className={classes.listItem} onClick={onItemClick}>
+        <div className={classes.listItem} onClick={onItemClick} key={index}>
             <picture>
                 <source srcSet={movie.image}/>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt={`Browsed movie poster ${index}`}/>

@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const AuthForm = ({content, header, subheader}) => {
     const navigate = useNavigate();
     const onReturnButtonClick = () => {
-        navigate('/login/index');
+        navigate('/');
     }
 
     return (

@@ -4,22 +4,49 @@ import Button from "../../UI/Button/Button.jsx";
 import {ThumbDownOutlined, ThumbUpOutlined} from "@mui/icons-material";
 
 import classes from './ReplyItem.module.scss';
+import {useDispatch, useSelector} from "react-redux";
 
-const ReplyItem = () => {
+import { setReplyItem } from '../../../store/slices/reviewPageSlice.js';
+
+const ReplyItem = ({item}) => {
+    const dispatch = useDispatch();
+    const { data, reply_item, buttons_disabled } = useSelector(state => state.reviewPage);
+
+    const dateObject = new Date(item.createdAt);
+    let hours = dateObject.getHours();
+    let minutes = dateObject.getMinutes();
+    let options = { day: 'numeric', month: 'long', year: 'numeric' };
+
+    const timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const dateFormatted = dateObject.toLocaleDateString('en-US', options);
+
+    const onReplyClick = () => {
+        dispatch(setReplyItem({comment_id: item.CommentId, nickname: item.User?.nickname}));
+    }
+
     return (
         <div className={classes.replyItem}>
             <div className={classes.contentHeader}>
-                <Avatar className={classes.avatar} src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"/>
+                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
                 <div className={classes.contentAuthor}>
-                    <h5>Megan Fox</h5>
-                    <span>12:15, 21 june 2023</span>
+                    <h5>
+                        @{item.User?.nickname}
+                        {
+                            item.User?.nickname === data.User?.nickname
+                            ?
+                            <span style={{marginLeft: "5px"}}>(author)</span>
+                            :
+                            <></>
+                        }
+                    </h5>
+                    <span>{timeFormatted}, {dateFormatted}</span>
                 </div>
             </div>
             <p>
-                Lorem ipsum dolor sit amet, con sec tetur adipiscing elit?
+                {item.text}
             </p>
             <div className={classes.reactions}>
-                <Button type="text" color="secondary">
+                <Button type="text" color="secondary" onClick={onReplyClick} disabled={buttons_disabled}>
                     Reply
                 </Button>
             </div>

@@ -16,6 +16,11 @@ router.get('/movie', reviewController.getMovieReviews);
 router.get('/feed', reviewController.getFeedReviews);
 router.get('/friends', /*authMiddleware,*/ reviewController.getFriendsReviews);
 
-router.get('/user_reaction', authMiddleware, reviewController.getUserReviewReaction)
+router.route('/reaction')
+    .get(/*authMiddleware,*/ reviewController.getReviewReactions)
+    .post(reviewController.createUserReviewReaction)
+    .delete(reviewController.removeUserReviewReaction);
+
+router.get('/reaction/user', reviewController.getUserReviewReaction)
 
 module.exports = router;

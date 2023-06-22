@@ -1,36 +1,58 @@
 import React from 'react';
 import {Avatar} from "@mui/material";
 import Button from "../../UI/Button/Button.jsx";
-import {ThumbDownOutlined, ThumbUpOutlined} from "@mui/icons-material";
 
 import classes from './CommentItem.module.scss';
 import ReplyItem from "../ReplyItem/ReplyItem.jsx";
-import Input from "../../UI/Input/Input.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {setReplyItem} from "../../../store/slices/reviewPageSlice.js";
 
-const CommentItem = () => {
+const CommentItem = ({item, replies}) => {
+    const dispatch = useDispatch();
+    const dateObject = new Date(item.createdAt);
+    let hours = dateObject.getHours();
+    let minutes = dateObject.getMinutes();
+    let options = { day: 'numeric', month: 'long', year: 'numeric' };
+
+    const { data, reply_item, buttons_disabled } = useSelector(state => state.reviewPage);
+
+    const timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const dateFormatted = dateObject.toLocaleDateString('en-US', options);
+
+    const onReplyClick = () => {
+        dispatch(setReplyItem({comment_id: item.id, nickname: item.User?.nickname}));
+    }
+
     return (
         <div className={classes.commentItem}>
             <div className={classes.contentHeader}>
-                <Avatar src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"/>
+                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
                 <div className={classes.contentAuthor}>
-                    <h5>Megan Fox</h5>
-                    <span>12:15, 21 june 2023</span>
+                    <h5>
+                        @{item.User?.nickname}
+                        {
+                            item.User?.nickname === data.User?.nickname
+                            ?
+                            <span style={{marginLeft: "5px"}}>(author)</span>
+                            :
+                            <></>
+                        }
+                    </h5>
+                    <span>{timeFormatted}, {dateFormatted}</span>
                 </div>
             </div>
             <p>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua? Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat?
+                {item.text}
             </p>
             <div className={classes.commentReactions}>
-                <Button type="text" color="secondary">
+                <Button type="text" color="secondary" onClick={onReplyClick} disabled={buttons_disabled}>
                     Reply
                 </Button>
             </div>
             <div className={classes.replySection}>
-                <ReplyItem/>
-                <ReplyItem/>
+                {
+                    replies.map(item => <ReplyItem item={item}/>)
+                }
             </div>
         </div>
     );

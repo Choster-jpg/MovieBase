@@ -15,7 +15,8 @@ const RateSlider = ({value, setValue, disabled = false}) => {
     if(value > 8) fillColor = masterpiece;
 
     return (
-        <Slider value={value} onChange={(e) => setValue(e.target.value)} marks
+        <Slider value={value} onChange={(e) => setValue(e.target.value)}
+                marks
                 disabled={disabled} step={1} max={10} min={1} sx={{
             width: "200px",
             '& .MuiSlider-thumb': {

@@ -1,76 +1,176 @@
 import React, {useEffect} from 'react';
 import classes from "./Review.module.scss";
-import {Avatar, IconButton} from "@mui/material";
+import {Avatar, CircularProgress, IconButton } from "@mui/material";
 
 import {
-    AutoStories,
-    Forum,
-    Movie,
-    Photo, Send,
+    HomeRounded,
+    Send,
     ThumbDown,
     ThumbDownOutlined,
     ThumbUp,
-    ThumbUpOutlined
+    ThumbUpOutlined, West
 } from "@mui/icons-material";
 
 import Button from "../../components/UI/Button/Button.jsx";
 import CommentItem from "../../components/items/CommentItem/CommentItem.jsx";
 import Input from "../../components/UI/Input/Input.jsx";
 import RateSlider from "../../components/UI/RateSlider/RateSlider.jsx";
-import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useParams} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
-import { fetchReviewData } from '../../store/slices/reviewPageSlice.js';
+import { fetchReviewData, fetchCommentReplies, fetchUserReaction,
+    fetchReviewComments, fetchReviewReactions,
+    resetReplies, setReplyItem, setInputText,
+    likeReview, dislikeReview, clearReaction,
+    createComment, createReply, resetNeedFetch } from '../../store/slices/reviewPageSlice.js';
+
+import FilledInput from "../../components/UI/FilledInput/FilledInput.jsx";
 
 const Review = () => {
-    const dispatch = useDispatch();
-    const { error, loading, data } = useSelector(state => state.reviewPage);
+    const navigate = useNavigate();
     const { id } = useParams();
+    const dispatch = useDispatch();
+
+    const { user } = useSelector(state => state.userData);
+
+    const { error, loading, data, comments, replies, need_fetch,
+            user_reaction, input_text, buttons_disabled, reply_item} = useSelector(state => state.reviewPage);
 
     useEffect(() => {
-        dispatch(fetchReviewData({review_id: id}));
-    }, []);
+        dispatch(resetReplies());
+        dispatch(fetchReviewData({ review_id: id }));
+        dispatch(fetchReviewReactions({ review_id: id }));
+        dispatch(fetchReviewComments({ review_id: id }));
 
-    const dateObject = new Date(data.createdAt);
-    let hours = dateObject.getHours();
-    let minutes = dateObject.getMinutes();
-    let timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        if(user) {
+            console.log("user na meste")
+            dispatch(fetchUserReaction({user_id: user.id, review_id: id}));
+        }
+    }, [dispatch]);
 
-    let options = { day: 'numeric', month: 'long', year: 'numeric' };
-    let dateFormatted = dateObject.toLocaleDateString('en-US', options);
+    useEffect(() => {
+        if(comments.length !== 0) {
+            comments.forEach(item => {
+                dispatch(fetchCommentReplies({comment_id: item.id}));
+            })
+        }
+    }, [comments])
+
+    const getCommentReplies = (id) => {
+        return replies.filter(item => item.CommentId === id);
+    }
+
+    const likeClick = () => {
+        if(user) {
+            if(user_reaction === 'like') {
+                dispatch(clearReaction({user_id: user.id, review_id: data.id}));
+            }
+            else {
+                dispatch(likeReview({user_id: user.id, review_id: data.id, reaction_type: "like"}));
+            }
+        }
+    }
+
+    const dislikeClick = () => {
+        if(user) {
+            if(user_reaction === 'dislike') {
+                dispatch(clearReaction({user_id: user.id, review_id: data.id}));
+            }
+            else {
+                dispatch(dislikeReview({user_id: user.id, review_id: data.id, reaction_type: "dislike"}));
+            }
+        }
+    }
+
+    useEffect(() => {
+        dispatch(fetchReviewReactions({ review_id: id }));
+    }, [user_reaction]);
+
+    const onButtonSendClick = () => {
+        if(user) {
+            if(!reply_item) {
+                dispatch(createComment({user_id: user.id, review_id: data.id, text: input_text}));
+            }
+            else {
+                dispatch(createReply({user_id: user.id, comment_id: reply_item.comment_id, text: input_text}));
+            }
+        }
+    }
+
+    useEffect(() => {
+        if(need_fetch) {
+            dispatch(fetchReviewComments({ review_id: id }));
+            dispatch(resetNeedFetch());
+        }
+    }, [need_fetch])
 
     return (
         <>
             {
-                data
+                user
                 ?
-                <>
+                <div className={classes.inputBarContainer}>
+                    {
+                        reply_item
+                        ?
+                        <>
+                            <span>
+                                <mark onClick={() => dispatch(setReplyItem(null))}>
+                                    Cancel
+                                </mark>
+                            </span>
+                            <span>Reply to user <b>@{reply_item.nickname}:</b></span>
+                        </>
+                        :
+                        <></>
+                    }
                     <div className={classes.postActionInput}>
                         <div>
-                            <Input type="text" isValidationRequired={false} label="Your comment..." isMultiline={true}/>
+                            <FilledInput multiline={true} placeholder="Type comment here.." value={input_text}
+                                         onChange={(e) => dispatch(setInputText(e.target.value))}/>
                         </div>
-                        <IconButton>
+                        <IconButton onClick={onButtonSendClick} disabled={buttons_disabled}>
                             <Send className={classes.icon}/>
                         </IconButton>
                     </div>
-                    <div className={classes.background}>
+                </div>
+                :
+                <></>
+            }
+            <div className={classes.background}>
+                {
+                    !loading
+                    ?
+                    <>
+                        <div className={classes.controlButtons}>
+                            <IconButton className={classes.iconButton}
+                                        onClick={() => navigate(-1)}>
+                                <West/>
+                            </IconButton>
+                            <IconButton className={classes.iconButton}
+                                        onClick={() => navigate('/browse')}>
+                                <HomeRounded/>
+                            </IconButton>
+                        </div>
                         <section className={classes.header}>
                             <div className={classes.headerContent}>
-                                <picture>
-                                    <source srcSet={data.Movie.poster}/>
-                                    <img className={classes.image} src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt={`Review movie poster`}/>
-                                </picture>
+                                <Link to={`/movies/${data.Movie?.imdb_link}`}>
+                                    <picture>
+                                        <source srcSet={data.Movie?.poster}/>
+                                        <img className={classes.image} src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt={`Review movie poster`}/>
+                                    </picture>
+                                </Link>
                                 <div className={classes.content}>
                                     <div className={classes.contentHeader}>
-                                        <Avatar src={`http://localhost:5000/${data.User.image}`}/>
+                                        <Avatar src={`http://localhost:5000/${data.User?.image}`}/>
                                         <div className={classes.contentAuthor}>
-                                            <h5>{data.User.full_name}</h5>
-                                            <span>{`${timeFormatted}, ${dateFormatted}`}</span>
+                                            <h5>{data.User?.full_name}</h5>
+                                            <span>{`${data.timeFormatted}, ${data.dateFormatted}`}</span>
                                         </div>
                                     </div>
                                     <h3>
-                                        { data.Movie.title }
-                                        <span>({new Date(data.Movie.release_date).getFullYear()})</span>
+                                        { data.Movie?.title }
+                                        <span>({new Date(data.Movie?.release_date).getFullYear()})</span>
                                     </h3>
                                     <h4>
                                         { data.title }
@@ -133,25 +233,39 @@ const Review = () => {
                                 </div>
                             </div>
                             <div className={classes.contentReactions}>
-                                <Button endIcon={<ThumbUpOutlined className={classes.icon}/>} type="text" color="secondary">
-                                    11,4K
+                                <Button onClick={likeClick}
+                                        endIcon={
+                                        user_reaction !== "like"
+                                            ?
+                                            <ThumbUpOutlined className={classes.icon}/>
+                                            :
+                                            <ThumbUp className={classes.icon}/>}
+                                        type="text" color="secondary" disabled={buttons_disabled}>
+                                    {data.likes}
                                 </Button>
-                                <Button endIcon={<ThumbDownOutlined className={classes.icon}/>} type="text" color="secondary">
-                                    240
+                                <Button onClick={dislikeClick}
+                                        endIcon={
+                                        user_reaction !== "dislike"
+                                            ?
+                                            <ThumbDownOutlined className={classes.icon}/>
+                                            :
+                                            <ThumbDown className={classes.icon}/>}
+                                        type="text" color="secondary" disabled={buttons_disabled}>
+                                    {data.dislikes}
                                 </Button>
                             </div>
                         </section>
                         <section className={classes.commentSection}>
                             <h3>Discussion</h3>
-                            <CommentItem/>
-                            <CommentItem/>
-                            <CommentItem/>
+                            {
+                                comments.map(item => <CommentItem item={item} replies={getCommentReplies(item.id)}/>)
+                            }
                         </section>
-                    </div>
-                </>
-                :
-                <span>Review not found</span>
-            }
+                    </>
+                    :
+                    <CircularProgress color="inherit"/>
+                }
+            </div>
         </>
     );
 };

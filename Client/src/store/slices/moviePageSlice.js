@@ -53,10 +53,10 @@ export const getIsInWatchList = createAsyncThunk(
 
 export const fetchFriendsThatLiked = createAsyncThunk(
     "moviePage/fetchFriendsThatLiked",
-    async({ user_id }, {rejectWithValue}) => {
+    async({ user_id, movie_id }, {rejectWithValue}) => {
         try {
             const { data } = await $host.get(`api/user/friends/like`, {
-                params: { user_id }
+                params: { user_id, movie_id }
             });
 
             return data;
@@ -69,10 +69,10 @@ export const fetchFriendsThatLiked = createAsyncThunk(
 
 export const fetchAudienceScore = createAsyncThunk(
     "moviePage/fetchAudienceScore",
-    async({ imdb_link }, {rejectWithValue}) => {
+    async({ movie_id }, {rejectWithValue}) => {
         try {
             const { data } = await $host.get(`api/movie/info/score`, {
-                params: { imdb_link }
+                params: { movie_id }
             });
 
             return data;
@@ -87,15 +87,75 @@ export const fetchMovieReviews = createAsyncThunk(
     "moviePage/fetchMovieReviews",
     async({ movie_id }, {rejectWithValue}) => {
         try {
-            const { data } = await $host.get(`api/movie/info/score`, {
-                params: { imdb_link }
+            const { data } = await $host.get(`api/review/movie`, {
+                params: { movie_id }
             });
+
+            return data;
         }
         catch(e) {
             rejectWithValue(e.response.data);
         }
     }
-)
+);
+
+export const addToWatchList = createAsyncThunk(
+    "moviePage/addToWatchList",
+    async({ user_id, movie }, {rejectWithValue}) => {
+        try {
+            const { data } = await $host.post(`api/movie/watchlist`, { user_id, movie });
+            return data;
+        }
+        catch(e) {
+            rejectWithValue(e.response.data);
+        }
+    }
+);
+
+export const removeFromWatchList = createAsyncThunk(
+    "moviePage/removeFromWatchList",
+    async({ user_id, movie_id }, {rejectWithValue}) => {
+        try {
+            const { data } = await $host.delete(`api/movie/watchlist`, {
+                params: { user_id, movie_id }
+            });
+
+            return data;
+        }
+        catch(e) {
+            rejectWithValue(e.response.data);
+        }
+    }
+);
+
+export const addToLikeList = createAsyncThunk(
+    "moviePage/addToLikeList",
+    async({ user_id, movie }, {rejectWithValue}) => {
+        try {
+            const { data } = await $host.post(`api/movie/likelist`, { user_id, movie });
+            return data;
+        }
+        catch(e) {
+            rejectWithValue(e.response.data);
+        }
+    }
+);
+
+export const removeFromLikeList = createAsyncThunk(
+    "moviePage/removeFromLikeList",
+    async({ user_id, movie_id }, {rejectWithValue}) => {
+        try {
+            const { data } = await $host.delete(`api/movie/likelist`, {
+                params: { user_id, movie_id }
+            });
+
+            return data;
+        }
+        catch(e) {
+            rejectWithValue(e.response.data);
+        }
+    }
+);
 
 
 const initialState = {
@@ -108,17 +168,17 @@ const initialState = {
     friendsList: [],
     audienceScore: 0,
     reviews: [],
+    buttons_disabled: false,
 };
 
 const moviePageSlice = createSlice({
     name: "moviePage",
     initialState,
     reducers: {
-        setIsInLikeList: (state, { payload }) => {
-            state.isInLikeList = payload.value;
-        },
-        setIsInWatchList: (state, { payload }) => {
-            state.isInWatchList = payload.value;
+        resetPage: (state) => {
+            state.friendsList = [];
+            state.isInWatchList = false;
+            state.isInLikeList = false;
         }
     },
     extraReducers: {
@@ -136,7 +196,7 @@ const moviePageSlice = createSlice({
 
 
         [getIsInLikeList.fulfilled]: (state, action) => {
-            state.isInLikeList = action.payload;
+            state.isInLikeList = action.payload !== false;
         },
         [getIsInLikeList.rejected]: (state, action) => {
             state.error += action.payload.message;
@@ -144,7 +204,7 @@ const moviePageSlice = createSlice({
 
 
         [getIsInWatchList.fulfilled]: (state, action) => {
-            state.isInWatchList = action.payload;
+            state.isInWatchList = action.payload !== false;
         },
         [getIsInWatchList.rejected]: (state, action) => {
             state.error += action.payload.message;
@@ -162,9 +222,54 @@ const moviePageSlice = createSlice({
             state.loading_reviews = false;
             state.error += action.payload.message;
         },
+
+
+        [fetchAudienceScore.fulfilled]: (state, action) => {
+            state.audienceScore = Math.round(action.payload.avg_rating * 10);
+        },
+
+
+        [fetchFriendsThatLiked.fulfilled]: (state, action) => {
+            state.friendsList = action.payload;
+        },
+
+        [addToWatchList.pending]: (state, action) => {
+            state.buttons_disabled = true;
+        },
+        [addToWatchList.fulfilled]: (state, action) => {
+            state.isInWatchList = true;
+            state.buttons_disabled = false;
+        },
+
+        [removeFromWatchList.pending]: (state, action) => {
+            state.buttons_disabled = true;
+        },
+        [removeFromWatchList.fulfilled]: (state, action) => {
+            state.isInWatchList = false;
+            state.buttons_disabled = false;
+        },
+
+
+        [addToLikeList.pending]: (state, action) => {
+            state.buttons_disabled = true;
+        },
+        [addToLikeList.fulfilled]: (state, action) => {
+            console.log("added");
+            state.isInLikeList = true;
+            state.buttons_disabled = false;
+        },
+
+        [removeFromLikeList.pending]: (state, action) => {
+            state.buttons_disabled = true;
+        },
+        [removeFromLikeList.fulfilled]: (state, action) => {
+            console.log("removed");
+            state.isInLikeList = false;
+            state.buttons_disabled = false;
+        },
     }
 });
 
-export const { setIsInLikeList, setIsInWatchList } = moviePageSlice.actions;
+export const { resetPage } = moviePageSlice.actions;
 
 export default moviePageSlice.reducer;

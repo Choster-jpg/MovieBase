@@ -1,15 +1,18 @@
 const sequelize = require('../database/database');
 const { Comment, Reply, User } = require('../models/models').Models(sequelize);
 
+const ApiError = require('../error/apiError');
+
 class CommentController {
     async createComment(req, res, next) {
         try {
-            const { user_id, text } = req.body;
-            const comment = await Comment.create({UserId: user_id, text});
+            const { user_id, review_id, text } = req.body;
+            const comment = await Comment.create({UserId: user_id, ReviewId: review_id, text});
             return res.json(comment);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -22,7 +25,8 @@ class CommentController {
             return res.json(comment);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -35,7 +39,8 @@ class CommentController {
             return res.json(comment);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -48,13 +53,14 @@ class CommentController {
                     is_deleted: false,
                 },
                 include: {
-                    model: User, attributes: ["image", "full_name"]
+                    model: User, attributes: ["image", "nickname"]
                 }
             });
             return res.json(comments);
         }
         catch (e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -65,7 +71,8 @@ class CommentController {
             return res.json(reply);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -78,7 +85,8 @@ class CommentController {
             return res.json(reply);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -91,26 +99,28 @@ class CommentController {
             return res.json(reply);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
     async getReplies(req, res, next) {
         try {
             const { comment_id } = req.query;
-            const replies = await Comment.findAll({
+            const replies = await Reply.findAll({
                 where: {
                     CommentId: comment_id,
                     is_deleted: false,
                 },
                 include: {
-                    model: User, attributes: ["image", "full_name"]
+                    model: User, attributes: ["image", "nickname"]
                 }
             });
             return res.json(replies);
         }
         catch (e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 }

@@ -6,6 +6,20 @@
     @include fullscreen-background($primary-dark);
     padding: $padding-default;
 
+    .controlButtons {
+        @include d-flex(space-between);
+        margin-bottom: $margin-default;
+
+        @include md {
+            display: none;
+        }
+
+        .iconButton {
+            margin: 0;
+            color: $primary-white;
+        }
+    }
+
     .accordionsContainer {
         margin-top: $margin-sm;
 

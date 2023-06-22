@@ -20,7 +20,7 @@ const Header = ({title}) => {
     }
 
     const handleSignInClick = () => {
-        navigate('/login/sign_in');
+        navigate('/sign_in');
     }
 
     const scrollDirection = useScrollDirection();

@@ -54,12 +54,8 @@ const PostItem = ({item}) => {
                     </h4>
                     <p>
                         {plain_text}
-                        <Link className={classes.link}>Read more</Link>
+                        <Link className={classes.link} to={`/review/${item.id}`}>Read more</Link>
                     </p>
-                    <div className={classes.comments}>
-                        <span>56</span>
-                        <Forum className={classes.icon}/>
-                    </div>
                 </div>
             </div>
         </div>

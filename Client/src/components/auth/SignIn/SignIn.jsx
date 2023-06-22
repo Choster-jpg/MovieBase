@@ -68,7 +68,7 @@ const SignIn = () => {
                         Sign in with google
                     </Button>*/}
                     <div className={classes.linkContainer}>
-                        <Link className={classes.link} href="/login/sign_up" underline="none">Don't have an account?</Link>
+                        <Link className={classes.link} href="/sign_up" underline="none">Don't have an account?</Link>
                     </div>
                 </form>
             } backIcon={<East/>} header={"Welcome back!"} subheader={"Continue your adventure."}/>

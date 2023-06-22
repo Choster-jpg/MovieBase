@@ -1,23 +1,28 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import classes from "./MyReviewItem.module.scss";
 import TextRating from "../../UI/TextRating/TextRating.jsx";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const MyReviewItem = ({item}) => {
-
+    const navigate = useNavigate();
 
     let dateObject = new Date(item.Movie.release_date);
     let year = dateObject.getFullYear();
 
     function removeHtmlTags(str) {
-        return str.replace(/<[^>]*>/g, '');
+        let result = str.replace(/<[^>]*>/g, '');
+        return result.replace(/&nbsp;/g, "");
     }
 
     let plain_text = removeHtmlTags(item.html_content).slice(0, 74);
     if(plain_text.length === 74) plain_text += '...';
 
+    const handleItemClick = () => {
+        navigate(`/review/${item.id}`);
+    }
+
     return (
-        <div className={classes.myReviewItem}>
+        <div className={classes.myReviewItem} onClick={handleItemClick}>
             <picture>
                 <source srcSet={item.Movie.poster}/>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt={`Movie poster`}/>

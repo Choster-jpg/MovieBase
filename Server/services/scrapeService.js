@@ -88,6 +88,7 @@ class ScrapeService {
             plot: $1(imdbSelectors.plot).text(),
             director: $1(imdbSelectors.director).text(),
             poster,
+            imdb_link: imdb,
             release_date: $1(imdbSelectors.releaseDateSection).find(imdbSelectors.releaseDateLink).text(),
             budget: $1(imdbSelectors.budget).text(),
             gross: $1(imdbSelectors.gross).text(),

@@ -7,6 +7,7 @@ import userDataReducer from "./slices/userDataSlice.js";
 import navbarStateReducer from "./slices/navbarStateSlice.js";
 import accountPageReducer from "./slices/accountPageSlice.js";
 import reviewPageReducer from "./slices/reviewPageSlice.js";
+import watchlistPageReducer from "./slices/watchlistPageSlice.js";
 
 export default configureStore({
     reducer: {
@@ -17,5 +18,6 @@ export default configureStore({
         navbarState: navbarStateReducer,
         accountPage: accountPageReducer,
         reviewPage: reviewPageReducer,
+        watchlistPage: watchlistPageReducer,
     }
 });

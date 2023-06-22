@@ -24,10 +24,6 @@
         }
     }
 
-    .avatar {
-        height: auto;
-        width: 30px;
-    }
 
     .reactions {
         @include d-flex(start);

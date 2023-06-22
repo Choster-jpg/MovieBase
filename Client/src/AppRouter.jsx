@@ -16,7 +16,7 @@ function AppRouter() {
                 auth_routes.map((route) => {
                     return <Route key={new Date()} path={route.path}
                                 element={
-                                    user ? <route.pageComponent/> : <Navigate to="/login/index"/>
+                                    user ? <route.pageComponent/> : <Navigate to="/"/>
                                 }/>
                 })
             }

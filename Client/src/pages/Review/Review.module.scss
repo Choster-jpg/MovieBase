@@ -1,29 +1,58 @@
 @use "../../styles/abstracts/variables" as *;
 @use "../../styles/abstracts/mixins" as *;
 
-.postActionInput {
+.controlButtons {
     @include d-flex(space-between);
+    margin-bottom: $margin-default;
+
+    @include md {
+        display: none;
+    }
+
+    .iconButton {
+        margin: 0;
+        color: $primary-white;
+    }
+}
+
+.inputBarContainer {
     padding-left: $padding-default;
     padding-top: $padding-xxs;
     padding-right: $padding-default;
-
-    > div {
-        width: 300px;
-        position: relative;
-
-        textarea {
-            color: $primary-dark;
-            font-weight: 500;
-        }
-    }
-
     z-index: 10;
     position: fixed;
     bottom: 0;
     width: 100%;
     min-height: 60px;
-    background: $primary-white;
+    background: $primary-dark-hover;
     border-radius: $border-radius-xs $border-radius-xs 0 0;
+
+    > span {
+        font-size: 0.8em;
+        color: $primary-white;
+        margin-left: 12px;
+
+        mark {
+            background: transparent;
+            font-weight: 600;
+            color: $highlight-yellow;
+            cursor: pointer;
+        }
+    }
+
+    .postActionInput {
+        @include d-flex(space-between);
+
+        > div {
+            width: 300px;
+            position: relative;
+
+            textarea {
+                //color: $primary-dark;
+                font-weight: 500;
+            }
+        }
+    }
 }
 
 .background {
@@ -162,6 +191,12 @@
             .icon {
                 width: 20px;
                 height: auto;
+            }
+
+            .iconPressed {
+                width: 20px;
+                height: auto;
+                color: $highlight-yellow;
             }
         }
     }

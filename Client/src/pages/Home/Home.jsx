@@ -19,7 +19,7 @@ import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {useDispatch, useSelector} from "react-redux";
 import { fetchFeed, fetchFriends,
-         setPageFriends, setPageFeed } from '../../store/slices/homePageSlice.js';
+         setPageFriends, setPageFeed, resetPosts } from '../../store/slices/homePageSlice.js';
 
 const Home = () => {
     const sortOptions = ["Newest", "Most popular"];
@@ -27,8 +27,7 @@ const Home = () => {
     const [openedTab, setOpenedTab] = useState("Popular");
 
     const { user } = useSelector(state => state.userData);
-    const { loading, error, feedPosts, friendsPosts,
-            pageFeed, pageFriends, limit, hasMoreFeed, hasMoreFriends } = useSelector(state => state.homePage);
+    const { loading, error, posts, page, limit, hasMore } = useSelector(state => state.homePage);
     const dispatch = useDispatch();
 
     /*useEffect(() => {
@@ -55,26 +54,24 @@ const Home = () => {
     };
 
     useEffect(() => {
-        console.log('tab changed');
+        dispatch(resetPosts());
         if(openedTab === "Popular") {
-            dispatch(fetchFeed({ filter: sortOption, limit, page: pageFeed}));
-            dispatch(setPageFeed({ value: 2 }));
+
+            dispatch(fetchFeed({ filter: sortOption, limit, page: page}));
         }
         else {
-            dispatch(fetchFriends({ filter: sortOption, limit, page: pageFriends, user_id: user.id}));
-            dispatch(setPageFriends({ value: 2 }));
+            dispatch(fetchFriends({ filter: sortOption, limit, page: page, user_id: user.id}));
         }
     }, [openedTab]);
 
     const fetchMoreFeed = () => {
-        console.log("Fetched more feed");
-        dispatch(fetchFeed({ filter: sortOption, limit, page: pageFeed}));
-        dispatch(setPageFeed({ value: pageFeed + 1 }));
+        dispatch(fetchFeed({ filter: sortOption, limit, page: page}));
+        dispatch(setPageFeed({ value: page + 1 }));
     }
 
     const fetchMoreFriends = () => {
-        dispatch(fetchFriends({ filter: sortOption, limit, page: pageFriends, user_id: user.id}));
-        dispatch(setPageFriends({ value: pageFriends + 1 }));
+        dispatch(fetchFriends({ filter: sortOption, limit, page: page, user_id: user.id}));
+        dispatch(setPageFriends({ value: page + 1 }));
     }
 
     return (
@@ -116,29 +113,29 @@ const Home = () => {
                 <CustomTabs setOpenedTab={setOpenedTab} tabHeaders={ user === null ? ["Popular"] : ["Popular", "Friends"]} tabPanels={[
                     <div className={classes.postsContainer}>
                         <InfiniteScroll next={fetchMoreFeed}
-                                        hasMore={hasMoreFeed}
+                                        hasMore={hasMore}
                                         loader={
                                             <div className={classes.loaderContainer}>
                                                 <CircularProgress color="inherit"/>
                                             </div>
                                         }
-                                        dataLength={feedPosts.length}>
+                                        dataLength={posts.length}>
                             {
-                                feedPosts.map(item => <PostItem item={item}/>)
+                                posts.map(item => <PostItem item={item}/>)
                             }
                         </InfiniteScroll>
                     </div>,
                     <div className={classes.postsContainer}>
                         <InfiniteScroll next={fetchMoreFriends}
-                                        hasMore={hasMoreFriends}
+                                        hasMore={hasMore}
                                         loader={
                                             <div className={classes.loaderContainer}>
                                                 <CircularProgress color="inherit"/>
                                             </div>
                                         }
-                                        dataLength={friendsPosts.length}>
+                                        dataLength={posts.length}>
                             {
-                                friendsPosts.map(item => <PostItem item={item}/>)
+                                posts.map(item => <PostItem item={item}/>)
                             }
                         </InfiniteScroll>
                     </div>

@@ -15,7 +15,7 @@ const Welcome = () => {
     const dispatch = useDispatch();
 
     const handleSignInClick = () => {
-        navigate('/login/sign_in');
+        navigate('/sign_in');
     }
 
     const handleWithoutLoginClick = () => {
@@ -45,7 +45,7 @@ const Welcome = () => {
                     </Button>
                 </div>
                 <div className={classes.textButton}>
-                    <Link className={classes.textButton__link} underline="none" href="/login/sign_up" >
+                    <Link className={classes.textButton__link} underline="none" href="/sign_up" >
                         Or Create Account
                         <ArrowRightAlt className={classes.textButton__icon}/>
                     </Link>

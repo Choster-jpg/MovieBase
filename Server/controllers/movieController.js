@@ -37,6 +37,7 @@ class MovieController {
             return res.json(result);
         }
         catch (e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
@@ -62,6 +63,7 @@ class MovieController {
             return res.json(result);
         }
         catch (e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
@@ -83,28 +85,31 @@ class MovieController {
         try {
             const { user_id, movie } = req.body;
 
+            let candidate;
+
             if(!movie.id)
             {
-                const candidate = await Movie.findOne({
+                candidate = await Movie.findOne({
                     where: {
-                        imdb_link: movie.imdb_page
+                        imdb_link: movie.imdb_link
                     }
                 })
 
                 if(!candidate) await movieService.createMovie(movie);
             }
 
-            const result = await Watchlist.create({UserId: user_id, MovieId: movie.id})
+            const result = await Watchlist.create({UserId: user_id, MovieId: movie.id || candidate.id})
             return res.json(result);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
 
     async removeFromWatchlist(req, res, next) {
         try {
-            const { user_id, movie_id } = req.body;
+            const { user_id, movie_id } = req.query;
             const result = await Watchlist.destroy({
                 where: { UserId: user_id, MovieId: movie_id }
             });
@@ -112,20 +117,22 @@ class MovieController {
             return res.json(result);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
 
     async isInWatchList(req, res, next) {
         try {
-            const { user_id, movie_id } = req.body;
+            const { user_id, movie_id } = req.query;
             const result = await Watchlist.findOne({
                 where: { UserId: user_id, MovieId: movie_id }
             });
 
-            return res.json(result || null);
+            return res.json(result || false);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
@@ -134,28 +141,31 @@ class MovieController {
         try {
             const { user_id, movie } = req.body
 
+            let candidate;
             if(!movie.id)
             {
-                const candidate = await Movie.findOne({
+                candidate = await Movie.findOne({
                     where: {
-                        imdb_link: movie.imdb_page
+                        imdb_link: movie.imdb_link
                     }
                 })
 
-                if(!candidate) await movieService.createMovie(movie);
+                if(!candidate)
+                    candidate = await movieService.createMovie(movie);
             }
 
-            const result = await LikeList.create({UserId: user_id, MovieId: movie.id})
+            const result = await LikeList.create({UserId: user_id, MovieId: movie.id || candidate.id});
             return res.json(result);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
 
     async removeFromLikeList(req, res, next) {
         try {
-            const { user_id, movie_id } = req.body;
+            const { user_id, movie_id } = req.query;
             const result = await LikeList.destroy({
                 where: { UserId: user_id, MovieId: movie_id }
             });
@@ -163,20 +173,22 @@ class MovieController {
             return res.json(result);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
 
     async isInLikeList(req, res, next) {
         try {
-            const { user_id, movie_id } = req.body;
+            const { user_id, movie_id } = req.query;
             const result = await LikeList.findOne({
                 where: { UserId: user_id, MovieId: movie_id }
             });
 
-            return res.json(result || null);
+            return res.json(result || false);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
@@ -195,6 +207,7 @@ class MovieController {
             return res.json(movies);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
@@ -226,24 +239,23 @@ class MovieController {
             return res.json(decodedValues);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }
 
     async getMovieAudienceScore(req, res, next) {
         try {
-            const { imdb_link } = req.query;
-            const id = await movieService.isFilmExistsInDatabase(imdb_link);
-            if(id) {
-                return await Review.findAll({
-                    attributes: [[Sequelize.fn('AVG', Sequelize.col('overall_rate')), 'avg_rating']],
-                    where: {id},
-                });
-            }
+            const { movie_id } = req.query;
+            const data = await Review.findAll({
+                attributes: [[Sequelize.fn('AVG', Sequelize.cast(Sequelize.col('overall_rate'), 'DECIMAL')), 'avg_rating']],
+                where: { MovieId: movie_id },
+            });
 
-            return null;
+            return res.json(data[0]);
         }
         catch(e) {
+            console.log(e);
             next(ApiError.Internal(e.message));
         }
     }

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import classes from './MyReview.module.scss';
 import {Editor} from "@tinymce/tinymce-react";
-import {AutoStories, ExpandMore, Movie, Photo} from "@mui/icons-material";
-import {Accordion, AccordionDetails, AccordionSummary, Divider, Slider} from "@mui/material";
+import {AutoStories, ExpandMore, HomeRounded, Movie, Photo, West} from "@mui/icons-material";
+import {Accordion, AccordionDetails, AccordionSummary, Divider, IconButton, Slider} from "@mui/material";
 import FilledInput from "../../components/UI/FilledInput/FilledInput.jsx";
 import Button from "../../components/UI/Button/Button.jsx";
 import RateSlider from "../../components/UI/RateSlider/RateSlider.jsx";
@@ -88,6 +88,16 @@ const MyReview = () => {
 
     return (
         <div className={classes.background}>
+            <div className={classes.controlButtons}>
+                <IconButton className={classes.iconButton}
+                            onClick={() => navigate(-1)}>
+                    <West/>
+                </IconButton>
+                <IconButton className={classes.iconButton}
+                            onClick={() => navigate('/browse')}>
+                    <HomeRounded/>
+                </IconButton>
+            </div>
             <h2>Your review</h2>
             <h3>{movie.title}</h3>
             <span>{movie.year}</span>

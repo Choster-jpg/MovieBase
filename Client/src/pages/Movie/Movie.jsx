@@ -5,7 +5,7 @@ import {
     BookmarkAdded,
     BookmarkAddOutlined,
     Favorite,
-    FavoriteBorder, KeyboardArrowDown, KeyboardArrowUp, Share, West
+    FavoriteBorder, HomeRounded, KeyboardArrowDown, KeyboardArrowUp, Share, West
 } from "@mui/icons-material";
 
 import {Avatar, AvatarGroup, CircularProgress, IconButton} from "@mui/material";
@@ -20,12 +20,19 @@ import CutReviewItem from "../../components/items/CutReviewItem/CutReviewItem.js
 import CustomTabs from "../../components/UI/CustomTabList/CustomTabs.jsx";
 import {useDispatch, useSelector} from "react-redux";
 
-import {fetchMovieData,
-        getIsInLikeList,
-        getIsInWatchList,
-        fetchFriendsThatLiked,
-        fetchAudienceScore } from "../../store/slices/moviePageSlice.js";
-import { setIsInLikeList, setIsInWatchList } from '../../store/slices/moviePageSlice.js';
+import {
+    fetchMovieData,
+    getIsInLikeList,
+    getIsInWatchList,
+    fetchFriendsThatLiked,
+    fetchAudienceScore,
+    addToWatchList,
+    removeFromWatchList,
+    addToLikeList,
+    removeFromLikeList,
+    fetchMovieReviews
+} from "../../store/slices/moviePageSlice.js";
+import { resetPage } from '../../store/slices/moviePageSlice.js';
 
 const Movie = () => {
     const navigate = useNavigate();
@@ -35,30 +42,52 @@ const Movie = () => {
     const dispatch = useDispatch();
     const { loading, loading_slow, error,
             movie, isInLikeList, isInWatchList,
-            friendsList, audienceScore } = useSelector(state => state.moviePage);
+            friendsList, audienceScore, buttons_disabled } = useSelector(state => state.moviePage);
+
+    const { user } = useSelector(state => state.userData);
 
     let title = location?.state?.title;
     if (!title) title = movie.title;
 
-    const addToFav = () => {
-        dispatch(setIsInLikeList({ value: !isInLikeList }));
+    const onLikelistClick = () => {
+        if(user) {
+            if(isInLikeList) {
+                dispatch(removeFromLikeList({ user_id: user.id, movie_id: movie.id }));
+            }
+            else {
+                dispatch(addToLikeList({ user_id: user.id, movie: {...movie, title} }));
+            }
+        }
     }
 
-    const addToWatchLater = () => {
-        dispatch(setIsInWatchList({ value: !isInWatchList }));
+    const onWatchlistClick = () => {
+        if(user) {
+            if(isInWatchList) {
+                dispatch(removeFromWatchList({ user_id: user.id, movie_id: movie.id }));
+            }
+            else {
+                dispatch(addToWatchList({ user_id: user.id, movie: {...movie, title} }));
+            }
+        }
     }
 
     useEffect(() => {
+        console.log('Refrshed');
         dispatch(fetchMovieData({title, year, imdb_link: id}));
     }, []);
 
     useEffect(() => {
-        if(movie.id)
-        {
-            dispatch(fetchFriendsThatLiked({user_id: 1}));
-            dispatch(fetchAudienceScore({imdb_link: id}));
-            dispatch(getIsInWatchList({ movie_id: movie.id, user_id: 1}));
-            dispatch(getIsInLikeList({ movie_id: movie.id, user_id: 1}))
+        if(movie.id) {
+            dispatch(fetchAudienceScore({ movie_id: movie.id }));
+            if(user) {
+                dispatch(fetchFriendsThatLiked({user_id: user.id, movie_id: movie.id}));
+                dispatch(getIsInWatchList({ movie_id: movie.id, user_id: user.id}));
+                dispatch(getIsInLikeList({ movie_id: movie.id, user_id: user.id}));
+                dispatch(fetchMovieReviews({ movie_id: movie.id }));
+            }
+        }
+        else {
+            dispatch(resetPage());
         }
     }, [movie])
 
@@ -89,14 +118,13 @@ const Movie = () => {
                     <>
                         <div className={classes.panel__controlButtons}>
                             <IconButton className={classes.iconButton}
-                                        onClick={() => {navigate(-1)}}>
+                                        onClick={() => navigate(-1)}>
                                 <West/>
                             </IconButton>
-                            {/*
-                                <IconButton className={classes.iconButton}>
-                                    <Share/>
-                                </IconButton>
-                            */}
+                            <IconButton className={classes.iconButton}
+                                        onClick={() => navigate('/browse')}>
+                                <HomeRounded/>
+                            </IconButton>
                         </div>
                         <div className={classes.adaptiveContainer}>
                             <div className={classes.panel__poster}>
@@ -106,7 +134,7 @@ const Movie = () => {
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
                                          alt="background image of the page"/>
                                 </picture>
-                                <IconButton className={classes.iconButton} onClick={addToFav}>
+                                <IconButton className={classes.iconButton} onClick={onLikelistClick} disabled={buttons_disabled}>
                                     {
                                         isInLikeList
                                         ?
@@ -167,7 +195,7 @@ const Movie = () => {
                                 </div>
                                 <div className={classes.statisticsContainer}>
                                     <div className={classes.watchLater}>
-                                        <Button variant="outlined" onClick={addToWatchLater}>
+                                        <Button variant="outlined" onClick={onWatchlistClick} disabled={buttons_disabled}>
                                             {isInWatchList ? <BookmarkAdded/> : <BookmarkAddOutlined/>}
                                         </Button>
                                         <span>{isInWatchList ? "Saved!" : "Watch later"}</span>

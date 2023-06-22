@@ -88,7 +88,7 @@ class ReviewController {
                     },
                     {
                         model: Movie,
-                        attributes: ["title", "release_date", "poster"]
+                        attributes: ["title", "release_date", "poster", "imdb_link"]
                     },
                     {
                         model: ReviewReaction,
@@ -243,17 +243,98 @@ class ReviewController {
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
     async getUserReviewReaction(req, res, next) {
-        const { user_id, review_id } = req.query;
-        const reaction = await ReviewReaction.findOne({
-            where: { user_id, review_id }
-        });
+        try {
+            const { user_id, review_id } = req.query;
+            const reaction = await ReviewReaction.findOne({
+                where: { user_id, ReviewId: review_id }
+            });
 
-        return res.json(reaction || null);
+            return res.json(reaction);
+        }
+        catch(e) {
+            console.log(e);
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+    async removeUserReviewReaction(req, res, next) {
+        try {
+            const { user_id, review_id } = req.query;
+
+            const reaction = await ReviewReaction.findOne({
+                where: {
+                    user_id,
+                    ReviewId: review_id,
+                }
+            });
+
+            await ReviewReaction.destroy({
+                where: {
+                    user_id,
+                    ReviewId: review_id,
+                }
+            })
+
+            return res.json(reaction);
+        }
+        catch(e) {
+            console.log(e);
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+    async createUserReviewReaction(req, res, next) {
+        try {
+            const { user_id, review_id, reaction_type } = req.body;
+            const candidate = await ReviewReaction.findOne({
+                where: {
+                    user_id,
+                    ReviewId: review_id,
+                }
+            });
+
+            let reaction;
+
+            if(candidate) {
+                candidate.reaction_type = reaction_type;
+                await candidate.save();
+                reaction = candidate;
+            }
+            else {
+                reaction = await ReviewReaction.create({user_id, reaction_type, ReviewId: review_id, review_id});
+            }
+
+            return res.json(reaction);
+        }
+        catch (e) {
+            console.log(e);
+            next(ApiError.Internal(e.message));
+        }
+    }
+
+    async getReviewReactions(req, res, next) {
+        try {
+            const { review_id } = req.query;
+            const reactions = await ReviewReaction.findAll({
+                where: {
+                    ReviewId: review_id
+                }
+            });
+
+            const likes = reactions.filter(reaction => reaction.reaction_type === "like");
+            const dislikes = reactions.filter(reaction => reaction.reaction_type === "dislike");
+
+            return res.json({likes: likes.length, dislikes: dislikes.length});
+        }
+        catch (e) {
+            console.log(e);
+            next(ApiError.Internal(e.message));
+        }
     }
 }
 

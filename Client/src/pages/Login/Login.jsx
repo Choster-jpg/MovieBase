@@ -15,7 +15,7 @@ const Login = () => {
     const paths = location.pathname.split('/');
 
     switch (paths[paths.length - 1]) {
-        case "index":
+        case "":
             return (<div className={classes.background}><Welcome/></div>);
 
         case "sign_up":

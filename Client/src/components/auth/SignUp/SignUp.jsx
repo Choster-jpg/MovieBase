@@ -41,7 +41,7 @@ const SignUp = () => {
     }, [error]);
 
     useEffect(() => {
-        if(!loading && registered) navigate('/login/sign_in');
+        if(!loading && registered) navigate('/sign_in');
     }, [loading])
     
     return (
@@ -115,7 +115,7 @@ const SignUp = () => {
                     <div className={classes.container}>
                         <span>Have an account?</span>
                         <div className={classes.linkContainer}>
-                            <Link className={classes.link} href="/login/sign_in" underline="none">Sign in</Link>
+                            <Link className={classes.link} href="/sign_in" underline="none">Sign in</Link>
                         </div>
                     </div>
                 </form>

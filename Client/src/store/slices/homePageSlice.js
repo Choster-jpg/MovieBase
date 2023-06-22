@@ -6,11 +6,9 @@ export const fetchFeed = createAsyncThunk(
     "homePage/fetchFeed",
     async ({ filter, page, limit }, {rejectWithValue}) => {
         try {
-            console.log('zapros poshel')
             const { data } = await $host.get(`api/review/feed`, {
                 params: { filter, page, limit }
             });
-            console.log(data);
 
             return data;
         }
@@ -39,13 +37,10 @@ export const fetchFriends = createAsyncThunk(
 const initialState = {
     loading: false,
     error: null,
-    feedPosts: [],
-    friendsPosts: [],
-    pageFeed: 1,
-    pageFriends: 1,
+    posts: [],
+    page: 1,
     limit: 5,
-    hasMoreFeed: true,
-    hasMoreFriends: true,
+    hasMore: true,
 };
 
 const homePageSlice = createSlice({
@@ -58,22 +53,25 @@ const homePageSlice = createSlice({
         setPageFriends: (state, { payload }) => {
             state.pageFriends = payload.value;
         },
+        resetPosts: (state) => {
+            state.posts = [];
+            state.page = 1;
+            state.hasMore = true;
+        }
     },
     extraReducers: {
         [fetchFeed.pending]: (state, action) => {
             state.loading = true;
         },
         [fetchFeed.fulfilled]: (state, action) => {
-            console.log("fetch feed fulfilled");
             state.loading = false;
-            /*state.feedPosts = state.feedPosts.concat(action.payload.filter(item =>
-                !state.feedPosts.some(element => element.id === item.id)
-            ));*/
+            state.posts = state.posts.concat(action.payload.filter(item =>
+                !state.posts.some(element => element.id === item.id)
+            ));
 
-            state.feedPosts = state.feedPosts.concat(action.payload);
             if(action.payload.length < state.limit)
             {
-                state.hasMoreFeed = false;
+                state.hasMore = false;
             }
         },
         [fetchFeed.rejected]: (state, action) => {
@@ -86,12 +84,15 @@ const homePageSlice = createSlice({
             state.loading = true;
         },
         [fetchFriends.fulfilled]: (state, action) => {
-            console.log("fetch friends fulfilled");
             state.loading = false;
-            state.friendsPosts = state.friendsPosts.concat(action.payload);
+            state.posts = state.posts.concat(action.payload.filter(item =>
+                !state.posts.some(element => element.id === item.id)
+            ));
+
+
             if(action.payload.length < state.limit)
             {
-                state.hasMoreFriends = false;
+                state.hasMore = false;
             }
         },
         [fetchFriends.rejected]: (state, action) => {
@@ -101,7 +102,7 @@ const homePageSlice = createSlice({
     }
 });
 
-export const { setPageFriends, setPageFeed } = homePageSlice.actions;
+export const { setPageFriends, setPageFeed, resetPosts } = homePageSlice.actions;
 
 export default homePageSlice.reducer;
 

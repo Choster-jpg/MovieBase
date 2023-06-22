@@ -3,6 +3,8 @@ const { User, UserRelationship, LikeList } = require('../models/models').Models(
 const userService = require('../services/userService');
 const { Op, QueryTypes } = require("sequelize");
 
+const ApiError = require('../error/apiError');
+
 const handleImage = require('../utils/handleImage');
 
 class UserController
@@ -16,7 +18,8 @@ class UserController
             return response.json(userData);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -31,7 +34,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -44,7 +47,8 @@ class UserController
             return response.json(token);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -57,7 +61,8 @@ class UserController
             return response.json(userData);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -70,7 +75,8 @@ class UserController
             return response.json(userData);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -85,7 +91,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -97,7 +103,8 @@ class UserController
             return response.redirect(process.env.CLIENT_URL);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -113,7 +120,8 @@ class UserController
             }
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -133,7 +141,8 @@ class UserController
             return response.json(user);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -147,7 +156,8 @@ class UserController
             return res.json(user);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -166,7 +176,8 @@ class UserController
             return res.json(friends);
         }
         catch (e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -178,7 +189,8 @@ class UserController
             return res.json(result);
         }
         catch (e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -194,7 +206,8 @@ class UserController
             return res.json(result);
         }
         catch (e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -222,7 +235,8 @@ class UserController
             return res.json(result);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e));
         }
     }
 
@@ -247,33 +261,43 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e));
         }
     }
 
     async getFriendsLikedMovie(req, res, next) {
-        const { user_id } = req.query;
-        const ids = await userService.getFriendsIds(user_id);
+        try {
+            const { user_id, movie_id } = req.query;
+            const ids = await userService.getFriendsIds(user_id);
 
-        const friends_ids = await LikeList.findAll({
-            where: {
-                UserId: {
-                    [Op.in]: ids,
-                }
-            },
-            attributes: ["UserId"]
-        });
+            const friends_ids = await LikeList.findAll({
+                where: {
+                    UserId: {
+                        [Op.in]: ids,
+                    },
+                    MovieId: movie_id,
+                },
+                attributes: ["UserId"],
+                raw: true,
+            });
 
-        const result = await User.findAll({
-            where: {
-                id: {
-                    [Op.in]: friends_ids,
-                }
-            },
-            attributes: ["image"],
-        });
+            const mapped_ids = friends_ids.map(item => item.UserId);
 
-        return res.json(result);
+            const result = await User.findAll({
+                where: {
+                    id: {
+                        [Op.in]: mapped_ids,
+                    }
+                },
+                attributes: ["image"],
+            });
+
+            return res.json(result);
+        }
+        catch(e) {
+            console.log(e);
+            next(ApiError.Internal(e));
+        }
     }
 }
 
