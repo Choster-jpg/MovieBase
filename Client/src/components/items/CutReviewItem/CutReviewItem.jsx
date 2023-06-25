@@ -3,13 +3,11 @@ import classes from "./CutReviewItem.module.scss";
 import {Avatar} from "@mui/material";
 import TextRating from "../../UI/TextRating/TextRating.jsx";
 import {Link} from "react-router-dom";
-import {Forum} from "@mui/icons-material";
 
 import { removeHtml } from "../../../utils/removeHtml.js";
 import {getPublicationDate} from "../../../utils/getPublicationDate.js";
 
 const CutReviewItem = ({item}) => {
-
     const purified_text = removeHtml(item.html_content).slice(0, 155);
     let text = purified_text;
     if(purified_text.length === 155) {
@@ -21,7 +19,7 @@ const CutReviewItem = ({item}) => {
     return (
         <div className={classes.postContent}>
             <div className={classes.postHeader}>
-                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
+                <Avatar src={`${import.meta.env.VITE_SERVER_API_URL}/${item.User?.image}`}/>
                 <div className={classes.postAuthor}>
                     <h5>{item.User?.full_name}</h5>
                     <span>{timeFormatted}, {dateFormatted}</span>

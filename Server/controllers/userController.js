@@ -19,7 +19,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -34,7 +34,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -48,7 +48,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -62,7 +62,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -76,7 +76,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -91,7 +91,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -104,7 +104,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -121,7 +121,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -151,7 +151,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -161,12 +161,14 @@ class UserController
             const { image } = req.files;
             const fileName = await handleImage(image, 'users');
 
-            const user = await User.update({image: fileName}, {where: {id: user_id}})
+            const user = await User.update({image: fileName}, {
+                where: {id: user_id}
+            })
             return res.json(user);
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -186,7 +188,7 @@ class UserController
         }
         catch (e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -198,7 +200,7 @@ class UserController
         }
         catch (e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -212,7 +214,7 @@ class UserController
         }
         catch (e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -241,7 +243,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -259,7 +261,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -284,7 +286,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -319,7 +321,7 @@ class UserController
         }
         catch(e) {
             console.log(e);
-            next(ApiError.Internal(e));
+            next(ApiError.Internal(e.message));
         }
     }
 }

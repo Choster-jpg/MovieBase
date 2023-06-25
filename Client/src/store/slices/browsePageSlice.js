@@ -12,7 +12,7 @@ export const fetchMovies = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -28,7 +28,7 @@ export const fetchUsers = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );

@@ -131,12 +131,12 @@ const Browse = () => {
                                         <div className={classes.startSearchText}>
                                             {
                                                 loading && movieSearchQuery
-                                                    ?
-                                                    <CircularProgress color="inherit" />
-                                                    :
-                                                    <span>
-                                                    Type anything into Input above to search! You can specify
-                                                    <mark> nickname</mark> or <mark> user name</mark>!
+                                                ?
+                                                <CircularProgress color="inherit" />
+                                                :
+                                                <span>
+                                                Type anything into Input above to search! You can specify
+                                                <mark> nickname</mark> or <mark> user name</mark>!
                                                 </span>
                                             }
                                         </div>

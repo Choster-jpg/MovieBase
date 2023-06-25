@@ -7,18 +7,13 @@ import classes from './ReplyItem.module.scss';
 import {useDispatch, useSelector} from "react-redux";
 
 import { setReplyItem } from '../../../store/slices/reviewPageSlice.js';
+import {getPublicationDate} from "../../../utils/getPublicationDate.js";
 
 const ReplyItem = ({item}) => {
     const dispatch = useDispatch();
     const { data, reply_item, buttons_disabled } = useSelector(state => state.reviewPage);
 
-    const dateObject = new Date(item.createdAt);
-    let hours = dateObject.getHours();
-    let minutes = dateObject.getMinutes();
-    let options = { day: 'numeric', month: 'long', year: 'numeric' };
-
-    const timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    const dateFormatted = dateObject.toLocaleDateString('en-US', options);
+    const { timeFormatted, dateFormatted }  = getPublicationDate(new Date(item.createdAt));
 
     const onReplyClick = () => {
         dispatch(setReplyItem({comment_id: item.CommentId, nickname: item.User?.nickname}));
@@ -27,7 +22,7 @@ const ReplyItem = ({item}) => {
     return (
         <div className={classes.replyItem}>
             <div className={classes.contentHeader}>
-                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
+                <Avatar src={`${import.meta.env.VITE_SERVER_API_URL}/${item.User?.image}`}/>
                 <div className={classes.contentAuthor}>
                     <h5>
                         @{item.User?.nickname}

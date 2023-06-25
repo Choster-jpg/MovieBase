@@ -10,7 +10,7 @@ const FriendsListItem = ({item}) => {
         <Link className={classes.link}>
             <div className={classes.friendsListItem}>
                 <Link to={`/user/${item.id}`}>
-                    <Avatar src={`http://localhost:5000/${item.image}`}/>
+                    <Avatar src={`${import.meta.env.VITE_SERVER_API_URL}/${item.image}`}/>
                 </Link>
                 <div className={classes.textContainer}>
                     <span>{item.full_name}</span>

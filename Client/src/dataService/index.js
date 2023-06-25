@@ -1,5 +1,5 @@
 import axios from "axios";
-const SERVER_API_ROUTE = 'http://localhost:5000/';
+const SERVER_API_ROUTE = `${import.meta.env.VITE_SERVER_API_URL}/`;
 
 const $host = axios.create({
     withCredentials: true,

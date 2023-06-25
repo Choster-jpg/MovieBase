@@ -106,7 +106,7 @@ const Account = () => {
                                     style={{ display: "none" }}
                                 />
                                 <div className={classes.clickable} onClick={handleClick}>
-                                    <Avatar className={classes.profileAvatar} src={`http://localhost:5000/${data.image}`}/>
+                                    <Avatar className={classes.profileAvatar} src={`${import.meta.env.VITE_SERVER_API_URL}/${data.image}`}/>
                                 </div>
                                 <Popover id={popover_id} open={open} anchorEl={anchorEl} onClose={handleClose}
                                          anchorOrigin={{

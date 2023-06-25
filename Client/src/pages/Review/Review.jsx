@@ -163,7 +163,7 @@ const Review = () => {
                                 <div className={classes.content}>
                                     <div className={classes.contentHeader}>
                                         <Link to={`/user/${data.User?.id}`}>
-                                            <Avatar src={`http://localhost:5000/${data.User?.image}`}/>
+                                            <Avatar src={`${import.meta.env.VITE_SERVER_API_URL}/${data.User?.image}`}/>
                                         </Link>
                                         <div className={classes.contentAuthor}>
                                             <h5>{data.User?.full_name}</h5>

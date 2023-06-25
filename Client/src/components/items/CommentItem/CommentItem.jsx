@@ -22,7 +22,7 @@ const CommentItem = ({item, replies}) => {
     return (
         <div className={classes.commentItem}>
             <div className={classes.contentHeader}>
-                <Avatar src={`http://localhost:5000/${item.User?.image}`}/>
+                <Avatar src={`${import.meta.env.VITE_SERVER_API_URL}/${item.User?.image}`}/>
                 <div className={classes.contentAuthor}>
                     <h5>
                         @{item.User?.nickname}

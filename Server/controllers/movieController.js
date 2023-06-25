@@ -11,24 +11,6 @@ const { Sequelize, Op } = require("sequelize");
 //const  = require("sequelize");
 
 class MovieController {
-    /*async create(req, res, next) {
-        try {
-            const { poster, title, release_date, runtime, imdb_rate,
-                rotten_rate, kinopoisk_rate, metacritic_rate, plot,
-                director, genres, budget, gross, cast } = req.body;
-
-            const movie = await movieService.createMovie({poster, title, release_date, runtime, imdb_rate,
-                rotten_rate, kinopoisk_rate, metacritic_rate, plot,
-                director, genres, budget, gross, cast});
-
-            return res.json(movie);
-        }
-        catch (e)
-        {
-            next(e);
-        }
-    }*/
-
     async browse(req, res, next) {
         try {
             const {query, limit} = req.query;

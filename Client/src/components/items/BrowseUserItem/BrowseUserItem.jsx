@@ -9,7 +9,7 @@ const BrowseUserItem = ({user}) => {
         <div className={classes.browseUserItem}>
             <div className={classes.infoContainer}>
                 <Link to={`/user/${user.id}`}>
-                    <Avatar className={classes.avatar} src={`http://localhost:5000/${user.image}`}/>
+                    <Avatar className={classes.avatar} src={`${import.meta.env.VITE_SERVER_API_URL}/${user.image}`}/>
                 </Link>
                 <div className={classes.textContainer}>
                     <span>{user.full_name}</span>

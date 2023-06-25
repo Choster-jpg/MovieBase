@@ -5,23 +5,16 @@ import {Link} from "react-router-dom";
 import classes from './PostItem.module.scss';
 import TextRating from "../../UI/TextRating/TextRating.jsx";
 import {Comment, Forum} from "@mui/icons-material";
+import {getPublicationDate} from "../../../utils/getPublicationDate.js";
 
 const PostItem = ({item}) => {
 
-    const dateObject = new Date(item.createdAt);
-    let hours = dateObject.getHours();
-    let minutes = dateObject.getMinutes();
-    let timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
-    let options = { day: 'numeric', month: 'long', year: 'numeric' };
-    let dateFormatted = dateObject.toLocaleDateString('en-US', options);
+    const { timeFormatted, dateFormatted } = getPublicationDate(new Date(item.createdAt));
 
     function removeHtmlTags(str) {
         return str.replace(/<[^>]*>/g, '');
     }
-
     let plain_text = removeHtmlTags(item.html_content).slice(0, 175);
-
     if(plain_text.length === 175) {
         plain_text += '...';
     }
@@ -31,7 +24,7 @@ const PostItem = ({item}) => {
             <div className={classes.postSubject}>
                 <div className={classes.posterLabels}>
                     <div className={classes.postHeader}>
-                        <Avatar className={classes.avatar} src={`http://localhost:5000/${item.User.image}`}/>
+                        <Avatar className={classes.avatar} src={`${import.meta.env.VITE_SERVER_API_URL}/${item.User.image}`}/>
                         <div className={classes.postAuthor}>
                             <h5>{item.User.full_name}</h5>
                             <span>{`${timeFormatted}, ${dateFormatted}`}</span>

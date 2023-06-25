@@ -41,7 +41,7 @@ class ReviewController {
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -58,7 +58,8 @@ class ReviewController {
             return res.json(review);
         }
         catch(e) {
-
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -72,7 +73,8 @@ class ReviewController {
             return res.json(review);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -98,7 +100,8 @@ class ReviewController {
             return res.json(review);
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -113,7 +116,8 @@ class ReviewController {
             return res.json(reviews);
         }
         catch(e) {
-            next(e);//
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -131,7 +135,8 @@ class ReviewController {
             return res.json(reviews)
         }
         catch(e) {
-            next(e);
+            console.log(e);
+            next(ApiError.Internal(e.message));
         }
     }
 
@@ -191,7 +196,7 @@ class ReviewController {
         }
         catch(e) {
             console.log(e);
-            next(e);
+            next(ApiError.Internal(e.message));
         }
     }
 

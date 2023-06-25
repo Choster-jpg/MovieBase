@@ -110,7 +110,7 @@ const UserAccount = () => {
                             <>
                                 <div className={classes.avatarContainer}>
                                     <div className={classes.clickable} onClick={handleClick}>
-                                        <Avatar className={classes.profileAvatar} src={`http://localhost:5000/${otherUserData.image}`}/>
+                                        <Avatar className={classes.profileAvatar} src={`${import.meta.env.VITE_SERVER_API_URL}/${otherUserData.image}`}/>
                                     </div>
                                     {
                                         user === null

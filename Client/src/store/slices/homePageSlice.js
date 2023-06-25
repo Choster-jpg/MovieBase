@@ -39,7 +39,7 @@ const initialState = {
     error: null,
     posts: [],
     page: 1,
-    limit: 5,
+    limit: 1000,
     hasMore: true,
 };
 
@@ -65,11 +65,12 @@ const homePageSlice = createSlice({
         },
         [fetchFeed.fulfilled]: (state, action) => {
             state.loading = false;
+            console.log(action.payload);
             state.posts = state.posts.concat(action.payload.filter(item =>
                 !state.posts.some(element => element.id === item.id)
             ));
 
-            if(action.payload.length < state.limit)
+            if(action.payload.length < state.limit )
             {
                 state.hasMore = false;
             }
@@ -88,7 +89,6 @@ const homePageSlice = createSlice({
             state.posts = state.posts.concat(action.payload.filter(item =>
                 !state.posts.some(element => element.id === item.id)
             ));
-
 
             if(action.payload.length < state.limit)
             {

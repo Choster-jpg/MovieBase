@@ -14,7 +14,7 @@ export const fetchMovieData = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -30,7 +30,7 @@ export const getIsInLikeList = createAsyncThunk(
             return data;
         }
         catch (e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -46,7 +46,7 @@ export const getIsInWatchList = createAsyncThunk(
             return data;
         }
         catch (e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -62,7 +62,7 @@ export const fetchFriendsThatLiked = createAsyncThunk(
             return data;
         }
         catch (e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 )
@@ -78,7 +78,7 @@ export const fetchAudienceScore = createAsyncThunk(
             return data;
         }
         catch (e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -94,7 +94,7 @@ export const fetchMovieReviews = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -107,7 +107,7 @@ export const addToWatchList = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -123,7 +123,7 @@ export const removeFromWatchList = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -136,7 +136,7 @@ export const addToLikeList = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -152,7 +152,7 @@ export const removeFromLikeList = createAsyncThunk(
             return data;
         }
         catch(e) {
-            rejectWithValue(e.response.data);
+            throw new Error(e.response.data.message);
         }
     }
 );
@@ -188,6 +188,9 @@ const moviePageSlice = createSlice({
         [fetchMovieData.fulfilled]: (state, action) => {
             state.loading = false;
             state.movie = action.payload;
+            if(!Array.isArray(state.movie.genres)) {
+                state.movie.genres = JSON.parse(action.payload.genres);
+            }
         },
         [fetchMovieData.rejected]: (state, action) => {
             state.loading = false;

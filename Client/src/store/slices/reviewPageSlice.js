@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {$host} from "../../dataService/index.js";
+import {getPublicationDate} from "../../utils/getPublicationDate.js";
 
 export const fetchReviewData = createAsyncThunk(
     "reviewPage/fetchReviewData",
@@ -193,13 +194,9 @@ const reviewPageSlice = createSlice({
         [fetchReviewData.fulfilled]: (state, action) => {
             state.data = action.payload;
 
-            const dateObject = new Date(state.data.createdAt);
-            let hours = dateObject.getHours();
-            let minutes = dateObject.getMinutes();
-            let options = {day: 'numeric', month: 'long', year: 'numeric'};
-
-            state.data.timeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-            state.data.dateFormatted = dateObject.toLocaleDateString('en-US', options);
+            const { timeFormatted, dateFormatted } = getPublicationDate(new Date(state.data.createdAt))
+            state.data.timeFormatted = timeFormatted;
+            state.data.dateFormatted = dateFormatted;
         },
         [fetchReviewData.rejected]: (state, action) => {
             state.loading = false;

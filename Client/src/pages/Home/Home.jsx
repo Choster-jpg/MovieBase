@@ -57,23 +57,12 @@ const Home = () => {
     useEffect(() => {
         dispatch(resetPosts());
         if(openedTab === "Actual") {
-
             dispatch(fetchFeed({ filter: sortOption, limit, page: page}));
         }
         else {
             dispatch(fetchFriends({ filter: sortOption, limit, page: page, user_id: user.id}));
         }
     }, [openedTab]);
-
-    const fetchMoreFeed = () => {
-        dispatch(fetchFeed({ filter: sortOption, limit, page: page}));
-        dispatch(setPageFeed({ value: page + 1 }));
-    }
-
-    const fetchMoreFriends = () => {
-        dispatch(fetchFriends({ filter: sortOption, limit, page: page, user_id: user.id}));
-        dispatch(setPageFriends({ value: page + 1 }));
-    }
 
     return (
         <>
@@ -113,32 +102,22 @@ const Home = () => {
                 </div>*/}
                 <CustomTabs setOpenedTab={setOpenedTab} tabHeaders={ user === null ? ["Actual"] : ["Actual", "Subscriptions"]} tabPanels={[
                     <div className={classes.postsContainer}>
-                        <InfiniteScroll next={fetchMoreFeed}
-                                        hasMore={hasMore}
-                                        loader={
-                                            <div className={classes.loaderContainer}>
-                                                <CircularProgress color="inherit"/>
-                                            </div>
-                                        }
-                                        dataLength={posts.length}>
                             {
+                                loading
+                                ?
+                                <CircularProgress color="inherit"/>
+                                :
                                 posts.map(item => <PostItem item={item}/>)
                             }
-                        </InfiniteScroll>
                     </div>,
                     <div className={classes.postsContainer}>
-                        <InfiniteScroll next={fetchMoreFriends}
-                                        hasMore={hasMore}
-                                        loader={
-                                            <div className={classes.loaderContainer}>
-                                                <CircularProgress color="inherit"/>
-                                            </div>
-                                        }
-                                        dataLength={posts.length}>
                             {
+                                loading
+                                ?
+                                <CircularProgress color="inherit"/>
+                                :
                                 posts.map(item => <PostItem item={item}/>)
                             }
-                        </InfiniteScroll>
                     </div>
                 ]}/>
             </div>
